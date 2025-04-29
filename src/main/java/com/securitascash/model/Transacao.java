@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import com.securitascash.enums.Movimento;
+import com.securitascash.model.conta.Conta;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
