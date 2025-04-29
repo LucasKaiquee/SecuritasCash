@@ -1,16 +1,18 @@
-package com.securitascash.model;
+package com.securitascash.model.conta;
 
 import java.util.List;
 
-import com.securitascash.enums.ContaTipo;
+import com.securitascash.model.Transacao;
+import com.securitascash.model.usuario.Usuario;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
@@ -21,6 +23,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipo_conta")
 public abstract class Conta {
 
     @Id
@@ -28,11 +32,6 @@ public abstract class Conta {
     private Long id;
     private String numero;
     private String descricao;
-    
-    @Enumerated(EnumType.STRING)
-    private ContaTipo tipo;
-
-    private Integer diaDoFechamento;
 
     @ManyToOne
     private Usuario usuario;
