@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import com.securitascash.model.conta.CartaoDeCredito;
 import com.securitascash.model.conta.Conta;
@@ -14,7 +14,7 @@ import com.securitascash.model.conta.ContaCorrente;
 import com.securitascash.repository.ContaRepository;
 import com.securitascash.repository.UsuarioRepository;
 
-@SpringBootTest
+@DataJpaTest
 public class Teste {
 
     @Autowired

@@ -2,13 +2,13 @@ package com.securitascash.categoria;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import com.securitascash.enums.Natureza;
 import com.securitascash.model.Categoria;
 import com.securitascash.repository.CategoriaRepository;
 
-@SpringBootTest
+@DataJpaTest
 public class Creating {
 
     @Autowired
