@@ -14,5 +14,5 @@ import lombok.NoArgsConstructor;
 @DiscriminatorValue("CARTAO_CREDITO")
 @Entity
 public class CartaoDeCredito extends Conta{
-    private int diaDoFechamento;
+    private Integer diaDoFechamento;
 }
