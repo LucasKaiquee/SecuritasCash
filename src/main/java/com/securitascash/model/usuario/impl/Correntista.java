@@ -1,4 +1,6 @@
-package com.securitascash.model.conta;
+package com.securitascash.model.usuario.impl;
+
+import com.securitascash.model.usuario.Usuario;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
@@ -10,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @Entity
-@DiscriminatorValue("CORRENTE")
-public class ContaCorrente extends Conta{
+@DiscriminatorValue("CORRENTISTA")
+public class Correntista extends Usuario{
     
 }

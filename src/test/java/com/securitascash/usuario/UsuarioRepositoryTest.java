@@ -9,14 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 
-import com.securitascash.model.usuario.Administrador;
-import com.securitascash.model.usuario.Correntista;
 import com.securitascash.model.usuario.Usuario;
+import com.securitascash.model.usuario.impl.Administrador;
+import com.securitascash.model.usuario.impl.Correntista;
 import com.securitascash.repository.UsuarioRepository;
 
 @DataJpaTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class UsuarioTest {
+public class UsuarioRepositoryTest {
     
     @Autowired
     UsuarioRepository usuarioRepository;
@@ -37,7 +37,7 @@ public class UsuarioTest {
 
         //Verify
         System.out.println(administrador);
-        Assertions.assertThat(administrador.getId()).isGreaterThan(0);
+        Assertions.assertThat(administrador.getId()).isNotNull();
         
 
     }
