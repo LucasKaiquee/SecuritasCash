@@ -22,8 +22,8 @@ public class Categoria {
     private Long id;
 
     private String name;
-    private boolean isActive;
-    private int ordem;
+    private Boolean isActive;
+    private Integer ordem;
 
     @Enumerated(EnumType.STRING)
     private Natureza natureza;
