@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import com.securitascash.model.conta.Conta;
-import com.securitascash.model.conta.impl.CartaoDeCredito;
-import com.securitascash.model.conta.impl.ContaCorrente;
+import com.securitascash.model.conta.inherit.CartaoDeCredito;
+import com.securitascash.model.conta.inherit.ContaCorrente;
 import com.securitascash.repository.ContaRepository;
 import com.securitascash.repository.UsuarioRepository;
 

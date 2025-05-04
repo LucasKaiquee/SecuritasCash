@@ -1,4 +1,4 @@
-package com.securitascash.model.usuario.impl;
+package com.securitascash.model.usuario.inherit;
 
 import com.securitascash.model.usuario.Usuario;
 

@@ -10,8 +10,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 
 import com.securitascash.model.usuario.Usuario;
-import com.securitascash.model.usuario.impl.Administrador;
-import com.securitascash.model.usuario.impl.Correntista;
+import com.securitascash.model.usuario.inherit.Administrador;
+import com.securitascash.model.usuario.inherit.Correntista;
 import com.securitascash.repository.UsuarioRepository;
 
 @DataJpaTest
