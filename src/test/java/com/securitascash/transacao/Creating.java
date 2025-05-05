@@ -33,7 +33,6 @@ public class Creating {
         Transacao transacao = new Transacao();
 
         transacao.setCategoria(categoriaRepository.findById(2L).orElse(null));
-        transacao.setComentario("Comentario sobre a transacao.");
         transacao.setConta(contaRepository.findById(1L).orElse(null));
         transacao.setData(new Date());
         transacao.setDescricao("Descricao bem importante.");
