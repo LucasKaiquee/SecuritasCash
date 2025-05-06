@@ -7,6 +7,7 @@ import java.util.List;
 import com.securitascash.enums.Movimento;
 import com.securitascash.model.conta.Conta;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -42,7 +43,7 @@ public class Transacao {
     @ManyToOne
     private Categoria categoria;
 
-    @OneToMany(mappedBy = "transacao")
+    @OneToMany(mappedBy = "transacao", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Comentario> comentarios;
 
 }
