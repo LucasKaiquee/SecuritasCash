@@ -1,6 +1,7 @@
 package com.securitascash.model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -44,6 +45,6 @@ public class Transacao {
     private Categoria categoria;
 
     @OneToMany(mappedBy = "transacao", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<Comentario> comentarios;
+    private List<Comentario> comentarios = new ArrayList<>();
 
 }

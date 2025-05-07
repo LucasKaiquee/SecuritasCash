@@ -23,14 +23,18 @@ public class ComentarioService {
         
     }
 
-    public void excluirComentario(){
+    public Transacao excluirComentario(Transacao transacao, Long comentarioID){
+        Comentario comentarioASerExcluido = buscarComentario(transacao.getComentarios(), comentarioID);
+        transacao.getComentarios().remove(comentarioASerExcluido);
 
+        return transacao;
     }
 
-    public List<Comentario> listarComentarios(){
-        return null;
+    public List<Comentario> listarComentarios(Transacao transacao ){
+        return transacao.getComentarios();
     }
 
+    
     public Comentario buscarComentario(List<Comentario> comentarios, Long comentarioID){
         for(Comentario comentario : comentarios){
             if (comentario.getId() == comentarioID) {return comentario;};
