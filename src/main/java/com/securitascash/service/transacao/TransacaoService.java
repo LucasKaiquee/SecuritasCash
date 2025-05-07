@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.securitascash.model.Comentario;
 import com.securitascash.model.Transacao;
 import com.securitascash.repository.TransacaoRepository;
 import com.securitascash.service.comentario.ComentarioService;
@@ -32,16 +33,17 @@ public class TransacaoService {
         return null;
     }
 
-    public void adicionarComentario(){
-        //TODO
+    
+    //TODO: Ver qual a melhor forma de adicionar os comentários no momento de criação da transação
+    //      Opção 1 : Usar DTO
+        
+    public void adicionarComentario(Comentario comentario){
     }
 
     public void editarComentario(){
-        //TODO
     }
 
     public void excluirComentario(){
-        //TODO
     }
 
 

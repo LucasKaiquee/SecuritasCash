@@ -44,7 +44,7 @@ public class Transacao {
     @ManyToOne
     private Categoria categoria;
 
-    @OneToMany(mappedBy = "transacao", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "transacao", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<Comentario> comentarios = new ArrayList<>();
 
 }

@@ -31,7 +31,7 @@ public abstract class Usuario {
     private String nome;
     private String senha;
 
-    @OneToMany(mappedBy = "usuario", cascade = {CascadeType.REMOVE, CascadeType.MERGE})
+    @OneToMany(mappedBy = "usuario", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
     private List<Conta> contas;
 
 }

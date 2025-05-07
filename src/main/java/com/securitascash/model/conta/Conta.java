@@ -36,6 +36,6 @@ public abstract class Conta {
     @ManyToOne
     private Usuario usuario;
 
-    @OneToMany(mappedBy = "conta", cascade = {CascadeType.REMOVE, CascadeType.MERGE})
+    @OneToMany(mappedBy = "conta", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
     private List<Transacao> transacoes;
 }
