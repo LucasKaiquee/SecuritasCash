@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.securitascash.model.conta.Conta;
+import com.securitascash.model.conta.inherit.ContaCorrente;
 import com.securitascash.repository.ContaRepository;
+import com.securitascash.repository.UsuarioRepository;
 
 @Service
 public class ContaService {
@@ -17,8 +19,22 @@ public class ContaService {
     @Autowired
     ContaRepository contaRepository;
 
-    public String criarContaCorrente(){
-        //TODO
+    @Autowired
+    UsuarioRepository usuarioRepository;
+
+
+    public Conta criarContaCorrente(){
+        // Conta c = new ContaCorrente(); 
+        // c.setNumero("123");
+        // c.setDescricao("Conta Corrente 123");
+        
+        // c.setUsuario(usuarioRepository.findById(4L).orElse(null));
+
+        // c.setTipo("CORRENTE");
+
+        // System.out.println(c.toString());
+
+        // contaRepository.save(c);
         return null;
     }
 
@@ -49,8 +65,8 @@ public class ContaService {
     }
 
     public List<Conta> listarContas(){
-        //TODO
-        return null;
+        List<Conta> contas = contaRepository.findAll();
+        return contas;
     }
 
 
