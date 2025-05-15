@@ -34,6 +34,7 @@ public abstract class Conta {
     private Long id;
     private String numero;
     private String descricao;
+    private String tipo;
 
     @ManyToOne
     private Usuario usuario;
