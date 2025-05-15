@@ -22,19 +22,9 @@ public class ContaService {
     @Autowired
     UsuarioRepository usuarioRepository;
 
-
-    public Conta criarContaCorrente(){
-        // Conta c = new ContaCorrente(); 
-        // c.setNumero("123");
-        // c.setDescricao("Conta Corrente 123");
-        
-        // c.setUsuario(usuarioRepository.findById(4L).orElse(null));
-
-        // c.setTipo("CORRENTE");
-
-        // System.out.println(c.toString());
-
-        // contaRepository.save(c);
+    public Conta criarConta(Conta conta){
+        conta.setUsuario(usuarioRepository.findById(4L).orElse(null));
+        contaRepository.save(conta);
         return null;
     }
 
