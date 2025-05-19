@@ -37,23 +37,9 @@ public class ContaController {
 
     @PostMapping("/adicionar")
     public String adicionarConta(@ModelAttribute ContaForm contaForm, Model model) {
-        Conta conta = null;
-    
-        switch (contaForm.getTipo()) {
-            case "CORRENTE":
-                conta = new ContaCorrente();
-                break;
-            case "CARTAO_CREDITO":
-                CartaoDeCredito cartao = new CartaoDeCredito();
-                cartao.setDiaDoFechamento(contaForm.getDiaDoFechamento());
-                conta = cartao;
-                break;
-        }
-
-        conta.setNumero(contaForm.getNumero());
-        conta.setDescricao(contaForm.getDescricao());
         
-        contaService.criarConta(conta);
+        
+        contaService.criarConta(contaForm);
 
         model.addAttribute("contas", contaService.listarContas());
         return "redirect:/contas"; // Redireciona para a lista após adicionar
