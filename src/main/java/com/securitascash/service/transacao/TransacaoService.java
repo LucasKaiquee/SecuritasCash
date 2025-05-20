@@ -49,7 +49,6 @@ public class TransacaoService {
         );
     }
 
-    
     @Transactional
     public Comentario adicionarComentario(Long transacaoId, Comentario comentario){
         Transacao transacao = this.buscarTransacaoPorId(transacaoId);
@@ -57,7 +56,6 @@ public class TransacaoService {
         return comentario;
 
     }
-
 
     @Transactional
     public Comentario editarComentario(Long transacaoId, Long comentarioId, String texto){

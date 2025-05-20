@@ -20,14 +20,11 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/contas")
 public class ContaController {
 
-    private final UsuarioController usuarioController;
+    @Autowired
+    UsuarioController usuarioController;
 
     @Autowired
-    private ContaService contaService;
-
-    ContaController(UsuarioController usuarioController) {
-        this.usuarioController = usuarioController;
-    }
+    ContaService contaService;
 
     @GetMapping
     public String getContas(Model model, HttpSession session) {

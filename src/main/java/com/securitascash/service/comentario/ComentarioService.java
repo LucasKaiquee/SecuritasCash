@@ -4,22 +4,34 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.securitascash.exception.BussinessException;
 import com.securitascash.model.Comentario;
 import com.securitascash.model.Transacao;
 
 @Service
 public class ComentarioService {
 
-    public Comentario criarComentario(Transacao transacao, Comentario comentario){      
+    private void verificarTextoNaoEVazio (String texto) throws BussinessException{
+        if (texto == null || texto.isEmpty()){
+            throw new BussinessException("Texto do comentário não pode ser vazio.");
+        }
+    }
+
+    public Comentario criarComentario(Transacao transacao, Comentario comentario){  
+        this.verificarTextoNaoEVazio(comentario.getTexto());
+        
         transacao.getComentarios().add(comentario);
         comentario.setTransacao(transacao);
+
         return comentario;
     }
 
     public Comentario editarComentario(Transacao transacao, Long comentarioID, String texto){
         Comentario comentario = buscarComentario(transacao.getComentarios(), comentarioID);
-        comentario.setTexto(texto);
 
+        this.verificarTextoNaoEVazio(texto);
+        comentario.setTexto(texto);
+        
         return comentario;
         
     }
