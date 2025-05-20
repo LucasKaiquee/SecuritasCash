@@ -12,6 +12,7 @@ public class ComentarioService {
 
     public Comentario criarComentario(Transacao transacao, Comentario comentario){      
         transacao.getComentarios().add(comentario);
+        comentario.setTransacao(transacao);
         return comentario;
     }
 
@@ -35,12 +36,13 @@ public class ComentarioService {
     }
 
     
-    public Comentario buscarComentario(List<Comentario> comentarios, Long comentarioID){
+    public Comentario buscarComentario(List<Comentario> comentarios, Long comentarioID) throws RuntimeException{
         for(Comentario comentario : comentarios){
             if (comentario.getId() == comentarioID) {return comentario;};
         }
 
-        return null;
+        throw new RuntimeException("Comentario não encontrado com o id: " + comentarioID);
+
     }
 
 

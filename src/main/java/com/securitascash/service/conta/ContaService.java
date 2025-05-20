@@ -15,9 +15,6 @@ import com.securitascash.repository.UsuarioRepository;
 @Service
 public class ContaService {
 
-    // OBS.: Discutir se será utilizada abstração para evitar duplicação de código
-    // entre ContaCorrente e ContaCartao 
-
     @Autowired
     ContaRepository contaRepository;
 
@@ -72,6 +69,13 @@ public class ContaService {
     public String excluirContaCartao(){
         //TODO
         return null;
+    }
+
+    public Conta buscarContaPorId (Long id){
+        Conta conta = contaRepository.findById(id).orElseThrow(
+            () -> new RuntimeException("Conta não encontrada com o id: " + id)
+        );
+        return conta;
     }
 
     public List<Conta> listarContasByUser(Long userId){

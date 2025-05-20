@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.securitascash.exception.ResourceNotFoundException;
 import com.securitascash.model.Comentario;
 import com.securitascash.model.Transacao;
 import com.securitascash.model.conta.Conta;
@@ -38,30 +39,23 @@ public class TransacaoService {
 
     public List<Transacao> listarTransacoes(Long contaID){
         Conta conta = contaService.buscarContaPorId(contaID);
-        if (conta != null) {
-            return conta.getTransacoes();
-        }
-        //TODO: Lançar exceção listarTransacoes
-        return null;
+        return conta.getTransacoes();
+
     }
 
     public Transacao buscarTransacaoPorId(Long id){
-        return transacaoRepository.findById(id).orElse(null);
+        return transacaoRepository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException("Transação não encontrada com o id: " + id)
+        );
     }
 
     
     @Transactional
     public Comentario adicionarComentario(Long transacaoId, Comentario comentario){
         Transacao transacao = this.buscarTransacaoPorId(transacaoId);
-        if (transacao != null) {
-            comentario.setTransacao(transacao);
-            transacao.getComentarios().add(comentario);
-            return comentario;
-        }
-        else{
-            //TODO: Lançar exceção adicionarComentario
-            return null;
-        }
+        this.comentarioService.criarComentario(transacao, comentario);
+        return comentario;
+
     }
 
 
@@ -74,11 +68,7 @@ public class TransacaoService {
 
     @Transactional
     public void excluirComentario(Long transacaoId, Long comentarioId){
-
         Transacao transacao = this.buscarTransacaoPorId(transacaoId);
-        if (transacao == null) {
-            //TODO: Lançar exceção editarComentario
-        }
 
         this.comentarioService.excluirComentario(transacao, comentarioId);
         transacaoRepository.save(transacao);
