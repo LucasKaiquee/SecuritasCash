@@ -1,4 +1,4 @@
-package com.securitascash.model.dto;
+package com.securitascash.model.conta.dto;
 
 import lombok.Data;
 

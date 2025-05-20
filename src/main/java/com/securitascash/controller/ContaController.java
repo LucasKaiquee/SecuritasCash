@@ -9,22 +9,34 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.securitascash.model.conta.Conta;
-import com.securitascash.model.conta.inherit.CartaoDeCredito;
-import com.securitascash.model.conta.inherit.ContaCorrente;
-import com.securitascash.model.dto.ContaForm;
+import com.securitascash.model.conta.dto.ContaForm;
+import com.securitascash.model.usuario.dto.UsuarioSessao;
 import com.securitascash.service.conta.ContaService;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/contas")
 public class ContaController {
 
+    private final UsuarioController usuarioController;
+
     @Autowired
     private ContaService contaService;
 
+    ContaController(UsuarioController usuarioController) {
+        this.usuarioController = usuarioController;
+    }
+
     @GetMapping
-    public String getContas(Model model) {
-        List<Conta> contas = contaService.listarContas();
+    public String getContas(Model model, HttpSession session) {
+
+        UsuarioSessao usuarioSessao = session.getAttribute("usuarioLogado") != null
+                ? (UsuarioSessao) session.getAttribute("usuarioLogado")
+                : null;
+
+        List<Conta> contas = contaService.listarContasByUser(usuarioSessao.getId());
         model.addAttribute("contas", contas);
         return "contas";
     }

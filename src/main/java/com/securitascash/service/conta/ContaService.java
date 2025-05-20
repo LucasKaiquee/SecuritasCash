@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.securitascash.model.conta.Conta;
+import com.securitascash.model.conta.dto.ContaForm;
 import com.securitascash.model.conta.inherit.CartaoDeCredito;
 import com.securitascash.model.conta.inherit.ContaCorrente;
-import com.securitascash.model.dto.ContaForm;
 import com.securitascash.repository.ContaRepository;
 import com.securitascash.repository.UsuarioRepository;
 
@@ -72,6 +72,11 @@ public class ContaService {
     public String excluirContaCartao(){
         //TODO
         return null;
+    }
+
+    public List<Conta> listarContasByUser(Long userId){
+        List<Conta> contas = contaRepository.findContaByUsuario_id(userId);
+        return contas;
     }
 
     public List<Conta> listarContas(){
