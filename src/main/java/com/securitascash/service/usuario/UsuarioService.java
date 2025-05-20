@@ -34,6 +34,11 @@ public class UsuarioService {
         return usuario;
     }
 
+    public Usuario login(String email, String senha){
+        Usuario usuario = usuarioRepository.findByEmailAndSenha(email, senha);
+        return usuario;
+    }
+
     public Usuario bloquearUsuarioCorrentista(Long userID){
         Usuario usuarioCorrentista = usuarioRepository.findById(userID).orElse(null);
         ((Correntista)usuarioCorrentista).setBlocked(true);
