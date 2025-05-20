@@ -10,16 +10,16 @@ import com.securitascash.model.Transacao;
 @Service
 public class ComentarioService {
 
-    public Transacao criarComentario(Transacao transacao, Comentario comentario){      
+    public Comentario criarComentario(Transacao transacao, Comentario comentario){      
         transacao.getComentarios().add(comentario);
-        return transacao;
+        return comentario;
     }
 
-    public Transacao editarComentario(Transacao transacao, Long comentarioID, String texto){
+    public Comentario editarComentario(Transacao transacao, Long comentarioID, String texto){
         Comentario comentario = buscarComentario(transacao.getComentarios(), comentarioID);
         comentario.setTexto(texto);
 
-        return transacao;
+        return comentario;
         
     }
 

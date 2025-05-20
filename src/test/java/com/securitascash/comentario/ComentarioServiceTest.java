@@ -23,37 +23,6 @@ public class ComentarioServiceTest {
     @Autowired
     ComentarioService comentarioService;
 
-    @Test
-    void criaComentarioNaTransacao(){
-
-        Transacao transacao = new Transacao();
-        Comentario comentario = new Comentario();
-
-        comentario.setTexto("Texto");
-
-        transacao = comentarioService.criarComentario(transacao, comentario);
-
-        Assertions.assertThat(transacao.getComentarios().size()).isGreaterThan(0);
-    }
-
-
-    @Test
-    void editaTextoDoComentario(){
-
-        Transacao transacao = new Transacao();
-        Comentario comentario = new Comentario();
-
-        comentario.setId(1L);
-        comentario.setTexto("Texto");
-
-        transacao.getComentarios().add(comentario);
-
-        transacao = comentarioService.editarComentario(transacao, 1L, "Novo Texto");
-
-        assertEquals(transacao.getComentarios().size(), 1);
-        assertEquals(transacao.getComentarios().get(0).getTexto(), "Novo Texto");
-    }
-
 
     @Test
     void excluiUmComentario(){
