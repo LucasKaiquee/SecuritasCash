@@ -35,10 +35,10 @@ public class ContaService {
                 break;
         }
 
+        conta.setTipo(contaForm.getTipo());
         conta.setNumero(contaForm.getNumero());
         conta.setDescricao(contaForm.getDescricao());
 
-        //Mockando o usuário
         conta.setUsuario(usuarioRepository.findById(contaForm.getUsuarioId()).orElse(null));
 
         contaRepository.save(conta);
