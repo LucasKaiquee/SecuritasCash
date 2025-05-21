@@ -12,6 +12,10 @@
             Você não possui contas cadastradas.
         </div> 
 
+        <div class="alert alert-info" role="alert" th:if="${mensagem}">
+            [[${{mensagem}}]]
+        </div>
+
         <table class="table table-hover table-bordered shadow-sm bg-white" th:unless="${#lists.isEmpty(contas)}">
             <thead class="table-dark text-center">
                 <tr>
