@@ -1,10 +1,12 @@
 package com.securitascash.config;
 
-import com.securitascash.model.usuario.dto.UsuarioSessao;
+import org.springframework.web.servlet.HandlerInterceptor;
+
+import com.securitascash.dto.usuario.UsuarioSessao;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.web.servlet.HandlerInterceptor;
 
 public class LoginInterceptor implements HandlerInterceptor {
 
