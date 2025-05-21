@@ -10,10 +10,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.securitascash.dto.conta.ContaForm;
+import com.securitascash.dto.usuario.UsuarioSessao;
 import com.securitascash.model.conta.Conta;
-import com.securitascash.model.conta.dto.ContaForm;
-import com.securitascash.model.usuario.dto.UsuarioSessao;
 import com.securitascash.service.conta.ContaService;
+import com.securitascash.utils.Utils;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -28,11 +29,9 @@ public class ContaController {
     ContaService contaService;
 
     @GetMapping
-    public String getContas(Model model, HttpSession session) {
+    public String getContas(Model model, HttpSession session) throws Exception {
 
-        UsuarioSessao usuarioSessao = session.getAttribute("usuarioLogado") != null
-                ? (UsuarioSessao) session.getAttribute("usuarioLogado")
-                : null;
+        UsuarioSessao usuarioSessao = Utils.getUsuarioSessao(session);
 
         List<Conta> contas = contaService.listarContasByUser(usuarioSessao.getId());
         model.addAttribute("contas", contas);
@@ -41,12 +40,12 @@ public class ContaController {
 
     @GetMapping("/criar")
     public String exibirFormulario(Model model, HttpSession session) throws Exception {
-        Long usuarioId = this.getUsuarioSessao(session).getId();
+        Long usuarioId = Utils.getUsuarioSessao(session).getId();
 
         if(usuarioId == null){
             throw new Exception(" O ID TÁ VINDO NULO");
         }
-        
+
         model.addAttribute("contaForm", new ContaForm());
         model.addAttribute("usuarioId", usuarioId);
 
@@ -60,12 +59,6 @@ public class ContaController {
 
         model.addAttribute("contas", contaService.listarContas());
         return "redirect:/contas"; // Redireciona para a lista após adicionar
-    }
-
-    private UsuarioSessao getUsuarioSessao(HttpSession session){
-        return session.getAttribute("usuarioLogado") != null
-                ? (UsuarioSessao) session.getAttribute("usuarioLogado")
-                : null;
     }
     
 }
