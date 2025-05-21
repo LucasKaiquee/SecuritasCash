@@ -8,24 +8,26 @@
     <div class="container mt-5">
         <h2 class="text-dark mb-4">Minhas Contas</h2>
 
-        <table class="table table-hover table-bordered shadow-sm bg-white">
+        <div class="alert alert-info" role="alert" th:if="${#lists.isEmpty(contas)}">
+            Você não possui contas cadastradas.
+        </div> 
+
+        <table class="table table-hover table-bordered shadow-sm bg-white" th:unless="${#lists.isEmpty(contas)}">
             <thead class="table-dark text-center">
                 <tr>
                     <th>Descrição</th>
                     <th>Número da Conta</th>
-                    <th>ID do Usuário</th>
+                    <th>Tipo da Conta</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="conta : ${contas}" class="text-center">
                     <td th:text="${conta.descricao}">Descrição</td>
                     <td th:text="${conta.numero}">0000-0</td>
-                    <td th:text="${conta.usuario.id}">1</td>
+                    <td th:text="${conta.tipo}">CORRENTE</td>
                 </tr>
             </tbody>
         </table>
-
-
         <div>
             <a class="btn btn-primary" href="/contas/criar">Adicionar Conta</a>
         </div>
