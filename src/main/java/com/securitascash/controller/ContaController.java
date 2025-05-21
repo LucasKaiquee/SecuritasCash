@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.securitascash.model.conta.Conta;
 import com.securitascash.model.conta.dto.ContaForm;
@@ -30,11 +31,9 @@ public class ContaController {
     @GetMapping
     public String getContas(Model model, HttpSession session) {
 
-        UsuarioSessao usuarioSessao = session.getAttribute("usuarioLogado") != null
-                ? (UsuarioSessao) session.getAttribute("usuarioLogado")
-                : null;
-
-        List<Conta> contas = contaService.listarContasByUser(usuarioSessao.getId());
+        Long usuarioId = this.getUsuarioSessao(session).getId();
+    
+        List<Conta> contas = contaService.listarContasByUser(usuarioId);
         model.addAttribute("contas", contas);
         return "contas";
     }
@@ -43,23 +42,16 @@ public class ContaController {
     public String exibirFormulario(Model model, HttpSession session) throws Exception {
         Long usuarioId = this.getUsuarioSessao(session).getId();
 
-        if(usuarioId == null){
-            throw new Exception(" O ID TÁ VINDO NULO");
-        }
-        
         model.addAttribute("contaForm", new ContaForm());
         model.addAttribute("usuarioId", usuarioId);
 
         return "criar-conta";
     }
 
-    @PostMapping("/adicionar")
-    public String adicionarConta(@ModelAttribute ContaForm contaForm, Model model) {
-        
+    @PostMapping("/criar")
+    public String adicionarConta(@ModelAttribute ContaForm contaForm) {
         contaService.criarConta(contaForm);
-
-        model.addAttribute("contas", contaService.listarContas());
-        return "redirect:/contas"; // Redireciona para a lista após adicionar
+        return "redirect:/contas"; 
     }
 
     private UsuarioSessao getUsuarioSessao(HttpSession session){
