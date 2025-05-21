@@ -25,6 +25,10 @@
                     <td th:text="${conta.descricao}">Descrição</td>
                     <td th:text="${conta.numero}">0000-0</td>
                     <td th:text="${conta.tipo}">CORRENTE</td>
+                    <td th:text="${conta.usuario.id}">1</td>
+                    <td>
+                        <a th:href="@{'/contas/' + ${conta.id} + '/transacoes'}" class="btn btn-info btn-sm">Ver Transações</a>
+                    </td>
                 </tr>
             </tbody>
         </table>

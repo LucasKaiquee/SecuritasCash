@@ -1,8 +1,8 @@
 package com.securitascash.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.securitascash.enums.Movimento;
@@ -30,8 +30,8 @@ public class Transacao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private Date data;
+    
+    private LocalDate data;
     private String descricao;
     private BigDecimal valor;
 

@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.securitascash.dto.conta.ContaForm;
+import com.securitascash.dto.usuario.UsuarioSessao;
 import com.securitascash.model.conta.Conta;
-import com.securitascash.model.conta.dto.ContaForm;
-import com.securitascash.model.usuario.dto.UsuarioSessao;
 import com.securitascash.service.conta.ContaService;
+import com.securitascash.utils.Utils;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -29,7 +30,7 @@ public class ContaController {
     ContaService contaService;
 
     @GetMapping
-    public String getContas(Model model, HttpSession session) {
+    public String getContas(Model model, HttpSession session) throws Exception {
 
         Long usuarioId = this.getUsuarioSessao(session).getId();
     
@@ -51,7 +52,9 @@ public class ContaController {
     @PostMapping("/criar")
     public String adicionarConta(@ModelAttribute ContaForm contaForm) {
         contaService.criarConta(contaForm);
-        return "redirect:/contas"; 
+
+        model.addAttribute("contas", contaService.listarContas());
+        return "redirect:/contas"; // Redireciona para a lista após adicionar
     }
 
     private UsuarioSessao getUsuarioSessao(HttpSession session){
