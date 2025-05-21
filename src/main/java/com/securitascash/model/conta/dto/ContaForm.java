@@ -8,5 +8,6 @@ public class ContaForm {
     private String numero;
     private String descricao;
     private Integer diaDoFechamento;
+    private Long usuarioId;
     
 }

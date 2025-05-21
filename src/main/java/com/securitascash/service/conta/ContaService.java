@@ -39,7 +39,7 @@ public class ContaService {
         conta.setDescricao(contaForm.getDescricao());
 
         //Mockando o usuário
-        conta.setUsuario(usuarioRepository.findById(4L).orElse(null));
+        conta.setUsuario(usuarioRepository.findById(contaForm.getUsuarioId()).orElse(null));
 
         contaRepository.save(conta);
         return null;
