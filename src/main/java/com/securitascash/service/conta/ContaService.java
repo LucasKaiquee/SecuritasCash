@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.securitascash.dto.conta.ContaForm;
 import com.securitascash.model.conta.Conta;
-import com.securitascash.model.conta.dto.ContaForm;
 import com.securitascash.model.conta.inherit.CartaoDeCredito;
 import com.securitascash.model.conta.inherit.ContaCorrente;
 import com.securitascash.repository.ContaRepository;
@@ -35,10 +35,10 @@ public class ContaService {
                 break;
         }
 
+        conta.setTipo(contaForm.getTipo());
         conta.setNumero(contaForm.getNumero());
         conta.setDescricao(contaForm.getDescricao());
 
-        //Mockando o usuário
         conta.setUsuario(usuarioRepository.findById(contaForm.getUsuarioId()).orElse(null));
 
         contaRepository.save(conta);
@@ -55,7 +55,6 @@ public class ContaService {
         return null;
     }
 
-
     public String criarContaCartao(){
         //TODO
         return null;
@@ -71,7 +70,7 @@ public class ContaService {
         return null;
     }
 
-    public Conta buscarContaPorId (Long id){
+    public Conta buscarPorId (Long id){
         Conta conta = contaRepository.findById(id).orElseThrow(
             () -> new RuntimeException("Conta não encontrada com o id: " + id)
         );

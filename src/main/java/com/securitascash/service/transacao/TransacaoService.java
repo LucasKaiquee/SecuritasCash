@@ -38,7 +38,7 @@ public class TransacaoService {
     }
 
     public List<Transacao> listarTransacoes(Long contaID){
-        Conta conta = contaService.buscarContaPorId(contaID);
+        Conta conta = contaService.buscarPorId(contaID);
         return conta.getTransacoes();
 
     }

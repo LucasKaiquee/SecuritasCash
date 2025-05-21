@@ -1,4 +1,4 @@
-package com.securitascash.model.usuario.dto;
+package com.securitascash.dto.usuario;
 
 import lombok.Data;
 

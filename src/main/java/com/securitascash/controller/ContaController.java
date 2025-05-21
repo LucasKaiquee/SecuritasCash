@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.securitascash.dto.conta.ContaForm;
+import com.securitascash.dto.usuario.UsuarioSessao;
 import com.securitascash.model.conta.Conta;
-import com.securitascash.model.conta.dto.ContaForm;
-import com.securitascash.model.usuario.dto.UsuarioSessao;
 import com.securitascash.service.conta.ContaService;
+import com.securitascash.utils.Utils;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -28,13 +30,11 @@ public class ContaController {
     ContaService contaService;
 
     @GetMapping
-    public String getContas(Model model, HttpSession session) {
+    public String getContas(Model model, HttpSession session) throws Exception {
 
-        UsuarioSessao usuarioSessao = session.getAttribute("usuarioLogado") != null
-                ? (UsuarioSessao) session.getAttribute("usuarioLogado")
-                : null;
-
-        List<Conta> contas = contaService.listarContasByUser(usuarioSessao.getId());
+        Long usuarioId = this.getUsuarioSessao(session).getId();
+    
+        List<Conta> contas = contaService.listarContasByUser(usuarioId);
         model.addAttribute("contas", contas);
         return "contas";
     }
@@ -43,19 +43,14 @@ public class ContaController {
     public String exibirFormulario(Model model, HttpSession session) throws Exception {
         Long usuarioId = this.getUsuarioSessao(session).getId();
 
-        if(usuarioId == null){
-            throw new Exception(" O ID TÁ VINDO NULO");
-        }
-        
         model.addAttribute("contaForm", new ContaForm());
         model.addAttribute("usuarioId", usuarioId);
 
         return "criar-conta";
     }
 
-    @PostMapping("/adicionar")
-    public String adicionarConta(@ModelAttribute ContaForm contaForm, Model model) {
-        
+    @PostMapping("/criar")
+    public String adicionarConta(@ModelAttribute ContaForm contaForm) {
         contaService.criarConta(contaForm);
 
         model.addAttribute("contas", contaService.listarContas());

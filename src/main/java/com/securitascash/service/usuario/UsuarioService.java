@@ -29,8 +29,13 @@ public class UsuarioService {
         return null;
     }
 
-    public Usuario buscarUsuario(Long id){
+    public Usuario buscarUsuarioPorId(Long id){
         Usuario usuario = usuarioRepository.findById(id).orElse(null);
+        return usuario;
+    }
+
+    public Usuario buscarUsuarioPorEmail(String email){
+        Usuario usuario = usuarioRepository.findByEmail(email);
         return usuario;
     }
 
