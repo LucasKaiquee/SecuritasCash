@@ -5,11 +5,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.securitascash.dto.transacao.TransacaoForm;
+import com.securitascash.enums.Movimento;
 import com.securitascash.exception.ResourceNotFoundException;
 import com.securitascash.model.Comentario;
 import com.securitascash.model.Transacao;
 import com.securitascash.model.conta.Conta;
 import com.securitascash.repository.TransacaoRepository;
+import com.securitascash.service.categoria.CategoriaService;
 import com.securitascash.service.comentario.ComentarioService;
 import com.securitascash.service.conta.ContaService;
 
@@ -27,15 +30,33 @@ public class TransacaoService {
     @Autowired
     ComentarioService comentarioService;
 
+    @Autowired
+    CategoriaService categoriaService;
+
 
     public void criarTransacao(Transacao transacao){
         this.transacaoRepository.save(transacao);
     }
 
+
     @Transactional
-    public Transacao editarTransacao(Transacao transacao){
-        return transacao;
+    public void atualizar(Long id, TransacaoForm form) {
+        Transacao transacao = transacaoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Transação não encontrada"));
+
+
+        transacao.setDescricao(form.getDescricao());
+        transacao.setValor(form.getValor());
+        transacao.setData(form.getData());
+        Movimento movimento = form.getMovimento() == "Crédito" ? Movimento.CREDITO : Movimento.DEBITO; 
+
+        transacao.setMovimento(movimento);
+        transacao.setCategoria(form.getCategoria());
+
+        transacaoRepository.save(transacao);
     }
+
+
 
     public List<Transacao> listarTransacoes(Long contaID){
         Conta conta = contaService.buscarPorId(contaID);

@@ -34,6 +34,7 @@ import jakarta.servlet.http.HttpSession;
 
 
 
+
 @Controller
 @RequestMapping("contas/{id}/transacoes")
 public class TransacaoController {
@@ -69,7 +70,7 @@ public class TransacaoController {
     }
 
     @GetMapping("criar")
-    public String criarTransacao(@PathVariable Long id, Model model) {
+    public String criarTransacaoFormulario(@PathVariable Long id, Model model) {
         model.addAttribute("transacaoForm", new TransacaoForm()); 
         model.addAttribute("contaId", id);
         model.addAttribute("categorias", categoriaService.listarCategorias()); 
@@ -98,6 +99,17 @@ public class TransacaoController {
         return "redirect:/contas/" + contaId + "/transacoes";
     }
 
+    @PutMapping("/{transacaoId}/comentarios")
+    public String atualizarTransacao(@PathVariable("id") Long contaId,
+                                    @PathVariable("transacaoId") Long transacaoId,
+                                    @ModelAttribute TransacaoForm dto) {
+        transacaoService.atualizar(transacaoId, dto); 
+
+        //CATEGORIA ESTÁ VINDO NULL
+        return "redirect:/contas/" + contaId + "/transacoes/" + transacaoId + "/comentarios";
+    }
+
+
     
     //Comentários
     @GetMapping("/{transacaoId}/comentarios")
@@ -108,6 +120,7 @@ public class TransacaoController {
         mav.setViewName("transacoes/comentarios");
 
         mav.addObject("comentarios", transacao.getComentarios());
+        mav.addObject("categorias", categoriaService.listarCategorias());
         // mav.addObject("contaId", contaId);
         mav.addObject("transacao", transacao);
         mav.addObject("comentarioForm", new ComentarioForm());
@@ -143,7 +156,10 @@ public class TransacaoController {
     }
 
     @DeleteMapping("/{transacaoId}/comentarios/{comentarioId}")
-    public String deletarComentario (@PathVariable("transacaoId") Long transacaoId, @PathVariable("comentarioId") Long comentarioId, @PathVariable("id") Long contaId){
+    public String deletarComentario (
+            @PathVariable("transacaoId") Long transacaoId,
+            @PathVariable("comentarioId") Long comentarioId,
+            @PathVariable("id") Long contaId){
 
         transacaoService.excluirComentario(transacaoId, comentarioId);
 

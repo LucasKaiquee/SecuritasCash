@@ -14,8 +14,66 @@
         <div class="mb-3">
             <strong>Descrição:</strong> <span th:text="${transacao.descricao}">Compra</span><br>
             <strong>Valor:</strong> <span th:text="${transacao.valor}">100.00</span><br>
-            <strong>Data:</strong> <span th:text="${transacao.data}">2025-05-21</span>
+            <strong>Data:</strong> <span th:text="${transacao.data}">2025-05-21</span><br>
+            <strong>Categoria:</strong> <span th:text="${transacao.categoria.name}">2025-05-21</span><br>
+            <strong>Movimento:</strong> <span th:text="${transacao.movimento}">2025-05-21</span><br>
         </div>
+
+        <!-- <div class="mb-3" id="transacao-visualizacao">
+            <strong>Descrição:</strong> <span th:text="${transacao.descricao}">Compra</span><br>
+            <strong>Valor:</strong> <span th:text="${transacao.valor}">100.00</span><br>
+            <strong>Data:</strong> <span th:text="${transacao.data}">2025-05-21</span><br>
+            <strong>Categoria:</strong> <span th:text="${transacao.categoria.name}">Categoria</span><br>
+            <strong>Movimento:</strong> <span th:text="${transacao.movimento}">ENTRADA/SAÍDA</span><br>
+
+            <button type="button" class="btn btn-sm btn-outline-primary mt-2" onclick="mostrarFormularioTransacao()">
+                <i class="bi bi-pencil"></i> Editar
+            </button>
+        </div>
+
+        <-- Formulário de edição -->
+
+        <!--
+        <form th:action="@{'/contas/' + ${transacao.conta.id} + '/transacoes/' + ${transacao.id}} + '/comentarios'" method="post"
+            id="transacao-form" style="display: none;">
+            <input type="hidden" name="_method" value="put" />
+
+            <div class="mb-2">
+                <label for="descricao">Descrição:</label>
+                <input type="text" class="form-control" id="descricao" name="descricao" th:value="${transacao.descricao}" required>
+            </div>
+
+            <div class="mb-2">
+                <label for="valor">Valor:</label>
+                <input type="number" step="0.01" class="form-control" id="valor" name="valor" th:value="${transacao.valor}" required>
+            </div>
+
+            <div class="mb-2">
+                <label for="data">Data:</label>
+                <input type="date" class="form-control" id="data" name="data" th:value="${transacao.data}" required>
+            </div>
+
+            <div class="mb-2">
+                <label for="categoria">Categoria:</label>
+                <select th:field="*{categoria}" class="form-select">
+                    <option th:each="cat : ${categorias}" th:value="${cat.id}" th:text="${cat.name}"></option>
+                </select>
+
+            
+            </div>
+
+            <div class="mb-3">
+                <label for="movimento">Movimento:</label>
+                <select id="movimento" name="movimento" class="form-control" required>
+                    <option th:value="'ENTRADA'" th:selected="${transacao.movimento == 'ENTRADA'}">ENTRADA</option>
+                    <option th:value="'SAIDA'" th:selected="${transacao.movimento == 'SAIDA'}">SAÍDA</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-success btn-sm">Salvar</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="cancelarFormularioTransacao()">Cancelar</button>
+        </form> -->
+
 
         <hr>
 
@@ -87,6 +145,17 @@
             document.getElementById('form-' + id).style.display = 'none';
             document.getElementById('texto-' + id).style.display = 'flex';
         }
+
+        function mostrarFormularioTransacao() {
+            document.getElementById('transacao-visualizacao').style.display = 'none';
+            document.getElementById('transacao-form').style.display = 'block';
+        }
+
+        function cancelarFormularioTransacao() {
+            document.getElementById('transacao-form').style.display = 'none';
+            document.getElementById('transacao-visualizacao').style.display = 'block';
+        }
     </script>
+
 </body>
 </html>
