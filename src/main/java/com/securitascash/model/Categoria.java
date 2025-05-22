@@ -2,6 +2,7 @@ package com.securitascash.model;
 
 import com.securitascash.enums.Natureza;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -22,7 +23,10 @@ public class Categoria {
     private Long id;
 
     private String name;
+
+    @Column(columnDefinition = "BOOLEAN DEFAULT true")
     private Boolean isActive;
+    
     private Integer ordem;
 
     @Enumerated(EnumType.STRING)

@@ -20,6 +20,21 @@
         </div>
 
         <div class="mb-3">
+            <label for="movimento" class="form-label">Movimento</label>
+            <select th:field="*{movimento}" class="form-select">
+                <option value="Crédito">Crédito</option>
+                <option value="Débito">Débito</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="Categoria" class="form-label">Categoria</label>
+            <select th:field="*{categoria}" class="form-select">
+                <option th:each="cat : ${categorias}" th:value="${cat.id}" th:text="${cat.name}"></option>
+            </select>
+        </div>
+
+        <div class="mb-3">
             <label for="valor" class="form-label">Valor</label>
             <input type="number" class="form-control" th:field="*{valor}" step="0.01" id="valor" required />
         </div>

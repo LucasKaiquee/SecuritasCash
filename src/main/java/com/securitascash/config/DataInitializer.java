@@ -8,13 +8,15 @@ import org.springframework.context.annotation.Configuration;
 
 import com.securitascash.enums.Natureza;
 import com.securitascash.model.Categoria;
+import com.securitascash.model.usuario.inherit.Correntista;
 import com.securitascash.repository.CategoriaRepository;
+import com.securitascash.repository.UsuarioRepository;
 
 @Configuration
 public class DataInitializer {
 
     @Bean
-    CommandLineRunner loadData(CategoriaRepository repositorio) {
+    CommandLineRunner loadDataCategoria(CategoriaRepository repositorio) {
         return args -> {
             if (repositorio.count() == 0) {
                 repositorio.saveAll(List.of(
@@ -43,6 +45,16 @@ public class DataInitializer {
                     new Categoria(null, "Aporte Reserva Emergência", true, 5, Natureza.INVESTIMENTO),
                     new Categoria(null, "Aporte Previdência", true, 5, Natureza.INVESTIMENTO)
                 ));
+            }
+        };
+    }
+
+    @Bean
+    CommandLineRunner loadDataUsuarioCorrentista(UsuarioRepository repositorio) {
+        return args -> {
+            if (repositorio.count() == 0) {
+                repositorio.save(new Correntista(null, "Luiz", "a", "lf@email.com", null));
+                repositorio.save(new Correntista(null, "Luiz", "a", "lf2@email.com", null));
             }
         };
     }
