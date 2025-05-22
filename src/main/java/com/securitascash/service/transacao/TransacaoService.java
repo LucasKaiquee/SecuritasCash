@@ -8,11 +8,12 @@ import org.springframework.stereotype.Service;
 import com.securitascash.dto.transacao.TransacaoForm;
 import com.securitascash.enums.Movimento;
 import com.securitascash.exception.ResourceNotFoundException;
+import com.securitascash.model.Categoria;
 import com.securitascash.model.Comentario;
 import com.securitascash.model.Transacao;
 import com.securitascash.model.conta.Conta;
+import com.securitascash.repository.CategoriaRepository;
 import com.securitascash.repository.TransacaoRepository;
-import com.securitascash.service.categoria.CategoriaService;
 import com.securitascash.service.comentario.ComentarioService;
 import com.securitascash.service.conta.ContaService;
 
@@ -31,7 +32,7 @@ public class TransacaoService {
     ComentarioService comentarioService;
 
     @Autowired
-    CategoriaService categoriaService;
+    CategoriaRepository categoriaRepository;
 
 
     public void criarTransacao(Transacao transacao){
@@ -39,22 +40,27 @@ public class TransacaoService {
     }
 
 
+
     @Transactional
     public void atualizar(Long id, TransacaoForm form) {
         Transacao transacao = transacaoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Transação não encontrada"));
 
+        Categoria categoria = categoriaRepository.findById(form.getCategoria().getId())
+                .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
 
         transacao.setDescricao(form.getDescricao());
         transacao.setValor(form.getValor());
         transacao.setData(form.getData());
+
         Movimento movimento = form.getMovimento() == "Crédito" ? Movimento.CREDITO : Movimento.DEBITO; 
 
         transacao.setMovimento(movimento);
-        transacao.setCategoria(form.getCategoria());
+        transacao.setCategoria(categoria);
 
         transacaoRepository.save(transacao);
     }
+
 
 
 

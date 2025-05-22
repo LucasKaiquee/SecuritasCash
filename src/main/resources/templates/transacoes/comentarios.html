@@ -11,15 +11,15 @@
     <div class="container mt-5">
         <h2 class="mb-4">Detalhes da Transação</h2>
 
-        <div class="mb-3">
+        <!-- <div class="mb-3">
             <strong>Descrição:</strong> <span th:text="${transacao.descricao}">Compra</span><br>
             <strong>Valor:</strong> <span th:text="${transacao.valor}">100.00</span><br>
             <strong>Data:</strong> <span th:text="${transacao.data}">2025-05-21</span><br>
             <strong>Categoria:</strong> <span th:text="${transacao.categoria.name}">2025-05-21</span><br>
             <strong>Movimento:</strong> <span th:text="${transacao.movimento}">2025-05-21</span><br>
-        </div>
+        </div> -->
 
-        <!-- <div class="mb-3" id="transacao-visualizacao">
+        <div class="mb-3" id="transacao-visualizacao">
             <strong>Descrição:</strong> <span th:text="${transacao.descricao}">Compra</span><br>
             <strong>Valor:</strong> <span th:text="${transacao.valor}">100.00</span><br>
             <strong>Data:</strong> <span th:text="${transacao.data}">2025-05-21</span><br>
@@ -31,9 +31,7 @@
             </button>
         </div>
 
-        <-- Formulário de edição -->
-
-        <!--
+        <!-- Formulário de edição -->
         <form th:action="@{'/contas/' + ${transacao.conta.id} + '/transacoes/' + ${transacao.id}} + '/comentarios'" method="post"
             id="transacao-form" style="display: none;">
             <input type="hidden" name="_method" value="put" />
@@ -55,12 +53,15 @@
 
             <div class="mb-2">
                 <label for="categoria">Categoria:</label>
-                <select th:field="*{categoria}" class="form-select">
-                    <option th:each="cat : ${categorias}" th:value="${cat.id}" th:text="${cat.name}"></option>
-                </select>
-
-            
+                <select id="categoria" name="categoria.id" class="form-control" required>
+                    <option th:each="categoria : ${categorias}"
+                            th:value="${categoria.id}"
+                            th:text="${categoria.name}"
+                            th:selected="${categoria.id} == ${transacao.categoria.id}">
+                    </option>
+                </select>   
             </div>
+
 
             <div class="mb-3">
                 <label for="movimento">Movimento:</label>
@@ -72,7 +73,7 @@
 
             <button type="submit" class="btn btn-success btn-sm">Salvar</button>
             <button type="button" class="btn btn-secondary btn-sm" onclick="cancelarFormularioTransacao()">Cancelar</button>
-        </form> -->
+        </form>
 
 
         <hr>
