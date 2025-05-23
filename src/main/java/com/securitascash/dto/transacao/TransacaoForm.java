@@ -2,7 +2,9 @@ package com.securitascash.dto.transacao;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
+import com.securitascash.dto.comentario.ComentarioForm;
 import com.securitascash.model.Categoria;
 
 import lombok.AllArgsConstructor;
@@ -18,4 +20,5 @@ public class TransacaoForm {
     private LocalDate data;
     private String movimento;
     private Categoria categoria;
+    private List<ComentarioForm> comentarios;
 }

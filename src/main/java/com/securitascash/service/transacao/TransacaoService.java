@@ -1,10 +1,12 @@
 package com.securitascash.service.transacao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.securitascash.dto.comentario.ComentarioForm;
 import com.securitascash.dto.transacao.TransacaoForm;
 import com.securitascash.enums.Movimento;
 import com.securitascash.exception.ResourceNotFoundException;
@@ -35,7 +37,35 @@ public class TransacaoService {
     CategoriaRepository categoriaRepository;
 
 
-    public void criarTransacao(Transacao transacao){
+    public void criarTransacao(TransacaoForm transacaoForm, Long contaId){
+
+        Conta conta = contaService.buscarPorId(contaId);
+
+        Transacao transacao = new Transacao();
+        transacao.setDescricao(transacaoForm.getDescricao());
+        transacao.setValor(transacaoForm.getValor());
+        transacao.setData(transacaoForm.getData());
+        transacao.setConta(conta);
+
+        Movimento movimento = transacaoForm.getMovimento() == "Crédito" ? Movimento.CREDITO : Movimento.DEBITO; 
+        transacao.setMovimento(movimento);
+
+        transacao.setCategoria(transacaoForm.getCategoria());
+
+        List<Comentario> comentarios = new ArrayList<>();
+        if (transacaoForm.getComentarios() != null) {
+            for (ComentarioForm c : transacaoForm.getComentarios()) {
+                if (c.getTexto() != null && !c.getTexto().isBlank()) {
+                    Comentario comentario = new Comentario();
+                    comentario.setTexto(c.getTexto());
+                    comentario.setTransacao(transacao);
+                    comentarios.add(comentario);
+                }
+            }
+        }
+
+        transacao.setComentarios(comentarios);
+
         this.transacaoRepository.save(transacao);
     }
 
@@ -77,8 +107,14 @@ public class TransacaoService {
     }
 
     @Transactional
-    public Comentario adicionarComentario(Long transacaoId, Comentario comentario){
+    public Comentario adicionarComentario(Long transacaoId, ComentarioForm comentarioForm){
         Transacao transacao = this.buscarTransacaoPorId(transacaoId);
+
+        Comentario comentario = new Comentario();
+        comentario.setTexto(comentarioForm.getTexto());
+        comentario.setTransacao(transacao);
+
+        
         this.comentarioService.criarComentario(transacao, comentario);
         return comentario;
 

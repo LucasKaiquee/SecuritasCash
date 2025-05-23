@@ -20,8 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.securitascash.dto.comentario.ComentarioForm;
 import com.securitascash.dto.transacao.TransacaoForm;
 import com.securitascash.dto.usuario.UsuarioSessao;
-import com.securitascash.enums.Movimento;
-import com.securitascash.model.Comentario;
 import com.securitascash.model.Transacao;
 import com.securitascash.model.conta.Conta;
 import com.securitascash.service.categoria.CategoriaService;
@@ -69,6 +67,7 @@ public class TransacaoController {
         return "transacoes";
     }
 
+
     @GetMapping("criar")
     public String criarTransacaoFormulario(@PathVariable Long id, Model model) {
         model.addAttribute("transacaoForm", new TransacaoForm()); 
@@ -82,20 +81,7 @@ public class TransacaoController {
     public String salvarTransacao(@ModelAttribute TransacaoForm transacaoForm,
                                 @RequestParam("contaId") Long contaId) {
 
-        Conta conta = contaService.buscarPorId(contaId);
-
-        Transacao transacao = new Transacao();
-        transacao.setDescricao(transacaoForm.getDescricao());
-        transacao.setValor(transacaoForm.getValor());
-        transacao.setData(transacaoForm.getData());
-        transacao.setConta(conta);
-
-        Movimento movimento = transacaoForm.getMovimento() == "Crédito" ? Movimento.CREDITO : Movimento.DEBITO; 
-        transacao.setMovimento(movimento);
-
-        transacao.setCategoria(transacaoForm.getCategoria());
-        transacaoService.criarTransacao(transacao);
-
+        transacaoService.criarTransacao(transacaoForm, contaId);
         return "redirect:/contas/" + contaId + "/transacoes";
     }
 
@@ -105,7 +91,6 @@ public class TransacaoController {
                                     @ModelAttribute TransacaoForm dto) {
         transacaoService.atualizar(transacaoId, dto); 
 
-        //CATEGORIA ESTÁ VINDO NULL
         return "redirect:/contas/" + contaId + "/transacoes/" + transacaoId + "/comentarios";
     }
 
@@ -121,7 +106,6 @@ public class TransacaoController {
 
         mav.addObject("comentarios", transacao.getComentarios());
         mav.addObject("categorias", categoriaService.listarCategorias());
-        // mav.addObject("contaId", contaId);
         mav.addObject("transacao", transacao);
         mav.addObject("comentarioForm", new ComentarioForm());
         
@@ -132,13 +116,9 @@ public class TransacaoController {
     public String salvarComentario(@ModelAttribute ComentarioForm comentarioForm,
                                 @RequestParam Long transacaoId, @PathVariable("id") Long contaId) {
 
-        Transacao transacao = transacaoService.buscarTransacaoPorId(transacaoId);
 
-        Comentario comentario = new Comentario();
-        comentario.setTexto(comentarioForm.getTexto());
-        comentario.setTransacao(transacao);
 
-        transacaoService.adicionarComentario(transacao.getId(), comentario);
+        transacaoService.adicionarComentario(transacaoId, comentarioForm);
 
         return "redirect:/contas/" + contaId + "/transacoes/" + transacaoId + "/comentarios" ;
     }
