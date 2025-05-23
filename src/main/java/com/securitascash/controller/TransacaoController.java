@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -30,9 +29,6 @@ import com.securitascash.utils.Utils;
 
 import jakarta.servlet.http.HttpSession;
 
-
-
-
 @Controller
 @RequestMapping("contas/{id}/transacoes")
 public class TransacaoController {
@@ -51,58 +47,61 @@ public class TransacaoController {
 
     // Transações
     @GetMapping
-    public String listarTransacoesPorConta(@PathVariable Long id, HttpSession session, Model model) throws Exception {
+    public ModelAndView listarPorConta(@PathVariable Long id, HttpSession session, ModelAndView mav) throws Exception {
 
         UsuarioSessao usuarioSessao = Utils.getUsuarioSessao(session);
         Conta conta = contaService.buscarPorId(id);
 
-        // Verifica se a conta pertence ao usuário logado
         if (!conta.getUsuario().getId().equals(usuarioSessao.getId())) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Acesso negado");
+            throw new ResponseStatusException( HttpStatus.FORBIDDEN);
         }
 
         List<Transacao> transacoes = transacaoService.listarTransacoes(id);
-        model.addAttribute("transacoes", transacoes);
-        model.addAttribute("conta", conta);
-        return "transacoes";
+        mav.setViewName("transacoes/list");
+        
+        mav.addObject("transacoes", transacoes);
+        mav.addObject("conta", conta);
+        return mav;
     }
 
 
     @GetMapping("criar")
-    public String criarTransacaoFormulario(@PathVariable Long id, Model model) {
-        model.addAttribute("transacaoForm", new TransacaoForm()); 
-        model.addAttribute("contaId", id);
-        model.addAttribute("categorias", categoriaService.listarCategorias()); 
-        return "transacoes/form";
+    public ModelAndView formulario(@PathVariable Long id, ModelAndView mav) {
+        mav.setViewName("transacoes/form");
+        
+        mav.addObject("transacaoForm", new TransacaoForm()); 
+        mav.addObject("contaId", id);
+        mav.addObject("categorias", categoriaService.listarCategorias()); 
+        return mav;
     }
 
     
     @PostMapping
-    public String salvarTransacao(@ModelAttribute TransacaoForm transacaoForm,
+    public String salvar(@ModelAttribute TransacaoForm transacaoForm,
                                 @RequestParam("contaId") Long contaId) {
 
         transacaoService.criarTransacao(transacaoForm, contaId);
         return "redirect:/contas/" + contaId + "/transacoes";
     }
 
-    @PutMapping("/{transacaoId}/comentarios")
-    public String atualizarTransacao(@PathVariable("id") Long contaId,
+    @PutMapping("/{transacaoId}/detalhes")
+    public String atualizar(@PathVariable("id") Long contaId,
                                     @PathVariable("transacaoId") Long transacaoId,
                                     @ModelAttribute TransacaoForm dto) {
         transacaoService.atualizar(transacaoId, dto); 
 
-        return "redirect:/contas/" + contaId + "/transacoes/" + transacaoId + "/comentarios";
+        return "redirect:/contas/" + contaId + "/transacoes/" + transacaoId + "/detalhes";
     }
 
 
     
     //Comentários
-    @GetMapping("/{transacaoId}/comentarios")
+    @GetMapping("/{transacaoId}/detalhes")
     public ModelAndView listarComentarios (@PathVariable Long transacaoId, ModelAndView mav, @PathVariable("id") Long contaId) {
 
         Transacao transacao = transacaoService.buscarTransacaoPorId(transacaoId);
         
-        mav.setViewName("transacoes/comentarios");
+        mav.setViewName("transacoes/detalhes");
 
         mav.addObject("comentarios", transacao.getComentarios());
         mav.addObject("categorias", categoriaService.listarCategorias());
@@ -112,18 +111,16 @@ public class TransacaoController {
         return mav;
     }
 
-    @PostMapping("/{transacaoId}/comentarios")
+    @PostMapping("/{transacaoId}/detalhes")
     public String salvarComentario(@ModelAttribute ComentarioForm comentarioForm,
                                 @RequestParam Long transacaoId, @PathVariable("id") Long contaId) {
 
-
-
         transacaoService.adicionarComentario(transacaoId, comentarioForm);
 
-        return "redirect:/contas/" + contaId + "/transacoes/" + transacaoId + "/comentarios" ;
+        return "redirect:/contas/" + contaId + "/transacoes/" + transacaoId + "/detalhes" ;
     }
 
-    @PutMapping("/{transacaoId}/comentarios/{comentarioId}")
+    @PutMapping("/{transacaoId}/detalhes/{comentarioId}")
     public String editarComentario(
             @PathVariable("transacaoId") Long transacaoId,
             @PathVariable("comentarioId") Long comentarioId,
@@ -132,10 +129,10 @@ public class TransacaoController {
 
         transacaoService.editarComentario(transacaoId, comentarioId, texto);
         
-        return "redirect:/contas/" + contaId + "/transacoes/" + transacaoId + "/comentarios" ;
+        return "redirect:/contas/" + contaId + "/transacoes/" + transacaoId + "/detalhes" ;
     }
 
-    @DeleteMapping("/{transacaoId}/comentarios/{comentarioId}")
+    @DeleteMapping("/{transacaoId}/detalhes/{comentarioId}")
     public String deletarComentario (
             @PathVariable("transacaoId") Long transacaoId,
             @PathVariable("comentarioId") Long comentarioId,
@@ -143,7 +140,7 @@ public class TransacaoController {
 
         transacaoService.excluirComentario(transacaoId, comentarioId);
 
-        return "redirect:/contas/" + contaId + "/transacoes/" + transacaoId + "/comentarios" ;
+        return "redirect:/contas/" + contaId + "/transacoes/" + transacaoId + "/detalhes" ;
     }
 
     

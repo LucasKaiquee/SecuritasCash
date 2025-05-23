@@ -1,54 +1,73 @@
-package com.securitascash.exception;
+// package com.securitascash.exception;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.context.request.WebRequest;
+// import org.springframework.http.HttpStatus;
+// import org.springframework.http.ResponseEntity;
+// import org.springframework.web.bind.annotation.ControllerAdvice;
+// import org.springframework.web.bind.annotation.ExceptionHandler;
+// import org.springframework.web.context.request.WebRequest;
+// import org.springframework.web.server.ResponseStatusException;
 
-import com.securitascash.model.ResponseModel;
+// import com.securitascash.model.ResponseModel;
 
-@ControllerAdvice
-public class GlobalExceptionHandler {
+// @ControllerAdvice
+// public class GlobalExceptionHandler {
 
-    // Exceção personalizada (ex: recurso não encontrado)
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ResponseModel<Object>> handleResourceNotFound(ResourceNotFoundException ex, WebRequest request) {
+//     // Exceção personalizada (ex: recurso não encontrado)
+//     @ExceptionHandler(ResourceNotFoundException.class)
+//     public ResponseEntity<ResponseModel<Object>> handleResourceNotFound(ResourceNotFoundException ex, WebRequest request) {
+
+//         String path = request.getDescription(false);
         
-        ResponseModel<Object> response = new ResponseModel<>(
-            HttpStatus.NOT_FOUND.value(),
-            ex.getMessage(),
-            null
-        );
+//         ResponseModel<Object> response = new ResponseModel<>(
+//             HttpStatus.NOT_FOUND.toString(),
+//             ex.getMessage(),
+//             "Path: " + path
+//         );
 
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-    }
+//         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+//     }
 
-    // Qualquer outra exceção não tratada
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ResponseModel<Object>> handleGlobalException(Exception ex, WebRequest request) {
+//     // Qualquer outra exceção não tratada
+//     @ExceptionHandler(Exception.class)
+//     public ResponseEntity<ResponseModel<Object>> handleGlobalException(Exception ex, WebRequest request) {
         
-        String path = request.getDescription(false);
+//         String path = request.getDescription(false);
 
-        ResponseModel<Object> response = new ResponseModel<>(
-            HttpStatus.INTERNAL_SERVER_ERROR.value(),
-            "Erro interno: " + ex.getMessage() + " | " + path,
-            null
-        );
+//         ResponseModel<Object> response = new ResponseModel<>(
+//             HttpStatus.INTERNAL_SERVER_ERROR.toString(),
+//             "Erro interno: " + ex.getMessage() + " | " + path,
+//             null
+//         );
 
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+//         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+//     }
 
-    @ExceptionHandler(BussinessException.class)
-    public ResponseEntity<ResponseModel<Object>> handleBussinessException(Exception ex, WebRequest request) {
+//     @ExceptionHandler(BussinessException.class)
+//     public ResponseEntity<ResponseModel<Object>> handleBussinessException(Exception ex, WebRequest request) {
+
+//          String path = request.getDescription(false);
         
-        ResponseModel<Object> response = new ResponseModel<>(
-            HttpStatus.BAD_REQUEST.value(),
-            ex.getMessage(),
-            null
-        );
+//         ResponseModel<Object> response = new ResponseModel<>(
+//             HttpStatus.BAD_REQUEST.toString(),
+//             ex.getMessage(),
+//             "Path: " + path
+//         );
 
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
-}
+//         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+//     }
+
+//     @ExceptionHandler(ResponseStatusException.class)
+//     public ResponseEntity<ResponseModel<Object>> handleResponseException(Exception ex, WebRequest request) {
+
+//         String path = request.getDescription(false);
+
+//         ResponseModel<Object> response = new ResponseModel<>(
+//             HttpStatus.FORBIDDEN.toString(),
+//             "Acesso negado!",
+//             "Path: " + path
+//         );
+
+//         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+//     }
+// }
 

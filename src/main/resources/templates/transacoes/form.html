@@ -56,7 +56,7 @@
         </div>
 
         <button type="submit" class="btn btn-success">Salvar Transação</button>
-        <a th:href="@{/contas}" class="btn btn-secondary">Cancelar</a>
+        <a th:href="@{'/contas/' + ${contaId} + '/transacoes'}" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
 </body>

@@ -32,7 +32,7 @@
         </div>
 
         <!-- Formulário de edição -->
-        <form th:action="@{'/contas/' + ${transacao.conta.id} + '/transacoes/' + ${transacao.id}} + '/comentarios'" method="post"
+        <form th:action="@{'/contas/' + ${transacao.conta.id} + '/transacoes/' + ${transacao.id}} + '/detalhes'" method="post"
             id="transacao-form" style="display: none;">
             <input type="hidden" name="_method" value="put" />
 
@@ -96,7 +96,7 @@
                         </button>
 
                         <!-- Botão Excluir -->
-                        <form th:action="@{'/contas/' + ${transacao.conta.id} + '/transacoes/' + ${transacao.id} + '/comentarios/' + ${comentario.id}}"
+                        <form th:action="@{'/contas/' + ${transacao.conta.id} + '/transacoes/' + ${transacao.id} + '/detalhes/' + ${comentario.id}}"
                             method="post" class="d-inline">
                             <input type="hidden" name="_method" value="delete"/>
                             <button type="submit" class="btn btn-sm btn-outline-danger" title="Excluir"
@@ -108,7 +108,7 @@
                 </div>
 
                 <!-- Formulário de edição oculto -->
-                <form th:action="@{'/contas/' + ${transacao.conta.id} + '/transacoes/' + ${transacao.id} + '/comentarios/' + ${comentario.id}}"
+                <form th:action="@{'/contas/' + ${transacao.conta.id} + '/transacoes/' + ${transacao.id} + '/detalhes/' + ${comentario.id}}"
                     method="post" th:id="'form-' + ${comentario.id}" style="display: none;" class="mt-2">
                     <input type="hidden" name="_method" value="put"/>
                     <div class="input-group">
@@ -122,7 +122,7 @@
         </ul>
 
         <!-- Formulário para adicionar novo comentário -->
-        <form th:action="@{'/contas/' + ${transacao.conta.id} + '/transacoes/' + ${transacao.id} + '/comentarios'}" method="post" th:object="${comentarioForm}">
+        <form th:action="@{'/contas/' + ${transacao.conta.id} + '/transacoes/' + ${transacao.id} + '/detalhes'}" method="post" th:object="${comentarioForm}">
             <input type="hidden" name="transacaoId" th:value="${transacao.id}" />
 
             <div class="mb-3">

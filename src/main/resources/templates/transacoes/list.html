@@ -27,7 +27,7 @@
                     <td th:text="${transacao.descricao}">Salário</td>
                     <td th:text="${#numbers.formatDecimal(transacao.valor, 1, 'COMMA', 2, 'POINT')}">1000.00</td>
                     <td>
-                        <a th:href="@{'/contas/' + ${conta.id} + '/transacoes/' + ${transacao.id} + '/comentarios'}"
+                        <a th:href="@{'/contas/' + ${conta.id} + '/transacoes/' + ${transacao.id} + '/detalhes'}"
                         class="btn btn-outline-primary btn-sm">
                         Ver Detalhes
                         </a>

@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ResponseModel<T> {
-    private int status;
+    private String status;
     private String message;
     private T data;
 }
