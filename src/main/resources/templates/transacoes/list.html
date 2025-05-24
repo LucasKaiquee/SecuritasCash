@@ -21,7 +21,7 @@
             </thead>
             <tbody>
                 <tr th:each="transacao : ${transacoes}" class="text-center">
-                    <td th:text="${transacao.data}">01/01/2024</td>
+                    <td th:text="${#temporals.format(transacao.data, 'dd/MM/yyyy')}">01/01/2024</td>
                     <td th:text="${transacao.categoria.name}">categoria</td>
                     <td th:text="${transacao.movimento}">movimento</td>
                     <td th:text="${transacao.descricao}">Salário</td>

@@ -11,14 +11,6 @@
     <div class="container mt-5">
         <h2 class="mb-4">Detalhes da Transação</h2>
 
-        <!-- <div class="mb-3">
-            <strong>Descrição:</strong> <span th:text="${transacao.descricao}">Compra</span><br>
-            <strong>Valor:</strong> <span th:text="${transacao.valor}">100.00</span><br>
-            <strong>Data:</strong> <span th:text="${transacao.data}">2025-05-21</span><br>
-            <strong>Categoria:</strong> <span th:text="${transacao.categoria.name}">2025-05-21</span><br>
-            <strong>Movimento:</strong> <span th:text="${transacao.movimento}">2025-05-21</span><br>
-        </div> -->
-
         <div class="mb-3" id="transacao-visualizacao">
             <strong>Descrição:</strong> <span th:text="${transacao.descricao}">Compra</span><br>
             <strong>Valor:</strong> <span th:text="${transacao.valor}">100.00</span><br>
@@ -66,8 +58,8 @@
             <div class="mb-3">
                 <label for="movimento">Movimento:</label>
                 <select id="movimento" name="movimento" class="form-control" required>
-                    <option th:value="'ENTRADA'" th:selected="${transacao.movimento == 'ENTRADA'}">ENTRADA</option>
-                    <option th:value="'SAIDA'" th:selected="${transacao.movimento == 'SAIDA'}">SAÍDA</option>
+                    <option th:value="'Crédito'" th:selected="${transacao.movimento == 'Crédito'}">Crédito</option>
+                    <option th:value="'Débito'" th:selected="${transacao.movimento == 'Débito'}">Débito</option>
                 </select>
             </div>
 

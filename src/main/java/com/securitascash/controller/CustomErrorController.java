@@ -14,6 +14,7 @@ public class CustomErrorController implements ErrorController{
     
     @RequestMapping("/error")
     public ModelAndView handleError(HttpServletRequest request, ModelAndView mav) {
+        
         Object statusObj = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
         int statusCode = statusObj != null ? Integer.parseInt(statusObj.toString()) : 500;
 

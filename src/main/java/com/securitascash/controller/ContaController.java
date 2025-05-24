@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.securitascash.dto.conta.ContaForm;
-import com.securitascash.dto.usuario.UsuarioSessao;
 import com.securitascash.model.conta.Conta;
 import com.securitascash.service.conta.ContaService;
+import com.securitascash.utils.Utils;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -31,7 +31,7 @@ public class ContaController {
     @GetMapping
     public String getContas(Model model, HttpSession session) throws Exception {
 
-        Long usuarioId = this.getUsuarioSessao(session).getId();
+        Long usuarioId = Utils.getUsuarioSessao(session).getId();
     
         List<Conta> contas = contaService.listarContasByUser(usuarioId);
         model.addAttribute("contas", contas);
@@ -40,7 +40,7 @@ public class ContaController {
 
     @GetMapping("/criar")
     public String exibirFormulario(Model model, HttpSession session) throws Exception {
-        Long usuarioId = this.getUsuarioSessao(session).getId();
+        Long usuarioId = Utils.getUsuarioSessao(session).getId();
 
         model.addAttribute("contaForm", new ContaForm());
         model.addAttribute("usuarioId", usuarioId);
@@ -53,12 +53,6 @@ public class ContaController {
         contaService.criarConta(contaForm);
         redirectAttributes.addFlashAttribute("mensagem", "Conta criada com sucesso!");
         return "redirect:/contas";
-    }
-
-    private UsuarioSessao getUsuarioSessao(HttpSession session){
-        return session.getAttribute("usuarioLogado") != null
-                ? (UsuarioSessao) session.getAttribute("usuarioLogado")
-                : null;
     }
     
 }

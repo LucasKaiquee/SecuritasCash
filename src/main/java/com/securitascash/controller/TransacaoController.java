@@ -71,7 +71,8 @@ public class TransacaoController {
         
         mav.addObject("transacaoForm", new TransacaoForm()); 
         mav.addObject("contaId", id);
-        mav.addObject("categorias", categoriaService.listarCategorias()); 
+        mav.addObject("categorias", categoriaService.listarCategorias());
+         
         return mav;
     }
 
@@ -88,6 +89,7 @@ public class TransacaoController {
     public String atualizar(@PathVariable("id") Long contaId,
                                     @PathVariable("transacaoId") Long transacaoId,
                                     @ModelAttribute TransacaoForm dto) {
+
         transacaoService.atualizar(transacaoId, dto); 
 
         return "redirect:/contas/" + contaId + "/transacoes/" + transacaoId + "/detalhes";
