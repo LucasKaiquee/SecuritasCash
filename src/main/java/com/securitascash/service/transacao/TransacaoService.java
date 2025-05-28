@@ -37,7 +37,7 @@ public class TransacaoService {
     CategoriaRepository categoriaRepository;
 
 
-    public void criarTransacao(TransacaoForm transacaoForm, Long contaId){
+    public void salvar(TransacaoForm transacaoForm, Long contaId){
 
         Conta conta = contaService.buscarPorId(contaId);
 
@@ -47,7 +47,7 @@ public class TransacaoService {
         transacao.setData(transacaoForm.getData());
         transacao.setConta(conta);
 
-        Movimento movimento = transacaoForm.getMovimento() == "Crédito" ? Movimento.CREDITO : Movimento.DEBITO; 
+        Movimento movimento = transacaoForm.getMovimento().equals("Crédito") ? Movimento.CREDITO : Movimento.DEBITO; 
         transacao.setMovimento(movimento);
 
         transacao.setCategoria(transacaoForm.getCategoria());
@@ -83,7 +83,7 @@ public class TransacaoService {
         transacao.setValor(form.getValor());
         transacao.setData(form.getData());
 
-        Movimento movimento = form.getMovimento() == "Crédito" ? Movimento.CREDITO : Movimento.DEBITO; 
+        Movimento movimento = form.getMovimento().equals("Crédito")  ? Movimento.CREDITO : Movimento.DEBITO; 
 
         transacao.setMovimento(movimento);
         transacao.setCategoria(categoria);
@@ -94,21 +94,22 @@ public class TransacaoService {
 
 
 
-    public List<Transacao> listarTransacoes(Long contaID){
+    public List<Transacao> listarPorContaId(Long contaID){
         Conta conta = contaService.buscarPorId(contaID);
         return conta.getTransacoes();
 
     }
 
-    public Transacao buscarTransacaoPorId(Long id){
+    public Transacao buscarPorId(Long id){
         return transacaoRepository.findById(id).orElseThrow(
             () -> new ResourceNotFoundException("Transação não encontrada com o id: " + id)
         );
     }
 
+
     @Transactional
     public Comentario adicionarComentario(Long transacaoId, ComentarioForm comentarioForm){
-        Transacao transacao = this.buscarTransacaoPorId(transacaoId);
+        Transacao transacao = this.buscarPorId(transacaoId);
 
         Comentario comentario = new Comentario();
         comentario.setTexto(comentarioForm.getTexto());
@@ -122,14 +123,14 @@ public class TransacaoService {
 
     @Transactional
     public Comentario editarComentario(Long transacaoId, Long comentarioId, String texto){
-        Transacao transacao = this.buscarTransacaoPorId(transacaoId);
+        Transacao transacao = this.buscarPorId(transacaoId);
         return this.comentarioService.editarComentario(transacao, comentarioId, texto);
     }
 
 
     @Transactional
     public void excluirComentario(Long transacaoId, Long comentarioId){
-        Transacao transacao = this.buscarTransacaoPorId(transacaoId);
+        Transacao transacao = this.buscarPorId(transacaoId);
 
         this.comentarioService.excluirComentario(transacao, comentarioId);
         transacaoRepository.save(transacao);
@@ -137,7 +138,7 @@ public class TransacaoService {
     }
 
     public List<Comentario> listarComentarios (Long transacaoId){
-        Transacao transacao = this.buscarTransacaoPorId(transacaoId);
+        Transacao transacao = this.buscarPorId(transacaoId);
         return this.comentarioService.listarComentarios(transacao);
     }
 

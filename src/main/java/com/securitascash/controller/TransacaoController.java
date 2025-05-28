@@ -56,7 +56,7 @@ public class TransacaoController {
             throw new ResponseStatusException( HttpStatus.FORBIDDEN);
         }
 
-        List<Transacao> transacoes = transacaoService.listarTransacoes(id);
+        List<Transacao> transacoes = transacaoService.listarPorContaId(id);
         mav.setViewName("transacoes/list");
         
         mav.addObject("transacoes", transacoes);
@@ -81,7 +81,7 @@ public class TransacaoController {
     public String salvar(@ModelAttribute TransacaoForm transacaoForm,
                                 @RequestParam("contaId") Long contaId) {
 
-        transacaoService.criarTransacao(transacaoForm, contaId);
+        transacaoService.salvar(transacaoForm, contaId);
         return "redirect:/contas/" + contaId + "/transacoes";
     }
 
@@ -101,7 +101,7 @@ public class TransacaoController {
     @GetMapping("/{transacaoId}/detalhes")
     public ModelAndView listarComentarios (@PathVariable Long transacaoId, ModelAndView mav, @PathVariable("id") Long contaId) {
 
-        Transacao transacao = transacaoService.buscarTransacaoPorId(transacaoId);
+        Transacao transacao = transacaoService.buscarPorId(transacaoId);
         
         mav.setViewName("transacoes/detalhes");
 

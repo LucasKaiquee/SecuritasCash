@@ -22,8 +22,8 @@
         <div class="mb-3">
             <label for="movimento" class="form-label">Movimento</label>
             <select th:field="*{movimento}" class="form-select">
-                <option value="Crédito">Crédito</option>
-                <option value="Débito">Débito</option>
+                <option th:value="'Crédito'" th:text="Crédito"></option>
+                <option th:value="'Debito'" th:text="Débito"></option>
             </select>
         </div>
 
