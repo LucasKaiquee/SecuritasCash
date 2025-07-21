@@ -8,6 +8,7 @@
 </head>
 
 <body>
+    <div th:replace="~{/fragments/header}" />
     <div class="container mt-5">
         <h2 class="mb-4">Correntistas Cadastrados</h2>
         <div th:if="${mensagem}" class="alert alert-success" role="alert">
@@ -31,9 +32,13 @@
                 </tr>
             </tbody>
         </table>
-        <a th:href="@{/correntistas/novo}" class="btn btn-success">Cadastrar Novo Correntista</a>
+        <div class="d-flex justify-content-end mt-3">
+            <a class="btn text-white" style="background-color: #6FA285;" th:href="@{'/correntistas/novo'}">
+                <i class="bi bi-plus-circle"></i> Adicionar Correntista
+            </a>
+        </div>
 
-        <a href="/" class="btn btn-secondary">Voltar ao Início</a>
+        
     </div>
 </body>
 
