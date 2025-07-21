@@ -10,7 +10,11 @@
 
         <h2 class="text-dark mb-4">Transações da Conta <span th:text="${conta.numero}">0000-0</span></h2>
 
-        <table class="table table-hover table-bordered shadow-sm bg-white">
+        <div class="alert alert-info" role="alert" th:if="${#lists.isEmpty(transacoes)}">
+            Você não possui transações nessa conta.
+        </div>
+
+        <table class="table table-hover table-bordered shadow-sm bg-white" th:unless="${#lists.isEmpty(transacoes)}">
             <thead class="table-dark text-center">
                 <tr>
                     <th>Data</th>
