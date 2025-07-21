@@ -20,19 +20,16 @@
         </div>
         <h2 class="text-dark mb-4">Minhas Contas</h2>
 
-        <!-- Alerta: Nenhuma conta -->
         <div class="alert alert-info" role="alert" th:if="${#lists.isEmpty(contas)}">
             Você não possui contas cadastradas.
         </div>
 
-        <!-- Alerta: Mensagem geral -->
         <div class="alert alert-info" role="alert" th:if="${mensagem}">
             [[${mensagem}]]
         </div>
 
-        <!-- Tabela de contas -->
         <table class="table table-hover table-bordered shadow-sm bg-white" th:unless="${#lists.isEmpty(contas)}">
-            <thead class="text-white text-center" style="background-color: #383636;">
+            <thead class="text-white table-dark text-center">
                 <tr>
                     <th>Descrição</th>
                     <th>Número da Conta</th>
@@ -46,24 +43,21 @@
                     <td th:text="${conta.numero}">0000-0</td>
                     <td th:text="${conta.tipo}">CORRENTE</td>
 
-                    <!-- Botão Ver Transações -->
                     <td>
                         <a th:href="@{'/contas/' + ${conta.id} + '/transacoes'}" class="btn btn-outline-dark btn-sm">
                             <i class="bi bi-list-ul"></i> Transações
                         </a>
                     </td>
 
-                    <!-- Botão Editar -->
-                    <td>
+                    <!-- <td>
                         <a th:href="@{'/contas/' + ${conta.id} + '/editar'}" class="btn btn-outline-success btn-sm">
                             <i class="bi bi-pencil"></i> Editar
                         </a>
-                    </td>
+                    </td> -->
                 </tr>
             </tbody>
         </table>
 
-        <!-- Botão Adicionar -->
         <div class="d-flex justify-content-end mt-3">
             <a class="btn text-white" style="background-color: #6FA285;" href="/contas/criar">
                 <i class="bi bi-plus-circle"></i> Adicionar Conta

@@ -14,7 +14,7 @@
             <p th:text="${mensagem}"></p>
         </div>
         <table class="table table-bordered table-striped">
-            <thead class="table-dark">
+            <thead class="table-dark text-center" >
                 <tr>
                     <th>ID</th>
                     <th>Nome</th>
@@ -23,7 +23,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="correntista : ${correntistas}">
+                <tr th:each="correntista : ${correntistas}" class="text-center">
                     <td th:text="${correntista.id}">1</td>
                     <td th:text="${correntista.nome}">Nome</td>
                     <td th:text="${correntista.email}">email@exemplo.com</td>
