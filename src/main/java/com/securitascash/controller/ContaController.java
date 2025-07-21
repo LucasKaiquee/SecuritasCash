@@ -18,10 +18,13 @@ import com.securitascash.service.conta.ContaService;
 import com.securitascash.utils.Utils;
 
 import jakarta.servlet.http.HttpSession;
+
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.securitascash.dto.usuario.UsuarioSessao;
+import com.securitascash.model.usuario.Usuario;
 
 @Controller
 @RequestMapping("/contas")
@@ -36,10 +39,13 @@ public class ContaController {
     @GetMapping
     public String getContas(Model model, HttpSession session) throws Exception {
 
-        Long usuarioId = Utils.getUsuarioSessao(session).getId();
-    
-        List<Conta> contas = contaService.listarContasByUser(usuarioId);
-        model.addAttribute("contas", contas);
+        UsuarioSessao usuarioSessao = Utils.getUsuarioSessao(session);
+        Long usuarioId = usuarioSessao.getId();
+
+        model.addAttribute("contaForm", new ContaForm());
+        model.addAttribute("usuarioId", usuarioId);
+        model.addAttribute("usuarioTipo", usuarioSessao.getTipo()); 
+        model.addAttribute("contas", contaService.listarContasByUser(usuarioId));
         return "contas/list";
     }
 
@@ -75,19 +81,16 @@ public class ContaController {
         contaForm.setUsuarioId(conta.getUsuario().getId());
 
         mav.addObject("contaForm", contaForm);
-        
+
         mav.setViewName("contas/form");
-        
+
         return mav;
     }
 
     @PutMapping("editar/{id}")
     public ModelAndView alterarConta(@PathVariable String id, ModelAndView mav) {
-        
-        
+
         return mav;
     }
-    
+
 }
-
-
