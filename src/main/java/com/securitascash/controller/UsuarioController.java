@@ -31,11 +31,15 @@ public class UsuarioController {
                         @RequestParam String password, Model model, HttpSession session) {
         
         Usuario usuario = usuarioService.login(email, password);
+        
 
         if (usuario != null) {
+            String tipo = usuario.getClass().getSimpleName();
+
             UsuarioSessao usuarioSessao = new UsuarioSessao();
             usuarioSessao.setId(usuario.getId());
             usuarioSessao.setNome(usuario.getNome());
+            usuarioSessao.setTipo(tipo);
     
             session.setAttribute("usuarioLogado", usuarioSessao);
             return "redirect:/contas";

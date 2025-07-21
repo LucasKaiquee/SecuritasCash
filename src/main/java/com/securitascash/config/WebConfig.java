@@ -12,8 +12,8 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginInterceptor())
-                .addPathPatterns("/contas/**") 
-                .excludePathPatterns("/usuario/login", "/");
+                .addPathPatterns("/contas/**", "/correntistas/**") // protege ambas as rotas
+                .excludePathPatterns("/usuario/login", "/"); // libera login e home
     }
 
     @Bean

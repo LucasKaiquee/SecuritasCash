@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.securitascash.enums.Natureza;
 import com.securitascash.model.Categoria;
+import com.securitascash.model.usuario.inherit.Administrador;
 import com.securitascash.model.usuario.inherit.Correntista;
 import com.securitascash.repository.CategoriaRepository;
 import com.securitascash.repository.UsuarioRepository;
@@ -53,6 +54,7 @@ public class DataInitializer {
     CommandLineRunner loadDataUsuarioCorrentista(UsuarioRepository repositorio) {
         return args -> {
             if (repositorio.count() == 0) {
+                repositorio.save(new Administrador(null, "Lucas", "1234", "lucas@teste.com", null));
                 repositorio.save(new Correntista(null, "Luiz", "a", "lf@email.com", null));
                 repositorio.save(new Correntista(null, "Luiz", "a", "lf2@email.com", null));
             }
