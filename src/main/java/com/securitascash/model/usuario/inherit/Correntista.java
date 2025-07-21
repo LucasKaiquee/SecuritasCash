@@ -28,4 +28,6 @@ public class Correntista extends Usuario{
         super(id, nome, senha, email, contas);
         this.isBlocked = false;
     }
+
+
 }
