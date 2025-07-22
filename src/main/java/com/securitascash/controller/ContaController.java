@@ -44,7 +44,6 @@ public class ContaController {
 
         model.addAttribute("contaForm", new ContaForm());
         model.addAttribute("usuarioId", usuarioId);
-        model.addAttribute("usuarioTipo", usuarioSessao.getTipo()); 
         model.addAttribute("contas", contaService.listarContasByUser(usuarioId));
         return "contas/list";
     }
