@@ -4,7 +4,7 @@ Securitas Cash é uma aplicação web para controlo financeiro pessoal, que perm
 
 ## Descrição do Projeto 📝
 
-A aplicação, originalmente denominada SpendWise, permite que um utilizador, o "Correntista", registe as suas transações financeiras. Estas transações podem ser de crédito ou débito e são associadas a categorias predefinidas (ex: Saúde, Salário, Lazer) ou a categorias criadas por um utilizador "Administrador".
+A aplicação, originalmente denominada SpendWise, permite que um utilizador, o "Correntista", registre as suas transações financeiras. Estas transações podem ser de crédito ou débito e são associadas a categorias predefinidas (ex: Saúde, Salário, Lazer) ou a categorias criadas por um utilizador "Administrador".
 
 O sistema suporta dois tipos de contas: Conta-Corrente e Cartão de Crédito. As transações podem incluir comentários para detalhar informações adicionais, como a origem de uma herança ou detalhes de uma compra específica.
 
@@ -40,7 +40,6 @@ A aplicação foi construída com as seguintes tecnologias:
 * **Linguagem**: Java 21.
 * **Utilitários**: Lombok.
 
-*(Informação extraída do ficheiro `pom.xml`)*
 
 ## Como Executar o Projeto ▶️
 
