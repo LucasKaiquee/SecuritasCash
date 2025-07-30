@@ -13,11 +13,12 @@
 
         <form th:action="@{/contas/criar}" th:object="${contaForm}" method="post">
             <div class="mb-3">
-                <label class="form-label">Tipo de Conta</label>
+                <label class="form-label">Tipo de Conta</label> 
                 <select th:field="*{tipo}" class="form-select">
                     <option value="CORRENTE">Conta Corrente</option>
                     <option value="CARTAO_CREDITO">Cartão de Crédito</option>
                 </select>
+                <div th:if="${#fields.hasErrors('tipo')}" class="text-danger" th:errors="*{tipo}" ></div>
             </div>
 
             <input type="hidden" name="usuarioId" th:value="${usuarioId}">
@@ -25,14 +26,17 @@
             <div class="mb-3">
                 <label class="form-label">Número</label>
                 <input type="text" th:field="*{numero}" class="form-control" required>
+                <div th:if="${#fields.hasErrors('numero')}" class="text-danger" th:errors="*{numero}"  ></div>
             </div>
             <div class="mb-3">
                 <label class="form-label">Descrição</label>
                 <input type="text" th:field="*{descricao}" class="form-control" required>
+                <div th:if="${#fields.hasErrors('descricao')}" class="text-danger" th:errors="*{descricao}"></div>
             </div>
             <div class="mb-3">
                 <label class="form-label">Dia do Fechamento (se for Cartão)</label>
-                <input type="number" th:field="*{diaDoFechamento}" class="form-control">
+                <input type="number" th:field="*{diaDoFechamento}" >
+                <div th:if="${#fields.hasErrors('diaDoFechamento')}" class="text-danger" th:errors="*{diaDoFechamento}"></div>
             </div>
 
             <a th:href="@{'/contas'}" class="btn btn-secondary">Cancelar</a>

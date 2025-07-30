@@ -16,7 +16,9 @@
 
         <div class="mb-3">
             <label for="descricao" class="form-label">Descrição</label>
-            <input type="text" class="form-control" th:field="*{descricao}" id="descricao" required />
+            <input type="text" class="form-control" th:field="*{descricao}" id="descricao" />
+            <div th:if="${#fields.hasErrors('descricao')}" class="text-danger" th:errors="*{descricao}"  ></div>
+
         </div>
 
         <div class="mb-3">
@@ -36,23 +38,28 @@
 
         <div class="mb-3">
             <label for="valor" class="form-label">Valor</label>
-            <input type="number" class="form-control" th:field="*{valor}" step="0.01" id="valor" required />
+            <input type="number" class="form-control" th:field="*{valor}" step="0.01" id="valor" />
+            <div th:if="${#fields.hasErrors('valor')}" class="text-danger" th:errors="*{valor}"  ></div>
+
         </div>
 
         <div class="mb-3">
             <label for="data" class="form-label">Data</label>
-            <input type="date" class="form-control" th:field="*{data}" id="data" required />
+            <input type="date" class="form-control" th:field="*{data}" id="data" />
+            <div th:if="${#fields.hasErrors('data')}" class="text-danger" th:errors="*{data}"  ></div>
+
         </div>
 
-        <h4>Comentários</h4>
 
-        <div th:each="i : ${#numbers.sequence(0, 1)}" class="mb-3">
-            <label class="form-label" th:for="'comentarios-' + ${i}">Comentário [[${i} + 1]]</label>
+        <h4>Comentário</h4>
+
+        <div class="mb-3">
             <textarea class="form-control"
-                    th:field="*{comentarios[__${i}__].texto}"
+                    th:field="*{comentario.texto}"
                     rows="2"
                     placeholder="Digite um comentário opcional">
             </textarea>
+            <div th:if="${#fields.hasErrors('comentario.texto')}" class="text-danger" th:errors="*{comentario.texto}"  ></div>
         </div>
 
         <a th:href="@{'/contas/' + ${contaId} + '/transacoes'}" class="btn btn-secondary">Cancelar</a>

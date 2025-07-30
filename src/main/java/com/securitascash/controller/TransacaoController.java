@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -28,6 +29,7 @@ import com.securitascash.service.usuario.UsuarioService;
 import com.securitascash.utils.Utils;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("contas/{id}/transacoes")
@@ -78,11 +80,18 @@ public class TransacaoController {
 
     
     @PostMapping
-    public String salvar(@ModelAttribute TransacaoForm transacaoForm,
-                                @RequestParam("contaId") Long contaId) {
+    public ModelAndView salvar(@Valid @ModelAttribute TransacaoForm transacaoForm, BindingResult result,  @RequestParam("contaId") Long contaId, ModelAndView mav) {
+
+        if (result.hasErrors()) {
+            mav.setViewName("transacoes/form");
+            mav.addObject("contaId", contaId);
+            mav.addObject("categorias", categoriaService.listarCategorias());
+            return mav;
+        }
 
         transacaoService.salvar(transacaoForm, contaId);
-        return "redirect:/contas/" + contaId + "/transacoes";
+        mav.setViewName("redirect:/contas/" + contaId + "/transacoes");
+        return mav;
     }
 
     @PutMapping("/{transacaoId}/detalhes")
@@ -114,12 +123,22 @@ public class TransacaoController {
     }
 
     @PostMapping("/{transacaoId}/detalhes")
-    public String salvarComentario(@ModelAttribute ComentarioForm comentarioForm,
-                                @RequestParam Long transacaoId, @PathVariable("id") Long contaId) {
+    public ModelAndView salvarComentario(@Valid @ModelAttribute ComentarioForm comentarioForm, BindingResult result,
+                                @RequestParam Long transacaoId, @PathVariable("id") Long contaId, ModelAndView mav) {
+                                    
+        if (result.hasErrors()) {
+            Transacao transacao = transacaoService.buscarPorId(transacaoId);
+            mav.setViewName("transacoes/detalhes");
+            mav.addObject("comentarios", transacao.getComentarios());
+            mav.addObject("categorias", categoriaService.listarCategorias());
+            mav.addObject("transacao", transacao);
+            return mav;
+        }
 
         transacaoService.adicionarComentario(transacaoId, comentarioForm);
 
-        return "redirect:/contas/" + contaId + "/transacoes/" + transacaoId + "/detalhes" ;
+        mav.setViewName("redirect:/contas/" + contaId + "/transacoes/" + transacaoId + "/detalhes" );
+        return mav;
     }
 
     @PutMapping("/{transacaoId}/detalhes/{comentarioId}")

@@ -1,30 +1,26 @@
 package com.securitascash.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.securitascash.dto.conta.ContaForm;
+import com.securitascash.dto.usuario.UsuarioSessao;
 import com.securitascash.model.conta.Conta;
 import com.securitascash.service.conta.ContaService;
 import com.securitascash.utils.Utils;
 
 import jakarta.servlet.http.HttpSession;
-
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
-
-import com.securitascash.dto.usuario.UsuarioSessao;
-import com.securitascash.model.usuario.Usuario;
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/contas")
@@ -59,7 +55,24 @@ public class ContaController {
     }
 
     @PostMapping("/criar")
-    public String adicionarConta(@ModelAttribute ContaForm contaForm, RedirectAttributes redirectAttributes) {
+    public String adicionarConta(@Valid @ModelAttribute("contaForm") ContaForm contaForm, 
+                                 BindingResult result,
+                                 Model model, 
+                                 HttpSession session,
+                                 RedirectAttributes redirectAttributes) {
+        
+
+        if (result.hasErrors()) {
+            try {
+                Long usuarioId = Utils.getUsuarioSessao(session).getId();
+                model.addAttribute("usuarioId", usuarioId);
+            } catch (Exception e) {
+                // Lida com o caso de usuário não logado
+                return "redirect:/usuario/login";
+            }
+            return "contas/form";
+        }
+
         contaService.criarConta(contaForm);
         redirectAttributes.addFlashAttribute("mensagem", "Conta criada com sucesso!");
         return "redirect:/contas";
