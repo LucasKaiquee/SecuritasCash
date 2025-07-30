@@ -20,20 +20,23 @@
 
             <div class="mb-3">
                 <label for="nome" class="form-label">Nome</label>
-                <input type="text" th:field="*{nome}" class="form-control" id="nome" placeholder="Digite o nome"
-                    required>
+                <input type="text" th:field="*{nome}" class="form-control" id="nome" placeholder="Digite o nome">
+                <div th:if="${#fields.hasErrors('nome')}" class="text-danger" th:errors="*{nome}"  ></div>
+
             </div>
 
             <div class="mb-3">
                 <label for="email" class="form-label">E-mail</label>
-                <input type="email" th:field="*{email}" class="form-control" id="email" placeholder="Digite o e-mail"
-                    required>
+                <input type="email" th:field="*{email}" class="form-control" id="email" placeholder="Digite o e-mail">
+                <div th:if="${#fields.hasErrors('email')}" class="text-danger" th:errors="*{email}"  ></div>
+
             </div>
 
             <div class="mb-3">
                 <label for="senha" class="form-label">Senha</label>
-                <input type="password" th:field="*{senha}" class="form-control" id="senha" placeholder="Digite a senha"
-                    required>
+                <input type="password" th:field="*{senha}" class="form-control" id="senha" placeholder="Digite a senha">
+                <div th:if="${#fields.hasErrors('senha')}" class="text-danger" th:errors="*{senha}"  ></div>
+
             </div>
 
             <button type="submit" class="btn btn-success">Cadastrar</button>
