@@ -53,15 +53,12 @@ public class TransacaoService {
         transacao.setCategoria(transacaoForm.getCategoria());
 
         List<Comentario> comentarios = new ArrayList<>();
-        if (transacaoForm.getComentarios() != null) {
-            for (ComentarioForm c : transacaoForm.getComentarios()) {
-                if (c.getTexto() != null && !c.getTexto().isBlank()) {
-                    Comentario comentario = new Comentario();
-                    comentario.setTexto(c.getTexto());
-                    comentario.setTransacao(transacao);
-                    comentarios.add(comentario);
-                }
-            }
+        
+        if (transacaoForm.getComentario() != null) {
+            Comentario comentario = new Comentario();
+            comentario.setTexto(transacaoForm.getComentario().getTexto());
+            comentario.setTransacao(transacao);
+            comentarios.add(comentario);
         }
 
         transacao.setComentarios(comentarios);
