@@ -1,0 +1,66 @@
+.scroll-table {
+    max-height: 400px; /* <-- Aumenta a altura */
+    overflow-y: auto;
+    position: relative;
+}
+
+.styled-table {
+    border-collapse: collapse;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    width: 100%;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Centraliza o texto em todas as células por padrão */
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+    text-align: center;
+}
+
+.styled-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: #009879;
+    color: #ffffff;
+}
+
+/* --- LARGURAS ESPECÍFICAS PARA CADA COLUNA --- */
+.styled-table th:nth-child(1),
+.styled-table td:nth-child(1) {
+    width: 50%;
+    text-align: left;
+    padding-left: 20px;
+}
+.styled-table th:nth-child(2),
+.styled-table td:nth-child(2) {
+    width: 25%;
+}
+.styled-table th:nth-child(3),
+.styled-table td:nth-child(3) {
+    width: 10%;
+}
+.styled-table th:nth-child(4),
+.styled-table td:nth-child(4) {
+    width: 15%;
+}
+
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+
+.styled-table tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+}
