@@ -3,7 +3,7 @@ package com.securitascash.validators.comentario;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class WhiteSpacesOnlyValidator implements ConstraintValidator<WhiteSpacesOnly, String> {
+public class NoWhiteSpacesOnlyValidator implements ConstraintValidator<NoWhiteSpacesOnly, String> {
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {

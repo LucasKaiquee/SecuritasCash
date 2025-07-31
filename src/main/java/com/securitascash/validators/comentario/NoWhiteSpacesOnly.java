@@ -10,10 +10,10 @@ import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
 @Documented
-@Constraint(validatedBy = WhiteSpacesOnlyValidator.class)
+@Constraint(validatedBy = NoWhiteSpacesOnlyValidator.class)
 @Target({ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface WhiteSpacesOnly {
+public @interface NoWhiteSpacesOnly {
     String message() default "O texto não pode ser composto apenas por espaços em branco.";
 
     Class<?>[] groups() default {};
