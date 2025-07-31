@@ -15,6 +15,9 @@
                     <li class="nav-item" th:if="${session.usuarioLogado.tipo == 'Administrador'}">
                         <a class="nav-link" th:href="@{/correntistas}">Correntistas</a>
                     </li>
+                    <li class="nav-item" th:if="${session.usuarioLogado.tipo == 'Administrador'}">
+                        <a class="nav-link" th:href="@{/categorias}">Categorias</a>
+                    </li>
                 </ul>
                 <div class="d-flex">
                     <span class="navbar-text me-3" th:text="${session.usuarioLogado.nome}"></span>
