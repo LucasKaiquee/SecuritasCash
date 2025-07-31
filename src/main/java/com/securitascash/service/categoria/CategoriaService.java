@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.securitascash.dto.categoria.CategoriaForm;
+import com.securitascash.enums.Natureza;
 import com.securitascash.model.Categoria;
 import com.securitascash.repository.CategoriaRepository;
 
@@ -16,7 +18,14 @@ public class CategoriaService {
     @Autowired
     CategoriaRepository categoriaRepository;
 
-    public void criarCategoria(Categoria categoria){
+    public void criarCategoria(CategoriaForm categoriaForm){
+        Categoria categoria = new Categoria();
+        
+        categoria.setName(categoriaForm.getNome());
+        categoria.setIsActive(categoriaForm.getAtivo());
+        categoria.setNatureza(Natureza.valueOf(categoriaForm.getNatureza()));
+        categoria.setOrdem(categoriaForm.getOrdem());
+
         this.categoriaRepository.save(categoria);
     }
 
