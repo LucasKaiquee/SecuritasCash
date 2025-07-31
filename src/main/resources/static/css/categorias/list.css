@@ -1,7 +1,54 @@
+/* --- CSS COMPLETO (FILTROS + TABELA) --- */
+
+/* ======================= ESTILOS DOS FILTROS ======================= */
+.card.mb-4 {
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background-color: #fcfcfc;
+}
+
+.card-title {
+    font-weight: 500;
+    color: #333;
+}
+
+.filter-form .form-label {
+    font-size: 0.9em;
+    font-weight: 500;
+    color: #555;
+}
+
+/* Alinha os botões com os campos de formulário */
+.filter-form .d-flex {
+    padding-bottom: 2px; /* Pequeno ajuste de alinhamento vertical */
+}
+
+/* Ícones dentro dos botões */
+.btn i {
+    margin-right: 6px;
+}
+
+/* Estilo do botão primário para combinar com a tabela */
+.btn-primary {
+    background-color: #009879;
+    border-color: #009879;
+}
+
+.btn-primary:hover {
+    background-color: #007a63;
+    border-color: #007a63;
+}
+
+
+/* ======================= ESTILOS DA TABELA ======================= */
+
+/* O contêiner que terá a barra de rolagem */
 .scroll-table {
-    max-height: 400px; /* <-- Aumenta a altura */
+    max-height: 400px; /* Altura da tabela, ajuste se necessário */
     overflow-y: auto;
     position: relative;
+    border: 1px solid #ddd;
+    border-radius: 8px;
 }
 
 .styled-table {
@@ -9,22 +56,24 @@
     font-size: 0.9em;
     font-family: sans-serif;
     width: 100%;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
-/* Centraliza o texto em todas as células por padrão */
+/* Células da tabela (padrão) */
 .styled-table th,
 .styled-table td {
     padding: 12px 15px;
     text-align: center;
 }
 
+/* Cabeçalho fixo */
 .styled-table thead th {
     position: sticky;
     top: 0;
     z-index: 1;
     background-color: #009879;
     color: #ffffff;
+    /* Remove a borda superior do navegador ao grudar */
+    border-top: none; 
 }
 
 /* --- LARGURAS ESPECÍFICAS PARA CADA COLUNA --- */
@@ -47,17 +96,17 @@
     width: 15%;
 }
 
-
+/* Linhas do corpo da tabela */
 .styled-table tbody tr {
     border-bottom: 1px solid #dddddd;
 }
 
-.styled-table tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3;
+.styled-table tbody tr:last-of-type {
+    border-bottom: none; /* Remove a última borda para não duplicar com a do container */
 }
 
-.styled-table tbody tr:last-of-type {
-    border-bottom: 2px solid #009879;
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
 }
 
 .styled-table tbody tr.active-row {

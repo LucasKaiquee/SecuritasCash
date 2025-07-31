@@ -23,6 +23,7 @@ public class CategoriaController {
     public ModelAndView list (ModelAndView mav) {
         mav.setViewName("categorias/list");
         mav.addObject("categorias", service.listarCategorias());
+        mav.addObject("naturezas", Natureza.values());
         return mav;
     }
 
