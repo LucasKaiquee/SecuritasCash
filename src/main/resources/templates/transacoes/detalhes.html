@@ -26,6 +26,7 @@
         <!-- Formulário de edição -->
         <form th:action="@{'/contas/' + ${transacao.conta.id} + '/transacoes/' + ${transacao.id}} + '/detalhes'" method="post"
             id="transacao-form" style="display: none;">
+            
             <input type="hidden" name="_method" value="put" />
 
             <div class="mb-2">
