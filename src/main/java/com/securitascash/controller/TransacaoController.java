@@ -80,7 +80,11 @@ public class TransacaoController {
 
     
     @PostMapping
-    public ModelAndView salvar(@Valid @ModelAttribute TransacaoForm transacaoForm, BindingResult result,  @RequestParam("contaId") Long contaId, ModelAndView mav) {
+    public ModelAndView salvar(
+                            @Valid @ModelAttribute TransacaoForm transacaoForm,
+                            BindingResult result,  
+                            @RequestParam("contaId") Long contaId, 
+                            ModelAndView mav) {
 
         if (result.hasErrors()) {
             mav.setViewName("transacoes/form");
@@ -96,8 +100,8 @@ public class TransacaoController {
 
     @PutMapping("/{transacaoId}/detalhes")
     public String atualizar(@PathVariable("id") Long contaId,
-                                    @PathVariable("transacaoId") Long transacaoId,
-                                    @ModelAttribute TransacaoForm dto) {
+                            @PathVariable("transacaoId") Long transacaoId,
+                            @ModelAttribute TransacaoForm dto) {
 
         transacaoService.atualizar(transacaoId, dto); 
 

@@ -73,8 +73,7 @@ public class TransacaoService {
         Transacao transacao = transacaoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Transação não encontrada"));
 
-        Categoria categoria = categoriaRepository.findById(form.getCategoria().getId())
-                .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
+        Categoria categoria = categoriaRepository.findByName(form.getCategoria().getName());
 
         transacao.setDescricao(form.getDescricao());
         transacao.setValor(form.getValor());

@@ -63,43 +63,146 @@
         </div>
 
         <div class="scroll-table">
-            <table class="styled-table">
-                <thead class="table-dark text-center" >
+            <table class="styled-table" id="categoriesTable">
+                <thead class="table-dark text-center">
                     <tr>
                         <th>Nome</th>
                         <th>Natureza</th>
                         <th>Ordem</th>
                         <th>Ativo</th>
-                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="categoria : ${categorias}" class="active-row">
-                        <td th:text="${categoria.name}">Nome</td>
+                    <tr th:each="categoria : ${categorias.content}" class="active-row">
+                        <td>
+                            <span class="category-name-text" th:text="${categoria.name}">Nome</span>
+                            <a class="category-name-link"
+                            th:href="@{/categorias/editar/{id}(id=${categoria.id})}"
+                            th:attr="data-delete-url=@{/categorias/excluir/{id}(id=${categoria.id})}"
+                            th:text="${categoria.name}">
+                            </a>
+                        </td>
                         <td th:text="${categoria.natureza.displayValue}">Investimento</td>
                         <td th:text="${categoria.ordem}">1</td>
-                        <td th:text="${categoria.isActive ? 'Sim' : 'Não'}">1</td>
-                        <td>
-                            <!-- Botão Excluir -->
-                            <form method="post">
-                                <input type="hidden" name="_method" value="delete"/>
-                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Excluir"
-                                        onclick="return confirm('Tem certeza que deseja excluir esta categoria?');">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </form>
-                        </td>
+                        <td th:text="${categoria.isActive ? 'Sim' : 'Não'}">Sim</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
+        <div th:if="${categorias.totalPages > 1}" class="d-flex justify-content-center mt-3">
+            <nav aria-label="Navegação da página">
+                <ul class="pagination">
+
+                    <li class="page-item" th:classappend="${categorias.first} ? 'disabled'">
+                        <a class="page-link"
+                        th:href="@{/categorias(page=${categorias.number - 1}, size=${categorias.size}, sort=${param.sort ?: ''})}"
+                        aria-label="Anterior">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                            Página <span th:text="${categorias.number + 1}"></span> de <span th:text="${categorias.totalPages}"></span>
+                        </a>
+                    </li>
+
+                    <li class="page-item" th:classappend="${categorias.last} ? 'disabled'">
+                        <a class="page-link"
+                        th:href="@{/categorias(page=${categorias.number + 1}, size=${categorias.size}, sort=${param.sort ?: ''})}"
+                        aria-label="Próximo">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </nav>
+        </div>
+
         <div class="d-flex justify-content-end mt-3">
+            <button type="button" id="toggleDeleteModeBtn" class="btn text-white me-2 mode-btn">
+                <i class="bi bi-trash"></i> Excluir
+            </button>
+            <button type="button" id="toggleEditModeBtn" class="btn text-white me-2 mode-btn">
+                <i class="bi bi-pencil"></i> Editar
+            </button>
             <a class="btn text-white" style="background-color: #6FA285;" th:href="@{'/categorias/criar'}">
-                <i class="bi bi-plus-circle"></i> Adicionar Categoria
+                <i class="bi bi-plus-circle"></i> Adicionar
             </a>
         </div>
+        
     </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const categoriesTable = document.getElementById('categoriesTable');
+        const toggleEditBtn = document.getElementById('toggleEditModeBtn');
+        const toggleDeleteBtn = document.getElementById('toggleDeleteModeBtn');
+
+        // --- Lógica para alternar os modos (garantindo que apenas um fique ativo) ---
+        toggleEditBtn.addEventListener('click', function() {
+            // Desativa o modo de exclusão se estiver ativo
+            categoriesTable.classList.remove('delete-mode-on');
+            toggleDeleteBtn.classList.remove('delete-mode-active');
+            // Alterna o modo de edição
+            this.classList.toggle('edit-mode-active');
+            categoriesTable.classList.toggle('edit-mode-on');
+        });
+
+        toggleDeleteBtn.addEventListener('click', function() {
+            // Desativa o modo de edição se estiver ativo
+            categoriesTable.classList.remove('edit-mode-on');
+            toggleEditBtn.classList.remove('edit-mode-active');
+            // Alterna o modo de exclusão
+            this.classList.toggle('delete-mode-active');
+            categoriesTable.classList.toggle('delete-mode-on');
+        });
+
+        // --- Lógica Central para o Clique no Nome da Categoria ---
+        categoriesTable.addEventListener('click', function(event) {
+            // Verifica se o elemento clicado é um link de categoria dentro da tabela
+            if (event.target.matches('.category-name-link')) {
+                // Previne a ação padrão do link (navegar para o href)
+                event.preventDefault();
+
+                const link = event.target;
+
+                // Se a tabela estiver em MODO DE EXCLUSÃO...
+                if (categoriesTable.classList.contains('delete-mode-on')) {
+                    const deleteUrl = link.getAttribute('data-delete-url');
+                    const confirmed = confirm('Tem certeza que deseja excluir esta categoria? A ação não pode ser desfeita.');
+
+                    if (confirmed) {
+                        // Chama a função que cria e submete o formulário seguro
+                        submitDeleteForm(deleteUrl);
+                    }
+                }
+                // Se a tabela estiver em MODO DE EDIÇÃO...
+                else if (categoriesTable.classList.contains('edit-mode-on')) {
+                    // ...permite a navegação para o href do link (página de edição)
+                    window.location.href = link.href;
+                }
+                // Se nenhum modo estiver ativo, nada acontece.
+            }
+        });
+
+        function submitDeleteForm(url) {
+            const form = document.createElement('form');
+            form.method = 'post';
+            form.action = url;
+
+            const hiddenField = document.createElement('input');
+            hiddenField.type = 'hidden';
+            hiddenField.name = '_method';
+            hiddenField.value = 'delete';
+
+            form.appendChild(hiddenField);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+    </script>
 </body>
 
 </html>

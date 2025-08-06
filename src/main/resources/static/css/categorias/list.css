@@ -43,13 +43,13 @@
 /* ======================= ESTILOS DA TABELA ======================= */
 
 /* O contêiner que terá a barra de rolagem */
-.scroll-table {
-    max-height: 400px; /* Altura da tabela, ajuste se necessário */
+/* .scroll-table {
+    max-height: 400px; 
     overflow-y: auto;
     position: relative;
     border: 1px solid #ddd;
     border-radius: 8px;
-}
+} */
 
 .styled-table {
     border-collapse: collapse;
@@ -79,13 +79,13 @@
 /* --- LARGURAS ESPECÍFICAS PARA CADA COLUNA --- */
 .styled-table th:nth-child(1),
 .styled-table td:nth-child(1) {
-    width: 25%;
+    width: 15%;
     text-align: left;
     padding-left: 20px;
 }
 .styled-table th:nth-child(2),
 .styled-table td:nth-child(2) {
-    width: 25%;
+    width: 15%;
 }
 .styled-table th:nth-child(3),
 .styled-table td:nth-child(3) {
@@ -93,10 +93,6 @@
 }
 .styled-table th:nth-child(4),
 .styled-table td:nth-child(4) {
-    width: 15%;
-}
-.styled-table th:nth-child(5),
-.styled-table td:nth-child(5) {
     width: 15%;
 }
 
@@ -114,65 +110,49 @@
 }
 
 .styled-table tbody tr.active-row {
+    font-weight:normal;
+    color: black;
+}
+
+
+/* ================================== */
+/* ESTADO PADRÃO (A CORREÇÃO ESTÁ AQUI) */
+/* ================================== */
+/* Por padrão, o link fica escondido */
+.category-name-link {
+    display: none;
+}
+/* E o texto normal fica visível */
+.category-name-text {
+    display: inline;
+    cursor: pointer;
+}
+
+/* Estilos dos Botões de Modo */
+.mode-btn { transition: background-color 0.3s ease, box-shadow 0.3s ease; }
+#toggleEditModeBtn { background-color: #5A8A72; }
+#toggleDeleteModeBtn { background-color: #C85E5E; }
+#toggleEditModeBtn.edit-mode-active { background-color: #3E5B49; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); }
+#toggleDeleteModeBtn.delete-mode-active { background-color: #A33B3B; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); }
+
+/* Link em modo de EDIÇÃO */
+.edit-mode-on .category-name-text { display: none; }
+.edit-mode-on .category-name-link {
+    display: inline;
+    text-decoration: underline;
+    color: #0d6efd; /* Azul para edição */
+    cursor: pointer;
+}
+
+/* Link em modo de EXCLUSÃO */
+.delete-mode-on .category-name-text { display: none; }
+.delete-mode-on .category-name-link {
+    display: inline;
+    color: #dc3545; /* Vermelho para exclusão */
     font-weight: bold;
-    color: #009879;
+    text-decoration: none;
+    cursor: pointer;
 }
-
-/* ======================= AJUSTE COM CSS GRID (TENTATIVA DEFINITIVA) ======================= */
-
-/*
-  Esta regra se aplica a QUALQUER botão (.btn) que esteja dentro
-  de uma célula (td) da sua tabela estilizada.
-*/
-.styled-table td .btn {
-    /* Mantém o botão quadrado */
-    width: 32px;
-    height: 32px;
-    padding: 0;
-    border-radius: 6px; /* Borda um pouco mais suave */
-    
-    /* --- A GRANDE MUDANÇA ---
-      Trocamos Flexbox por Grid. A propriedade 'place-items' é um
-      atalho poderoso para centralizar na horizontal e vertical.
-    */
-    display: grid;
-    place-items: center;
-}
-
-/*
-  Vamos garantir que o próprio ícone não tenha nenhuma propriedade
-  que o atrapalhe.
-*/
-/* ======================= ABORDAGEM FINAL E AGRESSIVA ======================= */
-
-/* Resetamos a célula para ser apenas um contêiner simples */
-.styled-table td:nth-child(5) {
-    padding: 0 !important; /* Removemos o padding da célula para o form controlar */
-}
-
-/* O formulário agora é o responsável por TUDO */
-.styled-table td:nth-child(5) form {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 100% !important; /* Ocupa toda a largura */
-    height: 100% !important; /* Ocupa toda a altura disponível da linha */
-    padding: 12px 15px !important; /* Adicionamos o padding que estava na célula */
-}
-
-/* Mantemos o botão como estava, pois já está funcionando */
-.styled-table td .btn {
-    width: 32px;
-    height: 32px;
-    padding: 0;
-    border-radius: 6px;
-    display: grid;
-    place-items: center;
-}
-
-.styled-table td .btn i {
-    font-size: 16px;
-    margin: 0;
-    padding: 0;
-    line-height: 1;
+.delete-mode-on .category-name-link:hover {
+    text-decoration: underline;
 }
