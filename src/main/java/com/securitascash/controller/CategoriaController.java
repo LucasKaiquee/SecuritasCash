@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,6 +20,8 @@ import com.securitascash.dto.categoria.CategoriaForm;
 import com.securitascash.enums.Natureza;
 import com.securitascash.model.Categoria;
 import com.securitascash.service.categoria.CategoriaService;
+
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/categorias")
@@ -57,7 +60,12 @@ public class CategoriaController {
     }
 
     @PostMapping
-    public ModelAndView create(@ModelAttribute CategoriaForm categoriaForm, ModelAndView mav) {
+    public ModelAndView create(@Valid @ModelAttribute CategoriaForm categoriaForm, BindingResult result, ModelAndView mav) {
+        if (result.hasErrors()) {
+            mav.setViewName("categorias/form");
+            mav.addObject("naturezas", Natureza.values());
+            return mav;
+        }
         service.criarCategoria(categoriaForm);
         mav.setViewName("redirect:/categorias");
         return mav;

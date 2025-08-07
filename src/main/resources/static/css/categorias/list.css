@@ -130,18 +130,23 @@
 
 /* Estilos dos Botões de Modo */
 .mode-btn { transition: background-color 0.3s ease, box-shadow 0.3s ease; }
-#toggleEditModeBtn { background-color: #5A8A72; }
+#toggleEditModeBtn { background-color: #DB9F21; }
 #toggleDeleteModeBtn { background-color: #C85E5E; }
-#toggleEditModeBtn.edit-mode-active { background-color: #3E5B49; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); }
+#toggleEditModeBtn.edit-mode-active { background-color: #9C6C0B; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); }
 #toggleDeleteModeBtn.delete-mode-active { background-color: #A33B3B; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); }
 
 /* Link em modo de EDIÇÃO */
 .edit-mode-on .category-name-text { display: none; }
 .edit-mode-on .category-name-link {
     display: inline;
-    text-decoration: underline;
-    color: #0d6efd; /* Azul para edição */
+    text-decoration:underline;
+    /* font-weight: bold; */
+    color: #DB9F21; /* Azul para edição */
     cursor: pointer;
+}
+.edit-mode-on .category-name-link:hover {
+    font-weight: bold;
+    
 }
 
 /* Link em modo de EXCLUSÃO */
@@ -149,10 +154,9 @@
 .delete-mode-on .category-name-link {
     display: inline;
     color: #dc3545; /* Vermelho para exclusão */
-    font-weight: bold;
-    text-decoration: none;
+    text-decoration: underline;
     cursor: pointer;
 }
 .delete-mode-on .category-name-link:hover {
-    text-decoration: underline;
+    font-weight: bold;
 }
