@@ -1,6 +1,7 @@
 package com.securitascash.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.securitascash.dto.categoria.CategoriaForm;
@@ -26,12 +28,25 @@ public class CategoriaController {
     CategoriaService service;
 
     @GetMapping
-    public ModelAndView list (ModelAndView mav, @PageableDefault(page = 0, size = 8, sort = "name") Pageable pageable) {
+    public ModelAndView list (
+        ModelAndView mav, 
+        @PageableDefault(page = 0, size = 7, sort = "name") Pageable pageable,
+        @RequestParam(required = false) Natureza natureza,
+        @RequestParam(required = false) Boolean isActive
+        ) {
+
+        Page<Categoria> categorias = service.listarComFiltro(natureza, isActive, pageable);
+
         mav.setViewName("categorias/list");
-        mav.addObject("categorias", service.listar(pageable));
+        mav.addObject("categorias", categorias);
+
         mav.addObject("naturezas", Natureza.values());
+        mav.addObject("naturezaSelecionada", natureza);
+        mav.addObject("ativoSelecionado", isActive);
+        
         return mav;
     }
+
 
     @GetMapping("/criar")
     public ModelAndView form(ModelAndView mav) {

@@ -72,6 +72,13 @@ public class CategoriaService {
         return categoriaRepository.findAll(pageable);
     }
 
+    public Page<Categoria> listarComFiltro(Natureza natureza, Boolean ativo, Pageable pageable) {
+        if (natureza == null && ativo == null) {
+            return categoriaRepository.findAll(pageable);
+        }
+        return categoriaRepository.findByFilters(natureza, ativo, pageable);
+    }
+
     public void excluir(Long id) {
         categoriaRepository.deleteById(id);
     }

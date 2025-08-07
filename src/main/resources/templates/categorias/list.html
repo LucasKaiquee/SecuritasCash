@@ -21,28 +21,36 @@
                 <h5 class="card-title mb-3">Filtrar por:</h5>
                 <form th:action="@{/categorias}" method="get" class="filter-form">
                     <div class="row align-items-end">
-                        <div class="col-lg-3 col-md-6 mb-3">
-                            <label for="Natureza" class="form-label">Natureza</label>
-                            <select  class="form-select">
-                                <option th:value="Todos" th:text="Todos"></option>
-                                <option th:each="natureza : ${naturezas}" th:value="${natureza}" th:text="${natureza.displayValue}"></option>
-                            </select>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 mb-3">
-                            <label for="filtroOrdem" class="form-label">Ordem</label>
-                            <select id="filtroOrdem" name="ativo" class="form-select">
-                                <option value="x">Crescente</option>
-                                <option value="y">Decrescente</option>
-                            </select>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 mb-3">
-                            <label for="filtroAtivo" class="form-label">Ativo</label>
-                            <select id="filtroAtivo" name="ativo" class="form-select">
+                        <div class="col-12 col-md-6 col-lg-3 mb-3">
+                            <label for="natureza" class="form-label">Natureza</label>
+                            <select id="natureza" name="natureza" class="form-select">
                                 <option value="">Todos</option>
-                                <option value="true">Sim</option>
-                                <option value="false">Não</option>
+                                <option 
+                                    th:each="n : ${naturezas}" 
+                                    th:value="${n}" 
+                                    th:text="${n.displayValue}"
+                                    th:selected="${ n == naturezaSelecionada}"
+                                    ></option>
+                            </select>
+                        </div>
+
+                        <div class="col-12 col-md-6 col-lg-3 mb-3">
+                            <label for="filtroAtivo" class="form-label">Ativo</label>
+                            <select id="filtroAtivo" th:name="isActive" class="form-select">
+                                <option value="" th:selected="${ativoSelecionado == null}">Todos</option>
+                                <option value="true" th:selected="${ativoSelecionado != null and ativoSelecionado == true}">Sim</option>
+                                <option value="false" th:selected="${ativoSelecionado != null and ativoSelecionado == false}">Não</option>
+                            </select>
+                        </div>
+
+                        <div class="col-12 col-md-6 col-lg-3 mb-3">
+                            <label for="filtroOrdem" class="form-label">Ordem</label>
+                            <select id="filtroOrdem" name="sort" class="form-select">
+                                <option value="">Nenhuma</option>
+                                <option value="name,asc" th:selected="${param.sort != null and param.sort[0] == 'name,asc'}">Nome Crescente (A-Z)</option>
+                                <option value="name,desc" th:selected="${param.sort != null and param.sort[0] == 'name,desc'}">Nome Decrescente (Z-A)</option>
+                                <option value="ordem,asc" th:selected="${param.sort != null and param.sort[0] == 'ordem,asc'}">Ordem Crescente</option>
+                                <option value="ordem,desc" th:selected="${param.sort != null and param.sort[0] == 'ordem,desc'}">Ordem Decrescente</option>
                             </select>
                         </div>
 
@@ -60,6 +68,15 @@
         </div>
         <div th:if="${mensagem}" class="alert alert-success" role="alert">
             <p th:text="${mensagem}"></p>
+        </div>
+
+        <div class="text-muted mb-2" th:if="${!categorias.empty}">
+            Mostrando registros de
+            <strong th:text="${(categorias.number * categorias.size) + 1}">1</strong>
+            a
+            <strong th:text="${(categorias.number * categorias.size) + categorias.numberOfElements}">10</strong>
+            de um total de
+            <strong th:text="${categorias.totalElements}">57</strong>.
         </div>
 
         <div class="scroll-table">
@@ -82,7 +99,7 @@
                             th:text="${categoria.name}">
                             </a>
                         </td>
-                        <td th:text="${categoria.natureza.displayValue}">Investimento</td>
+                        <td th:text="${categoria.natureza.displayValue}">Todos</td>
                         <td th:text="${categoria.ordem}">1</td>
                         <td th:text="${categoria.isActive ? 'Sim' : 'Não'}">Sim</td>
                     </tr>
@@ -90,13 +107,17 @@
             </table>
         </div>
 
-        <div th:if="${categorias.totalPages > 1}" class="d-flex justify-content-center mt-3">
+        <div class="d-flex justify-content-center mt-3">
             <nav aria-label="Navegação da página">
                 <ul class="pagination">
 
                     <li class="page-item" th:classappend="${categorias.first} ? 'disabled'">
                         <a class="page-link"
-                        th:href="@{/categorias(page=${categorias.number - 1}, size=${categorias.size}, sort=${param.sort ?: ''})}"
+                        th:href="@{/categorias(page=${categorias.number - 1},
+                                                size=${categorias.size},
+                                                sort=${param.sort ?: ''},
+                                                natureza=${param.natureza},
+                                                ativo=${param.ativo})}"
                         aria-label="Anterior">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
@@ -104,18 +125,21 @@
 
                     <li class="page-item disabled">
                         <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
-                            Página <span th:text="${categorias.number + 1}"></span> de <span th:text="${categorias.totalPages}"></span>
+                            Página <span th:text="${categorias.number + 1}"></span> de <span th:text="${categorias.totalPages} == 0 ? '1' : ${categorias.totalPages}"></span>
                         </a>
                     </li>
 
                     <li class="page-item" th:classappend="${categorias.last} ? 'disabled'">
                         <a class="page-link"
-                        th:href="@{/categorias(page=${categorias.number + 1}, size=${categorias.size}, sort=${param.sort ?: ''})}"
+                        th:href="@{/categorias(page=${categorias.number + 1},
+                                                size=${categorias.size},
+                                                sort=${param.sort ?: ''},
+                                                natureza=${param.natureza},
+                                                ativo=${param.ativo})}"
                         aria-label="Próximo">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
-
                 </ul>
             </nav>
         </div>
