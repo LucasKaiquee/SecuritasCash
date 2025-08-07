@@ -1,8 +1,9 @@
 package com.securitascash.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.securitascash.dto.comentario.ComentarioForm;
 import com.securitascash.dto.transacao.TransacaoForm;
 import com.securitascash.dto.usuario.UsuarioSessao;
+import com.securitascash.enums.Movimento;
 import com.securitascash.model.Transacao;
 import com.securitascash.model.conta.Conta;
 import com.securitascash.service.categoria.CategoriaService;
@@ -49,7 +51,14 @@ public class TransacaoController {
 
     // Transações
     @GetMapping
-    public ModelAndView listarPorConta(@PathVariable Long id, HttpSession session, ModelAndView mav) throws Exception {
+    public ModelAndView listarPorConta(
+        @PathVariable Long id, 
+        HttpSession session, 
+        ModelAndView mav,
+        @PageableDefault(page = 0, size = 7) Pageable pageable,
+        @RequestParam(required = false) Movimento movimento,
+        @RequestParam(required = false) String data
+        ) throws Exception {
 
         UsuarioSessao usuarioSessao = Utils.getUsuarioSessao(session);
         Conta conta = contaService.buscarPorId(id);
@@ -58,10 +67,10 @@ public class TransacaoController {
             throw new ResponseStatusException( HttpStatus.FORBIDDEN);
         }
 
-        List<Transacao> transacoes = transacaoService.listarPorContaId(id);
+        Page<Transacao> transacoes = transacaoService.buscarFiltrado(id,movimento, pageable);
         mav.setViewName("transacoes/list");
         
-        mav.addObject("transacoes", transacoes);
+        mav.addObject("pagina", transacoes);
         mav.addObject("conta", conta);
         return mav;
     }

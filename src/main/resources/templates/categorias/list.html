@@ -70,13 +70,13 @@
             <p th:text="${mensagem}"></p>
         </div>
 
-        <div class="text-muted mb-2" th:if="${!categorias.empty}">
+        <div class="text-muted mb-2" th:if="${!pagina.empty}">
             Mostrando registros de
-            <strong th:text="${(categorias.number * categorias.size) + 1}">1</strong>
+            <strong th:text="${(pagina.number * pagina.size) + 1}">1</strong>
             a
-            <strong th:text="${(categorias.number * categorias.size) + categorias.numberOfElements}">10</strong>
+            <strong th:text="${(pagina.number * pagina.size) + pagina.numberOfElements}">10</strong>
             de um total de
-            <strong th:text="${categorias.totalElements}">57</strong>.
+            <strong th:text="${pagina.totalElements}">57</strong>.
         </div>
 
         <div class="scroll-table">
@@ -90,7 +90,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="categoria : ${categorias.content}" class="active-row">
+                    <tr th:each="categoria : ${pagina.content}" class="active-row">
                         <td>
                             <span class="category-name-text" th:text="${categoria.name}">Nome</span>
                             <a class="category-name-link"
@@ -111,10 +111,10 @@
             <nav aria-label="Navegação da página">
                 <ul class="pagination">
 
-                    <li class="page-item" th:classappend="${categorias.first} ? 'disabled'">
+                    <li class="page-item" th:classappend="${pagina.first} ? 'disabled'">
                         <a class="page-link"
-                        th:href="@{/categorias(page=${categorias.number - 1},
-                                                size=${categorias.size},
+                        th:href="@{/categorias(page=${pagina.number - 1},
+                                                size=${pagina.size},
                                                 sort=${param.sort ?: ''},
                                                 natureza=${param.natureza},
                                                 ativo=${param.ativo})}"
@@ -125,14 +125,14 @@
 
                     <li class="page-item disabled">
                         <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
-                            Página <span th:text="${categorias.number + 1}"></span> de <span th:text="${categorias.totalPages} == 0 ? '1' : ${categorias.totalPages}"></span>
+                            Página <span th:text="${pagina.number + 1}"></span> de <span th:text="${pagina.totalPages} == 0 ? '1' : ${pagina.totalPages}"></span>
                         </a>
                     </li>
 
-                    <li class="page-item" th:classappend="${categorias.last} ? 'disabled'">
+                    <li class="page-item" th:classappend="${pagina.last} ? 'disabled'">
                         <a class="page-link"
-                        th:href="@{/categorias(page=${categorias.number + 1},
-                                                size=${categorias.size},
+                        th:href="@{/categorias(page=${pagina.number + 1},
+                                                size=${pagina.size},
                                                 sort=${param.sort ?: ''},
                                                 natureza=${param.natureza},
                                                 ativo=${param.ativo})}"

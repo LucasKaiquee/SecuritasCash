@@ -41,7 +41,7 @@ public class CategoriaController {
         Page<Categoria> categorias = service.listarComFiltro(natureza, isActive, pageable);
 
         mav.setViewName("categorias/list");
-        mav.addObject("categorias", categorias);
+        mav.addObject("pagina", categorias);
 
         mav.addObject("naturezas", Natureza.values());
         mav.addObject("naturezaSelecionada", natureza);

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.securitascash.dto.comentario.ComentarioForm;
@@ -90,10 +92,13 @@ public class TransacaoService {
 
 
 
-    public List<Transacao> listarPorContaId(Long contaID){
+    public Page<Transacao> listarPorContaId(Long contaID, Pageable pageable){
         Conta conta = contaService.buscarPorId(contaID);
-        return conta.getTransacoes();
-
+        return transacaoRepository.findAllByConta(conta, pageable);
+    }
+    public Page<Transacao> buscarFiltrado(Long contaID, Movimento movimento, Pageable pageable) {
+        Conta conta = contaService.buscarPorId(contaID);
+        return transacaoRepository.findByFilters(conta, movimento, pageable);
     }
 
     public Transacao buscarPorId(Long id){

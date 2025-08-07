@@ -70,9 +70,8 @@
     position: sticky;
     top: 0;
     z-index: 1;
-    background-color: #009879;
+    background-color: #009879; /* Cor do cabecalho da tabela */
     color: #ffffff;
-    /* Remove a borda superior do navegador ao grudar */
     border-top: none; 
 }
 

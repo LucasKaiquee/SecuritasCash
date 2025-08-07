@@ -33,11 +33,6 @@ public class CategoriaService {
 
     public Categoria editarCategoria(Long id, Categoria dto){
         Categoria categoria = this.buscar(id);
-
-        System.out.println("CATEGORIA DO REPOSITORIO: " + categoria);
-
-        System.out.println("CATEGORIA EDITADA: " + dto);
-
         categoria.setName(dto.getName());
         categoria.setIsActive(dto.getIsActive());
         categoria.setNatureza(dto.getNatureza());
