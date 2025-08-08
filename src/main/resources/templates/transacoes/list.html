@@ -70,9 +70,9 @@
                 <tr th:each="transacao : ${pagina}" class="text-center">
                     <td th:text="${#temporals.format(transacao.data, 'dd/MM/yyyy')}">01/01/2024</td>
                     <td th:text="${transacao.categoria.name}">categoria</td>
-                    <td th:text="${transacao.movimento}">movimento</td>
+                    <td th:text="${transacao.movimento.displayValue }">movimento</td>
                     <td th:text="${transacao.descricao}">Salário</td>
-                    <td th:text="${#numbers.formatDecimal(transacao.valor, 1, 'COMMA', 2, 'POINT')}">1000.00</td>
+                    <td th:text="'R$' + ' ' + ${#numbers.formatDecimal(transacao.valor, 0, 'POINT', 2, 'COMMA')}">1000.00</td>
                     <td>
                         <a th:href="@{'/contas/' + ${conta.id} + '/transacoes/' + ${transacao.id} + '/detalhes'}"
                         class="btn btn-outline-dark btn-sm">

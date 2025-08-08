@@ -13,10 +13,10 @@
 
         <div class="mb-3" id="transacao-visualizacao">
             <strong>Descrição:</strong> <span th:text="${transacao.descricao}">Compra</span><br>
-            <strong>Valor:</strong> <span th:text="${transacao.valor}">100.00</span><br>
-            <strong>Data:</strong> <span th:text="${transacao.data}">2025-05-21</span><br>
+            <strong>Valor:</strong> <span th:text="'R$' + ' ' + ${#numbers.formatDecimal(transacao.valor, 0, 'POINT', 2, 'COMMA')}">100.00</span><br>
+            <strong>Data:</strong> <span th:text="${#temporals.format(transacao.data, 'dd/MM/yyyy')}">2025-05-21</span><br>
             <strong>Categoria:</strong> <span th:text="${transacao.categoria.name}">Categoria</span><br>
-            <strong>Movimento:</strong> <span th:text="${transacao.movimento}">ENTRADA/SAÍDA</span><br>
+            <strong>Movimento:</strong> <span th:text="${transacao.movimento.displayValue}">ENTRADA/SAÍDA</span><br>
 
             <button type="button" class="btn btn-sm btn-outline-dark mt-2" onclick="mostrarFormularioTransacao()">
                 <i class="bi bi-pencil"></i> Editar 
