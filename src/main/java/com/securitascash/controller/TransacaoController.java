@@ -22,6 +22,7 @@ import com.securitascash.dto.comentario.ComentarioForm;
 import com.securitascash.dto.transacao.TransacaoForm;
 import com.securitascash.dto.usuario.UsuarioSessao;
 import com.securitascash.enums.Movimento;
+import com.securitascash.enums.Natureza;
 import com.securitascash.model.Transacao;
 import com.securitascash.model.conta.Conta;
 import com.securitascash.service.categoria.CategoriaService;
@@ -72,6 +73,8 @@ public class TransacaoController {
         
         mav.addObject("pagina", transacoes);
         mav.addObject("conta", conta);
+
+
         return mav;
     }
 
@@ -83,6 +86,7 @@ public class TransacaoController {
         mav.addObject("transacaoForm", new TransacaoForm()); 
         mav.addObject("contaId", id);
         mav.addObject("categorias", categoriaService.listarCategorias());
+        mav.addObject("naturezas", Natureza.values());
          
         return mav;
     }
@@ -99,6 +103,7 @@ public class TransacaoController {
             mav.setViewName("transacoes/form");
             mav.addObject("contaId", contaId);
             mav.addObject("categorias", categoriaService.listarCategorias());
+            mav.addObject("naturezas", Natureza.values());
             return mav;
         }
 
