@@ -1,12 +1,14 @@
 package com.securitascash.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -23,8 +25,8 @@ public class CorrentistaController {
     private CorrentistaService correntistaService;
     
     @GetMapping
-    public ModelAndView listarCorrentistas(ModelAndView mav) {
-        mav.addObject("correntistas", correntistaService.listarCorrentistas());
+    public ModelAndView listarCorrentistas(ModelAndView mav, Pageable pageable, @RequestParam(required = false) Boolean blocked) {
+        mav.addObject("pagina", correntistaService.listarFiltrado(blocked, pageable));
         mav.setViewName("correntistas/list");
         return mav;
     }

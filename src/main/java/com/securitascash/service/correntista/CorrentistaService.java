@@ -1,8 +1,8 @@
 package com.securitascash.service.correntista;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.securitascash.model.usuario.inherit.Correntista;
@@ -18,12 +18,20 @@ public class CorrentistaService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public List<Correntista> listarCorrentistas() {
-        return correntistaRepository.findAll();
+    public Page<Correntista> listarCorrentistas(Pageable pageable) {
+        return correntistaRepository.findAll(pageable);
     }
     public Correntista criarCorrentista(Correntista correntista) {
         System.out.println("CorrentistaService.criarCorrentista() - " + correntista);
         return usuarioRepository.save(correntista);
+    }
+
+    public Page<Correntista> listarFiltrado(Boolean bloqueado, Pageable pageable) {
+        if (bloqueado == null) {
+            return correntistaRepository.findAll(pageable);
+        } else {
+            return correntistaRepository.findByBloqueado(bloqueado, pageable);
+        }
     }
 }
 

@@ -11,6 +11,59 @@
     <div th:replace="~{/fragments/header}" />
     <div class="container mt-5">
         <h2 class="mb-4">Correntistas Cadastrados</h2>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Filtrar por:</h5>
+                <form th:action="@{/correntistas}" method="get" class="filter-form">
+                    <div class="row align-items-end">
+
+                        <div class="col-12 col-md-6 col-lg-3 mb-3">
+                            <label for="filtroAtivo" class="form-label"> Status </label>
+                            <select id="filtroAtivo" name="blocked" class="form-select">
+                                
+                                <option value="" th:selected="${param.blocked == null or param.blocked[0] == ''}">Todos</option>
+
+                                <option value="true" th:selected="${param.blocked != null and param.blocked[0] == 'true'}">Bloqueado</option>
+                                
+                                <option value="false" th:selected="${param.blocked != null and param.blocked[0] == 'false'}">Ativo</option>
+                            
+                            </select>
+                        </div>
+
+                        <!-- <div class="col-12 col-md-6 col-lg-3 mb-3">
+                            <label for="filtroOrdem" class="form-label">Ordem</label>
+                            <select id="filtroOrdem" name="sort" class="form-select">
+                                <option value="">Nenhuma</option>
+                                <option value="name,asc" th:selected="${param.sort != null and param.sort[0] == 'name,asc'}">Nome Crescente (A-Z)</option>
+                                <option value="name,desc" th:selected="${param.sort != null and param.sort[0] == 'name,desc'}">Nome Decrescente (Z-A)</option>
+                                <option value="ordem,asc" th:selected="${param.sort != null and param.sort[0] == 'ordem,asc'}">Ordem Crescente</option>
+                                <option value="ordem,desc" th:selected="${param.sort != null and param.sort[0] == 'ordem,desc'}">Ordem Decrescente</option>
+                            </select>
+                        </div> -->
+
+                        <div class="col-lg-3 col-md-6 mb-3 d-flex align-items-center">
+                            <button type="submit" class="btn btn-primary me-2"> 
+                                <i class="bi bi-funnel"></i> Filtrar
+                            </button>
+                            <a th:href="@{/correntistas}" class="btn btn-secondary">
+                                <i class="bi bi-arrow-clockwise"></i> Limpar
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="text-muted mb-2" th:if="${!pagina.empty}">
+            Mostrando registros de
+            <strong th:text="${(pagina.number * pagina.size) + 1}">1</strong>
+            a
+            <strong th:text="${(pagina.number * pagina.size) + pagina.numberOfElements}">10</strong>
+            de um total de
+            <strong th:text="${pagina.totalElements}">57</strong>.
+        </div>
+
         <div th:if="${mensagem}" class="alert alert-success" role="alert">
             <p th:text="${mensagem}"></p>
         </div>
@@ -24,7 +77,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="correntista : ${correntistas}" class="text-center">
+                <tr th:each="correntista : ${pagina}" class="text-center">
                     <td th:text="${correntista.id}">1</td>
                     <td th:text="${correntista.nome}">Nome</td>
                     <td th:text="${correntista.email}">email@exemplo.com</td>
@@ -37,7 +90,40 @@
                 <i class="bi bi-plus-circle"></i> Adicionar Correntista
             </a>
         </div>
+        <div class="d-flex justify-content-center mt-3">
+            <nav aria-label="Navegação da página">
+                <ul class="pagination">
 
+                    <li class="page-item" th:classappend="${pagina.first} ? 'disabled'">
+                        <a class="page-link"
+                        th:href="@{/correntistas(page=${pagina.number - 1},
+                                                size=${pagina.size},
+                                                blocked=${param.blocked})}"
+                        aria-label="Anterior">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                            Página <span th:text="${pagina.number + 1}"></span> de <span th:text="${pagina.totalPages} == 0 ? '1' : ${pagina.totalPages}"></span>
+                        </a>
+                    </li>
+
+                    <li class="page-item" th:classappend="${pagina.last} ? 'disabled'">
+                        <a class="page-link"
+                        th:href="@{/correntistas(page=${pagina.number + 1},
+                                                size=${pagina.size},
+                                                sort=${param.sort ?: ''},
+                                                natureza=${param.natureza},
+                                                ativo=${param.ativo})}"
+                        aria-label="Próximo">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
         
     </div>
 </body>
