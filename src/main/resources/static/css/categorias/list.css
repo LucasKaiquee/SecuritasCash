@@ -1,5 +1,9 @@
 /* --- CSS COMPLETO (FILTROS + TABELA) --- */
 
+body {
+    background-color: #f8fdf9;
+}
+
 /* ======================= ESTILOS DOS FILTROS ======================= */
 .card.mb-4 {
     border-radius: 8px;
@@ -41,21 +45,20 @@
 
 
 /* ======================= ESTILOS DA TABELA ======================= */
+.scroll-table {
+    border: 1px solid #e9ecef;               
+    border-radius: 12px;                     
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07); 
+}
 
-/* O contêiner que terá a barra de rolagem */
-/* .scroll-table {
-    max-height: 400px; 
-    overflow-y: auto;
-    position: relative;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-} */
 
 .styled-table {
     border-collapse: collapse;
     font-size: 0.9em;
     font-family: sans-serif;
     width: 100%;
+    border-radius: 11px; /* Um raio um pouco menor que o do contêiner */
+    overflow: hidden;    
 }
 
 /* Células da tabela (padrão) */
@@ -73,6 +76,10 @@
     background-color: #009879; /* Cor do cabecalho da tabela */
     color: #ffffff;
     border-top: none; 
+}
+
+.styled-table tr {
+    background-color: white;
 }
 
 /* --- LARGURAS ESPECÍFICAS PARA CADA COLUNA --- */
@@ -96,17 +103,17 @@
 }
 
 /* Linhas do corpo da tabela */
-.styled-table tbody tr {
+/* .styled-table tbody tr {
     border-bottom: 1px solid #dddddd;
-}
+} */
 
 .styled-table tbody tr:last-of-type {
     border-bottom: none; /* Remove a última borda para não duplicar com a do container */
 }
-
+/* 
 .styled-table tbody tr:nth-of-type(even) {
     background-color: #f3f3f3;
-}
+} */
 
 .styled-table tbody tr.active-row {
     font-weight:normal;
@@ -114,48 +121,7 @@
 }
 
 
-/* ================================== */
-/* ESTADO PADRÃO (A CORREÇÃO ESTÁ AQUI) */
-/* ================================== */
-/* Por padrão, o link fica escondido */
-.category-name-link {
-    display: none;
-}
-/* E o texto normal fica visível */
-.category-name-text {
-    display: inline;
-
-}
-
-/* Estilos dos Botões de Modo */
-.mode-btn { transition: background-color 0.3s ease, box-shadow 0.3s ease; }
-#toggleEditModeBtn { background-color: #DB9F21; }
-#toggleDeleteModeBtn { background-color: #C85E5E; }
-#toggleEditModeBtn.edit-mode-active { background-color: #9C6C0B; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); }
-#toggleDeleteModeBtn.delete-mode-active { background-color: #A33B3B; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); }
-
-/* Link em modo de EDIÇÃO */
-.edit-mode-on .category-name-text { display: none; }
-.edit-mode-on .category-name-link {
-    display: inline;
-    text-decoration:underline;
-    /* font-weight: bold; */
-    color: #DB9F21; /* Azul para edição */
+.clickable-row:hover {
     cursor: pointer;
-}
-.edit-mode-on .category-name-link:hover {
-    font-weight: bold;
-    
-}
-
-/* Link em modo de EXCLUSÃO */
-.delete-mode-on .category-name-text { display: none; }
-.delete-mode-on .category-name-link {
-    display: inline;
-    color: #dc3545; /* Vermelho para exclusão */
-    text-decoration: underline;
-    cursor: pointer;
-}
-.delete-mode-on .category-name-link:hover {
-    font-weight: bold;
+    background-color: #f0f0f0; /* Um leve destaque ao passar o mouse */
 }
