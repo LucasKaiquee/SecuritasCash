@@ -1,18 +1,5 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <meta charset="UTF-8">
-    <title>Lista de Categorias</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="/css/categorias/list.css">
-
-</head>
-
-<body>
-    <div th:replace="~{/fragments/header}" />
-
+<section layout:decorate="~{layouts/layout}" layout:fragment="content">
+    
     <div class="container mt-5">
         <h2 class="mb-4">Categorias</h2>
 
@@ -90,18 +77,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="categoria : ${pagina.content}" class="active-row">
-                        <td>
-                            <span class="category-name-text" th:text="${categoria.name}">Nome</span>
-                            <a class="category-name-link"
-                            th:href="@{/categorias/editar/{id}(id=${categoria.id})}"
-                            th:attr="data-delete-url=@{/categorias/excluir/{id}(id=${categoria.id})}"
-                            th:text="${categoria.name}">
-                            </a>
-                        </td>
-                        <td th:text="${categoria.natureza.displayValue}">Todos</td>
-                        <td th:text="${categoria.ordem}">1</td>
-                        <td th:text="${categoria.isActive ? 'Sim' : 'Não'}">Sim</td>
+                    <tr th:each="categoria : ${pagina.content}" class="active-row clickable-row" th:data-href="@{/categorias/editar/{id}(id=${categoria.id})}">
+                            
+                            <td th:text="${categoria.name}"></td>
+                            <td th:text="${categoria.natureza.displayValue}">Todos</td>
+                            <td th:text="${categoria.ordem}">1</td>
+                            <td th:text="${categoria.isActive ? 'Sim' : 'Não'}">Sim</td>
                     </tr>
                 </tbody>
             </table>
@@ -145,12 +126,12 @@
         </div>
 
         <div class="d-flex justify-content-end mt-3">
-            <button type="button" id="toggleDeleteModeBtn" class="btn text-white me-2 mode-btn">
+            <!-- <button type="button" id="toggleDeleteModeBtn" class="btn text-white me-2 mode-btn">
                 <i class="bi bi-trash"></i> Excluir
             </button>
             <button type="button" id="toggleEditModeBtn" class="btn text-white me-2 mode-btn">
                 <i class="bi bi-pencil"></i> Editar
-            </button>
+            </button> -->
             <a class="btn text-white" style="background-color: #6FA285;" th:href="@{'/categorias/criar'}">
                 <i class="bi bi-plus-circle"></i> Adicionar
             </a>
@@ -159,74 +140,18 @@
     </div>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const categoriesTable = document.getElementById('categoriesTable');
-        const toggleEditBtn = document.getElementById('toggleEditModeBtn');
-        const toggleDeleteBtn = document.getElementById('toggleDeleteModeBtn');
+        // Espera o documento carregar completamente
+        document.addEventListener("DOMContentLoaded", function() {
+            // Seleciona todas as linhas que têm a classe 'clickable-row'
+            const rows = document.querySelectorAll(".clickable-row");
 
-        // --- Lógica para alternar os modos (garantindo que apenas um fique ativo) ---
-        toggleEditBtn.addEventListener('click', function() {
-            // Desativa o modo de exclusão se estiver ativo
-            categoriesTable.classList.remove('delete-mode-on');
-            toggleDeleteBtn.classList.remove('delete-mode-active');
-            // Alterna o modo de edição
-            this.classList.toggle('edit-mode-active');
-            categoriesTable.classList.toggle('edit-mode-on');
+            // Adiciona um evento de clique a cada uma dessas linhas
+            rows.forEach(row => {
+                row.addEventListener("click", () => {
+                    // Pega a URL guardada no atributo 'data-href' e navega para ela
+                    window.location.href = row.dataset.href;
+                });
+            });
         });
-
-        toggleDeleteBtn.addEventListener('click', function() {
-            // Desativa o modo de edição se estiver ativo
-            categoriesTable.classList.remove('edit-mode-on');
-            toggleEditBtn.classList.remove('edit-mode-active');
-            // Alterna o modo de exclusão
-            this.classList.toggle('delete-mode-active');
-            categoriesTable.classList.toggle('delete-mode-on');
-        });
-
-        // --- Lógica Central para o Clique no Nome da Categoria ---
-        categoriesTable.addEventListener('click', function(event) {
-            // Verifica se o elemento clicado é um link de categoria dentro da tabela
-            if (event.target.matches('.category-name-link')) {
-                // Previne a ação padrão do link (navegar para o href)
-                event.preventDefault();
-
-                const link = event.target;
-
-                // Se a tabela estiver em MODO DE EXCLUSÃO...
-                if (categoriesTable.classList.contains('delete-mode-on')) {
-                    const deleteUrl = link.getAttribute('data-delete-url');
-                    const confirmed = confirm('Tem certeza que deseja excluir esta categoria? A ação não pode ser desfeita.');
-
-                    if (confirmed) {
-                        // Chama a função que cria e submete o formulário seguro
-                        submitDeleteForm(deleteUrl);
-                    }
-                }
-                // Se a tabela estiver em MODO DE EDIÇÃO...
-                else if (categoriesTable.classList.contains('edit-mode-on')) {
-                    // ...permite a navegação para o href do link (página de edição)
-                    window.location.href = link.href;
-                }
-                // Se nenhum modo estiver ativo, nada acontece.
-            }
-        });
-
-        function submitDeleteForm(url) {
-            const form = document.createElement('form');
-            form.method = 'post';
-            form.action = url;
-
-            const hiddenField = document.createElement('input');
-            hiddenField.type = 'hidden';
-            hiddenField.name = '_method';
-            hiddenField.value = 'delete';
-
-            form.appendChild(hiddenField);
-            document.body.appendChild(form);
-            form.submit();
-        }
-    });
     </script>
-</body>
-
-</html>
+</section>

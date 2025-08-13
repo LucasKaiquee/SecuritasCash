@@ -29,14 +29,18 @@
                 <label for="email" class="form-label">E-mail</label>
                 <input type="email" th:field="*{email}" class="form-control" id="email" placeholder="Digite o e-mail">
                 <div th:if="${#fields.hasErrors('email')}" class="text-danger" th:errors="*{email}"  ></div>
-
             </div>
 
             <div class="mb-3">
                 <label for="senha" class="form-label">Senha</label>
                 <input type="password" th:field="*{senha}" class="form-control" id="senha" placeholder="Digite a senha">
                 <div th:if="${#fields.hasErrors('senha')}" class="text-danger" th:errors="*{senha}"  ></div>
+            </div>
 
+            <div class="mb-3">
+                <label for="blocked" class="form-label">Bloquado?</label>
+                <input type="checkbox" th:checked="${correntista.blocked}" class="form-check" th:field="*{blocked}"  id="blocked" />
+                <div th:if="${#fields.hasErrors('blocked')}" class="text-danger" th:errors="*{blocked}"  ></div>
             </div>
 
             <button type="submit" class="btn btn-success">Cadastrar</button>

@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <meta charset="UTF-8">
-    <title>Lista de Correntistas</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-</head>
-
-<body>
-    <div th:replace="~{/fragments/header}" />
+<section layout:decorate="~{layouts/layout}" layout:fragment="content">
     <div class="container mt-5">
         <h2 class="mb-4">Correntistas Cadastrados</h2>
 
@@ -126,6 +116,4 @@
         </div>
         
     </div>
-</body>
-
-</html>
+</section>
