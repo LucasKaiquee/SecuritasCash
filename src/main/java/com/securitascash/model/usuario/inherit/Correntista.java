@@ -22,11 +22,10 @@ import lombok.NoArgsConstructor;
 public class Correntista extends Usuario{
     
     @Column(columnDefinition = "BOOLEAN DEFAULT false")
-    private boolean isBlocked;
+    public boolean isBlocked;
 
     public Correntista(Long id, String nome, String senha, String email, List<Conta> contas) {
         super(id, nome, senha, email, contas);
-        this.isBlocked = false;
     }
 
 
