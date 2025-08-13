@@ -1,131 +1,143 @@
-<section layout:decorate="~{layouts/layout}" layout:fragment="content">
-    <div class="container mt-5">
-        <h2 class="mb-4">Nova Transação</h2>
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layouts/layout}">
 
-        <form th:action="@{/contas/{id}/transacoes}" th:object="${transacaoForm}" method="post">
+<head>
+    <title>Cadastro de Transação</title>
+</head>
 
-            <input type="hidden" name="contaId" th:value="${contaId}" />
+<body>
+    <section layout:decorate="~{layouts/layout}" layout:fragment="content">
+        <div class="container mt-5">
+            <h2 class="mb-4">Nova Transação</h2>
 
-            <div class="mb-3">
-                <label for="descricao" class="form-label">Descrição</label>
-                <input type="text" class="form-control" th:field="*{descricao}" id="descricao" />
-                <div th:if="${#fields.hasErrors('descricao')}" class="text-danger" th:errors="*{descricao}"></div>
+            <form th:action="@{/contas/{id}/transacoes}" th:object="${transacaoForm}" method="post">
 
-            </div>
+                <input type="hidden" name="contaId" th:value="${contaId}" />
 
-            <div class="mb-3">
-                <label for="movimento" class="form-label">Movimento</label>
-                <select th:field="*{movimento}" class="form-select">
-                    <option th:value="''" th:text="'Selecione um movimento'"></option>
-                    <option th:value="'Crédito'" th:text="'Crédito'"></option>
-                    <option th:value="'Debito'" th:text="'Débito'"></option>
-                </select>
-                <div th:if="${#fields.hasErrors('movimento')}" class="text-danger" th:errors="*{movimento}"></div>
-            </div>
+                <div class="mb-3">
+                    <label for="descricao" class="form-label">Descrição</label>
+                    <input type="text" class="form-control" th:field="*{descricao}" id="descricao" />
+                    <div th:if="${#fields.hasErrors('descricao')}" class="text-danger" th:errors="*{descricao}"></div>
 
-            <div class="mb-3">
-                <label for="selectNatureza" class="form-label">Natureza</label>
-                <select id="selectNatureza" th:field="*{natureza}" class="form-select">
-                    <option value="">Selecione a Natureza</option>
-                    <option th:each="n : ${naturezas}" th:value="${n}" th:text="${n.displayValue}"></option>
-                </select>
-                <div th:if="${#fields.hasErrors('natureza')}" class="text-danger" th:errors="*{natureza}"></div>
-            </div>
+                </div>
 
-            <div class="mb-3">
-                <label for="selectCategoria" class="form-label">Categoria</label>
-                <select id="selectCategoria" th:field="*{categoria}" class="form-select">
-                    <option value="">Selecione uma natureza primeiro</option>
-                </select>
-                <div th:if="${#fields.hasErrors('categoria')}" class="text-danger" th:errors="*{categoria}"></div>
-            </div>
+                <div class="mb-3">
+                    <label for="movimento" class="form-label">Movimento</label>
+                    <select th:field="*{movimento}" class="form-select">
+                        <option th:value="''" th:text="'Selecione um movimento'"></option>
+                        <option th:value="'Crédito'" th:text="'Crédito'"></option>
+                        <option th:value="'Debito'" th:text="'Débito'"></option>
+                    </select>
+                    <div th:if="${#fields.hasErrors('movimento')}" class="text-danger" th:errors="*{movimento}"></div>
+                </div>
 
-            <script th:inline="javascript">
-                /*<![CDATA[*/
+                <div class="mb-3">
+                    <label for="selectNatureza" class="form-label">Natureza</label>
+                    <select id="selectNatureza" th:field="*{natureza}" class="form-select">
+                        <option value="">Selecione a Natureza</option>
+                        <option th:each="n : ${naturezas}" th:value="${n}" th:text="${n.displayValue}"></option>
+                    </select>
+                    <div th:if="${#fields.hasErrors('natureza')}" class="text-danger" th:errors="*{natureza}"></div>
+                </div>
 
-                // O Thymeleaf irá substituir '/*[[...]]*/' por um array JSON de suas categorias
-                const todasAsCategorias = /*[[${categorias}]]*/[];
+                <div class="mb-3">
+                    <label for="selectCategoria" class="form-label">Categoria</label>
+                    <select id="selectCategoria" th:field="*{categoria}" class="form-select">
+                        <option value="">Selecione uma natureza primeiro</option>
+                    </select>
+                    <div th:if="${#fields.hasErrors('categoria')}" class="text-danger" th:errors="*{categoria}"></div>
+                </div>
 
-                /*]]>*/
-            </script>
+                <script th:inline="javascript">
+                    /*<![CDATA[*/
 
-            <div class="mb-3">
-                <label for="valor" class="form-label">Valor</label>
-                <input type="number" class="form-control" th:field="*{valor}" step="0.01" id="valor" />
-                <div th:if="${#fields.hasErrors('valor')}" class="text-danger" th:errors="*{valor}"></div>
+                    // O Thymeleaf irá substituir '/*[[...]]*/' por um array JSON de suas categorias
+                    const todasAsCategorias = /*[[${categorias}]]*/[];
 
-            </div>
+                    /*]]>*/
+                </script>
 
-            <div class="mb-3">
-                <label for="data" class="form-label">Data</label>
-                <input type="date" class="form-control" th:field="*{data}" id="data" />
-                <div th:if="${#fields.hasErrors('data')}" class="text-danger" th:errors="*{data}"></div>
+                <div class="mb-3">
+                    <label for="valor" class="form-label">Valor</label>
+                    <input type="number" class="form-control" th:field="*{valor}" step="0.01" id="valor" />
+                    <div th:if="${#fields.hasErrors('valor')}" class="text-danger" th:errors="*{valor}"></div>
 
-            </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="data" class="form-label">Data</label>
+                    <input type="date" class="form-control" th:field="*{data}" id="data" />
+                    <div th:if="${#fields.hasErrors('data')}" class="text-danger" th:errors="*{data}"></div>
+
+                </div>
 
 
-            <h4>Comentário</h4>
+                <h4>Comentário</h4>
 
-            <div class="mb-3">
-                <textarea class="form-control" th:field="*{comentario.texto}" rows="2"
-                    placeholder="Digite um comentário opcional">
+                <div class="mb-3">
+                    <textarea class="form-control" th:field="*{comentario.texto}" rows="2"
+                        placeholder="Digite um comentário opcional">
             </textarea>
-                <div th:if="${#fields.hasErrors('comentario.texto')}" class="text-danger"
-                    th:errors="*{comentario.texto}"></div>
-            </div>
+                    <div th:if="${#fields.hasErrors('comentario.texto')}" class="text-danger"
+                        th:errors="*{comentario.texto}"></div>
+                </div>
 
-            <a th:href="@{'/contas/' + ${contaId} + '/transacoes'}" class="btn btn-secondary">Cancelar</a>
-            <button type="submit" class="btn btn-success">Salvar Transação</button>
-        </form>
-    </div>
+                <a th:href="@{'/contas/' + ${contaId} + '/transacoes'}" class="btn btn-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-success">Salvar Transação</button>
+            </form>
+        </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
 
-            // Pega os elementos <select> pelos IDs que definimos
-            const selectNatureza = document.getElementById('selectNatureza');
-            const selectCategoria = document.getElementById('selectCategoria');
+                // Pega os elementos <select> pelos IDs que definimos
+                const selectNatureza = document.getElementById('selectNatureza');
+                const selectCategoria = document.getElementById('selectCategoria');
 
-            // Função que será chamada para atualizar as categorias
-            function atualizarCategorias() {
-                // Pega o valor da natureza que foi selecionada (ex: "RECEITA")
-                const naturezaSelecionada = selectNatureza.value;
+                // Função que será chamada para atualizar as categorias
+                function atualizarCategorias() {
+                    // Pega o valor da natureza que foi selecionada (ex: "RECEITA")
+                    const naturezaSelecionada = selectNatureza.value;
 
-                // 1. Limpa todas as opções atuais do select de categoria
-                selectCategoria.innerHTML = '';
+                    // 1. Limpa todas as opções atuais do select de categoria
+                    selectCategoria.innerHTML = '';
 
-                // 2. Adiciona uma opção padrão inicial
-                const opcaoPadrao = document.createElement('option');
-                opcaoPadrao.value = '';
-                opcaoPadrao.textContent = 'Selecione uma categoria';
-                selectCategoria.appendChild(opcaoPadrao);
+                    // 2. Adiciona uma opção padrão inicial
+                    const opcaoPadrao = document.createElement('option');
+                    opcaoPadrao.value = '';
+                    opcaoPadrao.textContent = 'Selecione uma categoria';
+                    selectCategoria.appendChild(opcaoPadrao);
 
-                // Se uma natureza válida foi selecionada...
-                if (naturezaSelecionada) {
-                    // 3. Filtra a lista completa de categorias (que o Thymeleaf nos deu)
-                    const categoriasFiltradas = todasAsCategorias.filter(categoria => {
-                        // Compara a natureza da categoria com a natureza selecionada
-                        return categoria.natureza === naturezaSelecionada;
-                    });
+                    // Se uma natureza válida foi selecionada...
+                    if (naturezaSelecionada) {
+                        // 3. Filtra a lista completa de categorias (que o Thymeleaf nos deu)
+                        const categoriasFiltradas = todasAsCategorias.filter(categoria => {
+                            // Compara a natureza da categoria com a natureza selecionada
+                            return categoria.natureza === naturezaSelecionada;
+                        });
 
-                    // 4. Cria e adiciona as novas opções baseadas no filtro
-                    categoriasFiltradas.forEach(categoria => {
-                        const novaOpcao = document.createElement('option');
-                        novaOpcao.value = categoria.id; // O valor será o ID da categoria
-                        novaOpcao.textContent = categoria.name; // O texto será o nome da categoria
-                        selectCategoria.appendChild(novaOpcao);
-                    });
+                        // 4. Cria e adiciona as novas opções baseadas no filtro
+                        categoriasFiltradas.forEach(categoria => {
+                            const novaOpcao = document.createElement('option');
+                            novaOpcao.value = categoria.id; // O valor será o ID da categoria
+                            novaOpcao.textContent = categoria.name; // O texto será o nome da categoria
+                            selectCategoria.appendChild(novaOpcao);
+                        });
+                    }
                 }
-            }
 
-            // Adiciona um "ouvinte" que chama a função 'atualizarCategorias'
-            // toda vez que o valor do select de natureza MUDAR.
-            selectNatureza.addEventListener('change', atualizarCategorias);
+                // Adiciona um "ouvinte" que chama a função 'atualizarCategorias'
+                // toda vez que o valor do select de natureza MUDAR.
+                selectNatureza.addEventListener('change', atualizarCategorias);
 
-            // Opcional: Chama a função uma vez no carregamento da página,
-            // caso o formulário já venha com uma natureza pré-selecionada (em um formulário de edição).
-            atualizarCategorias();
+                // Opcional: Chama a função uma vez no carregamento da página,
+                // caso o formulário já venha com uma natureza pré-selecionada (em um formulário de edição).
+                atualizarCategorias();
 
-        });
-    </script>
-</section>
+            });
+        </script>
+    </section>
+</body>
+
+</html>

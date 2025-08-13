@@ -1,146 +1,166 @@
-<section layout:decorate="~{layouts/layout}" layout:fragment="content">
-    <div class="container mt-5">
-        <h2 class="mb-4">Detalhes da Transação</h2>
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layouts/layout}">
 
-        <div class="mb-3" id="transacao-visualizacao">
-            <strong>Descrição:</strong> <span th:text="${transacao.descricao}">Compra</span><br>
-            <strong>Valor:</strong> <span th:text="'R$' + ' ' + ${#numbers.formatDecimal(transacao.valor, 0, 'POINT', 2, 'COMMA')}">100.00</span><br>
-            <strong>Data:</strong> <span th:text="${#temporals.format(transacao.data, 'dd/MM/yyyy')}">2025-05-21</span><br>
-            <strong>Categoria:</strong> <span th:text="${transacao.categoria.name}">Categoria</span><br>
-            <strong>Movimento:</strong> <span th:text="${transacao.movimento.displayValue}">ENTRADA/SAÍDA</span><br>
+<head>
+    <title>Transações</title>
+</head>
 
-            <button type="button" class="btn btn-sm btn-outline-dark mt-2" onclick="mostrarFormularioTransacao()">
-                <i class="bi bi-pencil"></i> Editar 
-            </button>
-        </div>
+<body>
+    <section layout:fragment="content">
+        <div class="container mt-5">
+            <h2 class="mb-4">Detalhes da Transação</h2>
 
-        <!-- Formulário de edição -->
-        <form th:action="@{'/contas/' + ${transacao.conta.id} + '/transacoes/' + ${transacao.id}} + '/detalhes'" method="post"
-            id="transacao-form" style="display: none;">
-            
-            <input type="hidden" name="_method" value="put" />
+            <div class="mb-3" id="transacao-visualizacao">
+                <strong>Descrição:</strong> <span th:text="${transacao.descricao}">Compra</span><br>
+                <strong>Valor:</strong> <span
+                    th:text="'R$' + ' ' + ${#numbers.formatDecimal(transacao.valor, 0, 'POINT', 2, 'COMMA')}">100.00</span><br>
+                <strong>Data:</strong> <span
+                    th:text="${#temporals.format(transacao.data, 'dd/MM/yyyy')}">2025-05-21</span><br>
+                <strong>Categoria:</strong> <span th:text="${transacao.categoria.name}">Categoria</span><br>
+                <strong>Movimento:</strong> <span th:text="${transacao.movimento.displayValue}">ENTRADA/SAÍDA</span><br>
 
-            <div class="mb-2">
-                <label for="descricao">Descrição:</label>
-                <input type="text" class="form-control" id="descricao" name="descricao" th:value="${transacao.descricao}" required>
+                <button type="button" class="btn btn-sm btn-outline-dark mt-2" onclick="mostrarFormularioTransacao()">
+                    <i class="bi bi-pencil"></i> Editar
+                </button>
             </div>
 
-            <div class="mb-2">
-                <label for="valor">Valor:</label>
-                <input type="number" step="0.01" class="form-control" id="valor" name="valor" th:value="${transacao.valor}" required>
-            </div>
+            <!-- Formulário de edição -->
+            <form th:action="@{'/contas/' + ${transacao.conta.id} + '/transacoes/' + ${transacao.id}} + '/detalhes'"
+                method="post" id="transacao-form" style="display: none;">
 
-            <div class="mb-2">
-                <label for="data">Data:</label>
-                <input type="date" class="form-control" id="data" name="data" th:value="${transacao.data}" required>
-            </div>
+                <input type="hidden" name="_method" value="put" />
 
-            <div class="mb-2">
-                <label for="categoria">Categoria:</label>
-                <select id="categoria" name="categoria.id" class="form-control" required>
-                    <option th:each="categoria : ${categorias}"
-                            th:value="${categoria.id}"
-                            th:text="${categoria.name}"
-                            th:selected="${categoria.id} == ${transacao.categoria.id}">
-                    </option>
-                </select>   
-            </div>
-
-
-            <div class="mb-3">
-                <label for="movimento">Movimento:</label>
-                <select id="movimento" name="movimento" class="form-control" required>
-                    <option th:value="'Crédito'" th:selected="${transacao.movimento == 'Crédito'}">Crédito</option>
-                    <option th:value="'Débito'" th:selected="${transacao.movimento == 'Débito'}">Débito</option>
-                </select>
-            </div>
-
-            <button type="submit" class="btn btn-success btn-sm">Salvar</button>
-            <button type="button" class="btn btn-secondary btn-sm" onclick="cancelarFormularioTransacao()">Cancelar</button>
-        </form>
-
-
-        <hr>
-
-        <h4>Comentários</h4>
-
-        <!-- Comentários existentes -->
-        <ul class="list-group mb-3">
-            <li class="list-group-item mb-2"
-                th:each="comentario : ${comentarios}" th:id="'comentario-' + ${comentario.id}">
-                
-                <!-- Texto do comentário + botões -->
-                <div class="d-flex justify-content-between align-items-center" th:id="'texto-' + ${comentario.id}">
-                    <span th:text="${comentario.texto}">Comentário</span>
-                    <div>
-                        <!-- Botão Editar -->
-                        <button type="button" class="btn btn-sm btn-outline-primary me-2" title="Editar"
-                                th:onclick="'mostrarFormulario(' + ${comentario.id} + ')'">
-                            <i class="bi bi-pencil"></i>
-                        </button>
-
-                        <!-- Botão Excluir -->
-                        <form th:action="@{'/contas/' + ${transacao.conta.id} + '/transacoes/' + ${transacao.id} + '/detalhes/' + ${comentario.id}}"
-                            method="post" class="d-inline">
-                            <input type="hidden" name="_method" value="delete"/>
-                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Excluir"
-                                    onclick="return confirm('Tem certeza que deseja excluir este comentário?');">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </form>
-                    </div>
+                <div class="mb-2">
+                    <label for="descricao">Descrição:</label>
+                    <input type="text" class="form-control" id="descricao" name="descricao"
+                        th:value="${transacao.descricao}" required>
                 </div>
 
-                <!-- Formulário de edição oculto -->
-                <form th:action="@{'/contas/' + ${transacao.conta.id} + '/transacoes/' + ${transacao.id} + '/detalhes/' + ${comentario.id}}"
-                    method="post" th:id="'form-' + ${comentario.id}" style="display: none;" class="mt-2">
-                    <input type="hidden" name="_method" value="put"/>
-                    <div class="input-group">
-                        <input type="text" name="texto" th:value="${comentario.texto}" class="form-control" required/>
-                        <button type="submit" class="btn btn-success btn-sm">Salvar</button>
-                        <button type="button" class="btn btn-secondary btn-sm"
-                                th:onclick="'cancelarEdicao(' + ${comentario.id} + ')'">Cancelar</button>
+                <div class="mb-2">
+                    <label for="valor">Valor:</label>
+                    <input type="number" step="0.01" class="form-control" id="valor" name="valor"
+                        th:value="${transacao.valor}" required>
+                </div>
+
+                <div class="mb-2">
+                    <label for="data">Data:</label>
+                    <input type="date" class="form-control" id="data" name="data" th:value="${transacao.data}" required>
+                </div>
+
+                <div class="mb-2">
+                    <label for="categoria">Categoria:</label>
+                    <select id="categoria" name="categoria.id" class="form-control" required>
+                        <option th:each="categoria : ${categorias}" th:value="${categoria.id}"
+                            th:text="${categoria.name}" th:selected="${categoria.id} == ${transacao.categoria.id}">
+                        </option>
+                    </select>
+                </div>
+
+
+                <div class="mb-3">
+                    <label for="movimento">Movimento:</label>
+                    <select id="movimento" name="movimento" class="form-control" required>
+                        <option th:value="'Crédito'" th:selected="${transacao.movimento == 'Crédito'}">Crédito</option>
+                        <option th:value="'Débito'" th:selected="${transacao.movimento == 'Débito'}">Débito</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-success btn-sm">Salvar</button>
+                <button type="button" class="btn btn-secondary btn-sm"
+                    onclick="cancelarFormularioTransacao()">Cancelar</button>
+            </form>
+
+
+            <hr>
+
+            <h4>Comentários</h4>
+
+            <!-- Comentários existentes -->
+            <ul class="list-group mb-3">
+                <li class="list-group-item mb-2" th:each="comentario : ${comentarios}"
+                    th:id="'comentario-' + ${comentario.id}">
+
+                    <!-- Texto do comentário + botões -->
+                    <div class="d-flex justify-content-between align-items-center" th:id="'texto-' + ${comentario.id}">
+                        <span th:text="${comentario.texto}">Comentário</span>
+                        <div>
+                            <!-- Botão Editar -->
+                            <button type="button" class="btn btn-sm btn-outline-primary me-2" title="Editar"
+                                th:onclick="'mostrarFormulario(' + ${comentario.id} + ')'">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+
+                            <!-- Botão Excluir -->
+                            <form
+                                th:action="@{'/contas/' + ${transacao.conta.id} + '/transacoes/' + ${transacao.id} + '/detalhes/' + ${comentario.id}}"
+                                method="post" class="d-inline">
+                                <input type="hidden" name="_method" value="delete" />
+                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Excluir"
+                                    onclick="return confirm('Tem certeza que deseja excluir este comentário?');">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </div>
                     </div>
-                </form>
-            </li>
-        </ul>
 
-        <!-- Formulário para adicionar novo comentário -->
-        <form th:action="@{'/contas/' + ${transacao.conta.id} + '/transacoes/' + ${transacao.id} + '/detalhes'}" method="post" th:object="${comentarioForm}">
-            <input type="hidden" name="transacaoId" th:value="${transacao.id}" />
+                    <!-- Formulário de edição oculto -->
+                    <form
+                        th:action="@{'/contas/' + ${transacao.conta.id} + '/transacoes/' + ${transacao.id} + '/detalhes/' + ${comentario.id}}"
+                        method="post" th:id="'form-' + ${comentario.id}" style="display: none;" class="mt-2">
+                        <input type="hidden" name="_method" value="put" />
+                        <div class="input-group">
+                            <input type="text" name="texto" th:value="${comentario.texto}" class="form-control"
+                                required />
+                            <button type="submit" class="btn btn-success btn-sm">Salvar</button>
+                            <button type="button" class="btn btn-secondary btn-sm"
+                                th:onclick="'cancelarEdicao(' + ${comentario.id} + ')'">Cancelar</button>
+                        </div>
+                    </form>
+                </li>
+            </ul>
 
-            <div class="mb-3">
-                <label for="texto" class="form-label">Novo Comentário</label>
-                <textarea class="form-control" id="texto" th:field="*{texto}" rows="3"></textarea>
-                <div th:if="${#fields.hasErrors('texto')}" class="text-danger" th:errors="*{texto}"  ></div>
-            </div>
+            <!-- Formulário para adicionar novo comentário -->
+            <form th:action="@{'/contas/' + ${transacao.conta.id} + '/transacoes/' + ${transacao.id} + '/detalhes'}"
+                method="post" th:object="${comentarioForm}">
+                <input type="hidden" name="transacaoId" th:value="${transacao.id}" />
 
-            <button type="submit" class="btn btn-primary" style="background-color: #6FA285;">Adicionar Comentário</button>
-            <a th:href="@{'/contas/' + ${transacao.conta.id} + '/transacoes'}" class="btn btn-secondary">Voltar</a>
-        </form>
-    </div>
+                <div class="mb-3">
+                    <label for="texto" class="form-label">Novo Comentário</label>
+                    <textarea class="form-control" id="texto" th:field="*{texto}" rows="3"></textarea>
+                    <div th:if="${#fields.hasErrors('texto')}" class="text-danger" th:errors="*{texto}"></div>
+                </div>
 
-    <!-- Script para expandir/ocultar o formulário -->
-    <script>
-        function mostrarFormulario(id) {
-            document.getElementById('texto-' + id).style.display = 'none';
-            document.getElementById('form-' + id).style.display = 'block';
-        }
+                <button type="submit" class="btn btn-primary" style="background-color: #6FA285;">Adicionar
+                    Comentário</button>
+                <a th:href="@{'/contas/' + ${transacao.conta.id} + '/transacoes'}" class="btn btn-secondary">Voltar</a>
+            </form>
+        </div>
 
-        function cancelarEdicao(id) {
-            document.getElementById('form-' + id).style.display = 'none';
-            document.getElementById('texto-' + id).style.display = 'flex';
-        }
+        <!-- Script para expandir/ocultar o formulário -->
+        <script>
+            function mostrarFormulario(id) {
+                document.getElementById('texto-' + id).style.display = 'none';
+                document.getElementById('form-' + id).style.display = 'block';
+            }
 
-        function mostrarFormularioTransacao() {
-            document.getElementById('transacao-visualizacao').style.display = 'none';
-            document.getElementById('transacao-form').style.display = 'block';
-        }
+            function cancelarEdicao(id) {
+                document.getElementById('form-' + id).style.display = 'none';
+                document.getElementById('texto-' + id).style.display = 'flex';
+            }
 
-        function cancelarFormularioTransacao() {
-            document.getElementById('transacao-form').style.display = 'none';
-            document.getElementById('transacao-visualizacao').style.display = 'block';
-        }
-    </script>
+            function mostrarFormularioTransacao() {
+                document.getElementById('transacao-visualizacao').style.display = 'none';
+                document.getElementById('transacao-form').style.display = 'block';
+            }
 
-</section>
+            function cancelarFormularioTransacao() {
+                document.getElementById('transacao-form').style.display = 'none';
+                document.getElementById('transacao-visualizacao').style.display = 'block';
+            }
+        </script>
+
+    </section>
+</body>
+
+</html>

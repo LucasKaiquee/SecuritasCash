@@ -1,123 +1,145 @@
-<section layout:decorate="~{layouts/layout}" layout:fragment="content">
-    <div class="container mt-5">
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layouts/layout}">
 
-        <h2 class="text-dark mb-4">Transações da Conta <span th:text="${conta.numero}">0000-0</span></h2>
+<head>
+    <title>Transações</title>
+</head>
 
-        <div class="alert alert-info" role="alert" th:if="${#lists.isEmpty(pagina)}">
-            Você não possui transações nessa conta.
-        </div>
+<body>
+    <section layout:decorate="~{layouts/layout}" layout:fragment="content">
+        <div class="container mt-5">
 
-            
-        <div class="card mb-4">
-            <div class="card-body">
-                <h5 class="card-title mb-3">Filtrar por:</h5>
-                <form th:action="@{transacoes}" method="get" class="filter-form">
-                    <div class="row align-items-end">
-                        
-                        <div class="col-12 col-md-6 col-lg-4 mb-3">
-                            <label for="movimento" class="form-label">Movimento</label>
-                            <select id="movimento" name="movimento" class="form-select">
-                                <option value="">Todos</option>
-                                <option value="CREDITO" th:selected="${param.movimento != null and param.movimento[0] == 'CREDITO'}">Crédito</option>
-                                <option value="DEBITO" th:selected="${param.movimento != null and param.movimento[0] == 'DEBITO'}">Débito</option>
-                            </select>
-                        </div>
+            <h2 class="text-dark mb-4">Transações da Conta <span th:text="${conta.numero}">0000-0</span></h2>
 
-                        <div class="col-12 col-md-6 col-lg-4 mb-3">
-                            <label for="filtroOrdem" class="form-label">Ordenar por</label>
-                            <select id="filtroOrdem" name="sort" class="form-select">
-                                <option value="">Padrão</option>
-                                <option value="data,desc" th:selected="${param.sort != null and param.sort[0] == 'data,desc'}" >Data (Mais Recentes)</option>
-                                <option value="data,asc" th:selected="${param.sort != null and param.sort[0] == 'data,asc'}">Data (Mais Antigas)</option>
-                                <option value="valor,desc" th:selected="${param.sort != null and param.sort[0] == 'valor,desc'}">Valor (Maior para Menor)</option>
-                                <option value="valor,asc" th:selected="${param.sort != null and param.sort[0] == 'valor,asc'}">Valor (Menor para Maior)</option>
-                            </select>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 mb-3 d-flex align-items-center">
-                            <button type="submit" class="btn btn-primary me-2"> 
-                                <i class="bi bi-funnel"></i> Filtrar
-                            </button>
-                            <a th:href="@{transacoes}" class="btn btn-secondary">
-                                <i class="bi bi-arrow-clockwise"></i> Limpar
-                            </a>
-                        </div>
-                    </div>
-                </form>
+            <div class="alert alert-info" role="alert" th:if="${#lists.isEmpty(pagina)}">
+                Você não possui transações nessa conta.
             </div>
-        </div>
 
-        <table class="table table-hover table-bordered shadow-sm bg-white" th:unless="${#lists.isEmpty(pagina)}">
-            <thead class="table-dark text-center">
-                <tr>
-                    <th>Data</th>
-                    <th>Categoria</th>
-                    <th>Movimento</th>
-                    <th>Descrição</th>
-                    <th>Valor</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="transacao : ${pagina}" class="text-center">
-                    <td th:text="${#temporals.format(transacao.data, 'dd/MM/yyyy')}">01/01/2024</td>
-                    <td th:text="${transacao.categoria.name}">categoria</td>
-                    <td th:text="${transacao.movimento.displayValue }">movimento</td>
-                    <td th:text="${transacao.descricao}">Salário</td>
-                    <td th:text="'R$' + ' ' + ${#numbers.formatDecimal(transacao.valor, 0, 'POINT', 2, 'COMMA')}">1000.00</td>
-                    <td>
-                        <a th:href="@{'/contas/' + ${conta.id} + '/transacoes/' + ${transacao.id} + '/detalhes'}"
-                        class="btn btn-outline-dark btn-sm">
-                        Ver Detalhes
-                        </a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
 
-        <div class="d-flex justify-content-center mt-3">
-            <nav aria-label="Navegação da página">
-                <ul class="pagination">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Filtrar por:</h5>
+                    <form th:action="@{transacoes}" method="get" class="filter-form">
+                        <div class="row align-items-end">
 
-                    <li class="page-item" th:classappend="${pagina.first} ? 'disabled'">
-                        <a class="page-link"
-                        th:href="@{transacoes
+                            <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                <label for="movimento" class="form-label">Movimento</label>
+                                <select id="movimento" name="movimento" class="form-select">
+                                    <option value="">Todos</option>
+                                    <option value="CREDITO"
+                                        th:selected="${param.movimento != null and param.movimento[0] == 'CREDITO'}">
+                                        Crédito</option>
+                                    <option value="DEBITO"
+                                        th:selected="${param.movimento != null and param.movimento[0] == 'DEBITO'}">
+                                        Débito</option>
+                                </select>
+                            </div>
+
+                            <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                <label for="filtroOrdem" class="form-label">Ordenar por</label>
+                                <select id="filtroOrdem" name="sort" class="form-select">
+                                    <option value="">Padrão</option>
+                                    <option value="data,desc"
+                                        th:selected="${param.sort != null and param.sort[0] == 'data,desc'}">Data (Mais
+                                        Recentes)</option>
+                                    <option value="data,asc"
+                                        th:selected="${param.sort != null and param.sort[0] == 'data,asc'}">Data (Mais
+                                        Antigas)</option>
+                                    <option value="valor,desc"
+                                        th:selected="${param.sort != null and param.sort[0] == 'valor,desc'}">Valor
+                                        (Maior para Menor)</option>
+                                    <option value="valor,asc"
+                                        th:selected="${param.sort != null and param.sort[0] == 'valor,asc'}">Valor
+                                        (Menor para Maior)</option>
+                                </select>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6 mb-3 d-flex align-items-center">
+                                <button type="submit" class="btn btn-primary me-2">
+                                    <i class="bi bi-funnel"></i> Filtrar
+                                </button>
+                                <a th:href="@{transacoes}" class="btn btn-secondary">
+                                    <i class="bi bi-arrow-clockwise"></i> Limpar
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <table class="table table-hover table-bordered shadow-sm bg-white" th:unless="${#lists.isEmpty(pagina)}">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th>Data</th>
+                        <th>Categoria</th>
+                        <th>Movimento</th>
+                        <th>Descrição</th>
+                        <th>Valor</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="transacao : ${pagina}" class="text-center">
+                        <td th:text="${#temporals.format(transacao.data, 'dd/MM/yyyy')}">01/01/2024</td>
+                        <td th:text="${transacao.categoria.name}">categoria</td>
+                        <td th:text="${transacao.movimento.displayValue }">movimento</td>
+                        <td th:text="${transacao.descricao}">Salário</td>
+                        <td th:text="'R$' + ' ' + ${#numbers.formatDecimal(transacao.valor, 0, 'POINT', 2, 'COMMA')}">
+                            1000.00</td>
+                        <td>
+                            <a th:href="@{'/contas/' + ${conta.id} + '/transacoes/' + ${transacao.id} + '/detalhes'}"
+                                class="btn btn-outline-dark btn-sm">
+                                Ver Detalhes
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="d-flex justify-content-center mt-3">
+                <nav aria-label="Navegação da página">
+                    <ul class="pagination">
+
+                        <li class="page-item" th:classappend="${pagina.first} ? 'disabled'">
+                            <a class="page-link" th:href="@{transacoes
                                         (page=${pagina.number - 1},
                                         size=${pagina.size},
                                         sort=${param.sort ?: ''},
                                         movimento=${param.movimento},
-                                        data=${param.data})}"
-                        aria-label="Anterior">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
+                                        data=${param.data})}" aria-label="Anterior">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
 
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
-                            Página <span th:text="${pagina.number + 1}"></span> de <span th:text="${pagina.totalPages} == 0 ? '1' : ${pagina.totalPages}"></span>
-                        </a>
-                    </li>
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                Página <span th:text="${pagina.number + 1}"></span> de <span
+                                    th:text="${pagina.totalPages} == 0 ? '1' : ${pagina.totalPages}"></span>
+                            </a>
+                        </li>
 
-                    <li class="page-item" th:classappend="${pagina.last} ? 'disabled'">
-                        <a class="page-link"
-                        th:href="@{transacoes
+                        <li class="page-item" th:classappend="${pagina.last} ? 'disabled'">
+                            <a class="page-link" th:href="@{transacoes
                                         (page=${pagina.number + 1},
                                         size=${pagina.size},
                                         sort=${param.sort ?: ''},
                                         movimento=${param.movimento},
-                                        data=${param.data})}"
-                                        
-                        aria-label="Próximo">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+                                        data=${param.data})}" aria-label="Próximo">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
 
-        <div class="d-flex justify-content-between">
-            <a th:href="@{'/contas'}" class="btn btn-secondary" >Voltar</a>
-            <a th:href="@{'/contas/' + ${conta.id} + '/transacoes/criar'}" class="btn btn-success" style="background-color: #6FA285;">Adicionar Transação</a>
+            <div class="d-flex justify-content-between">
+                <a th:href="@{'/contas'}" class="btn btn-secondary">Voltar</a>
+                <a th:href="@{'/contas/' + ${conta.id} + '/transacoes/criar'}" class="btn btn-success"
+                    style="background-color: #6FA285;">Adicionar Transação</a>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
+</body>
+
+</html>
