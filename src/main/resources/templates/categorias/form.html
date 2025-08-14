@@ -4,16 +4,16 @@
       layout:decorate="~{layouts/layout}">
 
 <head>
-    <title>Cadastro de Categoria</title>
+    <title th:text="${categoria} ? 'Editar Categoria' : 'Cadastrar Categoria' ">Cadastro de Categoria</title>
     </head>
 <body>
 <section layout:fragment="content">
     <div class="container mt-5">
 
+
         <div th:if="${categoria}">
             <h2 class="mb-4">Editar Categoria</h2>
         </div>
-
         <div th:unless="${categoria}">
             <h2 class="mb-4">Nova Categoria</h2>
         </div>

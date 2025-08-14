@@ -6,12 +6,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.securitascash.dto.correntista.CorrentistaDTO;
 import com.securitascash.model.usuario.inherit.Correntista;
 import com.securitascash.service.correntista.CorrentistaService;
 
@@ -33,13 +36,13 @@ public class CorrentistaController {
 
     @GetMapping("/novo")
     public ModelAndView exibirFormulario(ModelAndView mav) {
-        mav.addObject("correntista", new Correntista());
+        mav.addObject("correntistaForm", new CorrentistaDTO());
         mav.setViewName("correntistas/form");
         return mav;
     }
 
     @PostMapping("/novo")
-    public ModelAndView criarCorrentista(@Valid @ModelAttribute Correntista correntista, BindingResult result, RedirectAttributes attr, ModelAndView mav) {
+    public ModelAndView criarCorrentista(@Valid @ModelAttribute CorrentistaDTO correntista, BindingResult result, RedirectAttributes attr, ModelAndView mav) {
 
         if ( result.hasErrors() ) {
             mav.setViewName("correntistas/form");
@@ -52,5 +55,25 @@ public class CorrentistaController {
         mav.setViewName("redirect:/correntistas");
         return mav;
     }
-    
+
+    @GetMapping("/editar/{id}")
+    public ModelAndView update (ModelAndView mav, @PathVariable Long id) {
+        Correntista correntista = correntistaService.buscar(id);
+
+        mav.setViewName("correntistas/form");
+        mav.addObject("correntista", correntista);
+
+        return mav;
+    }
+
+    @PutMapping("/editar/{id}")
+    public ModelAndView update ( @Valid @ModelAttribute Correntista correntista, BindingResult result, @PathVariable Long id,  ModelAndView mav){
+        if ( result.hasErrors() ) {
+            mav.setViewName("correntistas/form");
+            return mav;
+        }
+        correntistaService.editar(id, correntista);
+        mav.setViewName("redirect:/correntistas");
+        return mav;
+    }
 }

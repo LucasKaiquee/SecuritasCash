@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.securitascash.dto.correntista.CorrentistaDTO;
 import com.securitascash.model.usuario.inherit.Correntista;
 import com.securitascash.repository.CorrentistaRepository;
 import com.securitascash.repository.UsuarioRepository;
@@ -21,9 +22,14 @@ public class CorrentistaService {
     public Page<Correntista> listarCorrentistas(Pageable pageable) {
         return correntistaRepository.findAll(pageable);
     }
-    public Correntista criarCorrentista(Correntista correntista) {
-        System.out.println("CorrentistaService.criarCorrentista() - " + correntista);
-        return usuarioRepository.save(correntista);
+    public void criarCorrentista(CorrentistaDTO correntista) {
+        Correntista novCorrentista = new Correntista();
+        novCorrentista.setNome(correntista.getNome());
+        novCorrentista.setEmail(correntista.getEmail());
+        novCorrentista.setSenha(correntista.getSenha());
+        novCorrentista.setBlocked(correntista.isBlocked());
+        
+        usuarioRepository.save(novCorrentista);
     }
 
     public Page<Correntista> listarFiltrado(Boolean bloqueado, Pageable pageable) {
@@ -32,6 +38,20 @@ public class CorrentistaService {
         } else {
             return correntistaRepository.findByBloqueado(bloqueado, pageable);
         }
+    }
+
+    public Correntista buscar(Long id) {
+        return correntistaRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Correntista não encontrado com o ID: " + id));
+    }
+
+    public Correntista editar (Long id, Correntista dto) {
+        Correntista correntista = this.buscar(id);
+        correntista.setNome(dto.getNome());
+        correntista.setEmail(dto.getEmail());
+        correntista.setBlocked(dto.isBlocked());
+
+        return correntistaRepository.save(correntista);
     }
 }
 
