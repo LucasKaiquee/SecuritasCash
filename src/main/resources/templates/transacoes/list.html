@@ -67,35 +67,78 @@
                     </form>
                 </div>
             </div>
+            <div class="scroll-table">
+                <table class="styled-table" th:unless="${#lists.isEmpty(pagina)}">
+                    <thead class="table-dark text-center">
+                        <tr>
+                            <th>Data</th>
+                            <th>Categoria</th>
+                            <th>Movimento</th>
+                            <th>Descrição</th>
+                            <th>Valor</th>
+                            <th>Comentários</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="transacao : ${pagina}" class="text-center clickable-row"
+                            th:data-href="@{'/contas/' + ${conta.id} + '/transacoes/' + ${transacao.id} + '/detalhes'}">
+                            <td th:text="${#temporals.format(transacao.data, 'dd/MM/yyyy')}">01/01/2024</td>
+                            <td th:text="${transacao.categoria.name}">categoria</td>
+                            <td th:text="${transacao.movimento.displayValue }">movimento</td>
+                            <td class="transacao-descricao" th:text="${transacao.descricao}">Salário</td>
+                            <td
+                                th:text="'R$' + ' ' + ${#numbers.formatDecimal(transacao.valor, 0, 'POINT', 2, 'COMMA')}">
+                                1000.00</td>
+                            <td>
+                                <div class=" comment-button icone-container"
+                                    th:onclick="'abrirModalComentarios(event, \'modal-comentarios-' + ${transacao.id} + '\')'">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="icone-comentario">
+                                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                    </svg>
+                                    <div class="balao-quantidade">
+                                        <span th:text="${#lists.size(transacao.comentarios)}">0</span>
+                                    </div>
+                                </div>
 
-            <table class="table table-hover table-bordered shadow-sm bg-white" th:unless="${#lists.isEmpty(pagina)}">
-                <thead class="table-dark text-center">
-                    <tr>
-                        <th>Data</th>
-                        <th>Categoria</th>
-                        <th>Movimento</th>
-                        <th>Descrição</th>
-                        <th>Valor</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="transacao : ${pagina}" class="text-center">
-                        <td th:text="${#temporals.format(transacao.data, 'dd/MM/yyyy')}">01/01/2024</td>
-                        <td th:text="${transacao.categoria.name}">categoria</td>
-                        <td th:text="${transacao.movimento.displayValue }">movimento</td>
-                        <td th:text="${transacao.descricao}">Salário</td>
-                        <td th:text="'R$' + ' ' + ${#numbers.formatDecimal(transacao.valor, 0, 'POINT', 2, 'COMMA')}">
-                            1000.00</td>
-                        <td>
-                            <a th:href="@{'/contas/' + ${conta.id} + '/transacoes/' + ${transacao.id} + '/detalhes'}"
-                                class="btn btn-outline-dark btn-sm">
-                                Ver Detalhes
-                            </a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                                <div th:id="'modal-comentarios-' + ${transacao.id}" class="modal-comentarios-overlay">
+                                    <div class="modal-comentarios-content">
+                                        <span class="fechar-modal"
+                                            th:onclick="'fecharModalComentarios(event, \'modal-comentarios-' + ${transacao.id} + '\')'">&times;</span>
+
+                                        <h3>Comentários</h3>
+
+                                        <ul class="lista-comentarios">
+                                            <li th:each="comentario : ${transacao.comentarios}"
+                                                th:text="${comentario.texto}">
+                                                Texto do comentário aqui...
+                                            </li>
+                                            <li th:if="${#lists.isEmpty(transacao.comentarios)}">
+                                                Nenhum comentário para esta transação.
+                                            </li>
+                                        </ul>
+
+                                        <div class="modal-footer">
+                                            
+                                            <div th:unless="${#lists.isEmpty(transacao.comentarios)}" >
+                                                <a th:href="@{'/contas/' + ${transacao.conta.id} + '/transacoes/' + ${transacao.id} + '/detalhes'}"
+                                                    class="modal-botao botao-editar">
+                                                    Editar
+                                                </a>
+                                            </div>
+                                            <a th:href="@{'/contas/' + ${transacao.conta.id} + '/transacoes/' + ${transacao.id} + '/detalhes'}"
+                                                class="modal-botao botao-adicionar">
+                                                Adicionar Novo
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
             <div class="d-flex justify-content-center mt-3">
                 <nav aria-label="Navegação da página">
@@ -139,6 +182,68 @@
                     style="background-color: #6FA285;">Adicionar Transação</a>
             </div>
         </div>
+        <script>
+            // --- LÓGICA PARA AS LINHAS CLICÁVEIS ---
+            document.addEventListener("DOMContentLoaded", function () {
+                const rows = document.querySelectorAll(".clickable-row");
+
+                rows.forEach(row => {
+                    row.addEventListener("click", (event) => {
+                        // MUDANÇA: Verifica se a linha está com o modal aberto. Se estiver, não faz nada.
+                        if (row.classList.contains('modal-aberto')) {
+                            return;
+                        }
+
+                        // Impede que o clique no ícone também acione a navegação
+                        // Se o elemento clicado (ou seu pai) tem a classe 'icone-container', não navega.
+                        if (event.target.closest('.icone-container')) {
+                            return;
+                        }
+
+                        // Se passou nas verificações, navega para a URL
+                        window.location.href = row.dataset.href;
+                    });
+                });
+            });
+
+            // --- FUNÇÕES DO MODAL MODIFICADAS ---
+
+            // Função para ABRIR o modal
+            function abrirModalComentarios(event, modalId) {
+                // MUDANÇA: Impede que o clique "vaze" para a linha e ative a navegação
+                event.stopPropagation();
+
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.style.display = 'flex';
+
+                    // MUDANÇA: Encontra a linha pai (tr.clickable-row) e a "desativa"
+                    // adicionando uma classe que a impede de ser clicada.
+                    const linha = modal.closest('.clickable-row');
+                    if (linha) {
+                        linha.classList.add('modal-aberto');
+                    }
+                }
+            }
+
+            // Função para FECHAR o modal
+            function fecharModalComentarios(event, modalId) {
+                // MUDANÇA: Impede que o clique "vaze" (boa prática)
+                event.stopPropagation();
+
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.style.display = 'none';
+
+                    // MUDANÇA: Encontra a linha pai e a "reativa",
+                    // removendo a classe que a travava.
+                    const linha = modal.closest('.clickable-row');
+                    if (linha) {
+                        linha.classList.remove('modal-aberto');
+                    }
+                }
+            }
+        </script>
     </section>
 </body>
 
