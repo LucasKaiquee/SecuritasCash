@@ -3,89 +3,171 @@
     layout:decorate="~{layouts/layout}">
 
 <head>
-    <title>Cadastro de Transação</title>
+    <title th:text="${transacao} ? 'Editar Transação' : 'Cadastrar Transação'">Cadastro de Transação</title>
 </head>
 
 <body>
     <section layout:fragment="content">
         <div class="container mt-5">
-            <h2 class="mb-4">Nova Transação</h2>
 
-            <form th:action="@{/contas/{id}/transacoes}" th:object="${transacaoForm}" method="post">
+            <div th:unless="${transacao}">
+                <h2 class="mb-4">Nova Transação</h2>
+            </div>
 
-                <input type="hidden" name="contaId" th:value="${contaId}" />
+            <div th:if="${transacao}">
+                <h2 class="mb-4">Editar Transação</h2>
+            </div>
+            
+            <!-- Cadastro de Transação -->
+            <div th:unless="${transacao}">
+                <form th:action="@{/contas/{id}/transacoes}" th:object="${transacaoForm}" method="post">
 
-                <div class="mb-3">
-                    <label for="descricao" class="form-label">Descrição</label>
-                    <input type="text" class="form-control" th:field="*{descricao}" id="descricao" />
-                    <div th:if="${#fields.hasErrors('descricao')}" class="text-danger" th:errors="*{descricao}"></div>
+                    <input type="hidden" name="contaId" th:value="${contaId}" />
 
-                </div>
+                    <div class="mb-3">
+                        <label for="descricao" class="form-label">Descrição</label>
+                        <input type="text" class="form-control" th:field="*{descricao}" id="descricao" />
+                        <div th:if="${#fields.hasErrors('descricao')}" class="text-danger" th:errors="*{descricao}"></div>
 
-                <div class="mb-3">
-                    <label for="movimento" class="form-label">Movimento</label>
-                    <select th:field="*{movimento}" class="form-select">
-                        <option th:value="''" th:text="'Selecione um movimento'"></option>
-                        <option th:value="'Crédito'" th:text="'Crédito'"></option>
-                        <option th:value="'Debito'" th:text="'Débito'"></option>
-                    </select>
-                    <div th:if="${#fields.hasErrors('movimento')}" class="text-danger" th:errors="*{movimento}"></div>
-                </div>
+                    </div>
 
-                <div class="mb-3">
-                    <label for="selectNatureza" class="form-label">Natureza</label>
-                    <select id="selectNatureza" th:field="*{natureza}" class="form-select">
-                        <option value="">Selecione a Natureza</option>
-                        <option th:each="n : ${naturezas}" th:value="${n}" th:text="${n.displayValue}"></option>
-                    </select>
-                    <div th:if="${#fields.hasErrors('natureza')}" class="text-danger" th:errors="*{natureza}"></div>
-                </div>
+                    <div class="mb-3">
+                        <label for="movimento" class="form-label">Movimento</label>
+                        <select th:field="*{movimento}" class="form-select">
+                            <option th:value="''" th:text="'Selecione um movimento'"></option>
+                            <option th:value="'Crédito'" th:text="'Crédito'"></option>
+                            <option th:value="'Debito'" th:text="'Débito'"></option>
+                        </select>
+                        <div th:if="${#fields.hasErrors('movimento')}" class="text-danger" th:errors="*{movimento}"></div>
+                    </div>
 
-                <div class="mb-3">
-                    <label for="selectCategoria" class="form-label">Categoria</label>
-                    <select id="selectCategoria" th:field="*{categoria}" class="form-select">
-                        <option value="">Selecione uma natureza primeiro</option>
-                    </select>
-                    <div th:if="${#fields.hasErrors('categoria')}" class="text-danger" th:errors="*{categoria}"></div>
-                </div>
+                    <div class="mb-3">
+                        <label for="selectNatureza" class="form-label">Natureza</label>
+                        <select id="selectNatureza" th:field="*{natureza}" class="form-select">
+                            <option value="">Selecione a Natureza</option>
+                            <option th:each="n : ${naturezas}" th:value="${n}" th:text="${n.displayValue}"></option>
+                        </select>
+                        <div th:if="${#fields.hasErrors('natureza')}" class="text-danger" th:errors="*{natureza}"></div>
+                    </div>
 
-                <script th:inline="javascript">
-                    /*<![CDATA[*/
+                    <div class="mb-3">
+                        <label for="selectCategoria" class="form-label">Categoria</label>
+                        <select id="selectCategoria" th:field="*{categoria}" class="form-select">
+                            <option value="">Selecione uma natureza primeiro</option>
+                        </select>
+                        <div th:if="${#fields.hasErrors('categoria')}" class="text-danger" th:errors="*{categoria}"></div>
+                    </div>
 
-                    // O Thymeleaf irá substituir '/*[[...]]*/' por um array JSON de suas categorias
-                    const todasAsCategorias = /*[[${categorias}]]*/[];
+                    <script th:inline="javascript">
+                        /*<![CDATA[*/
 
-                    /*]]>*/
-                </script>
+                        // O Thymeleaf irá substituir '/*[[...]]*/' por um array JSON de suas categorias
+                        const todasAsCategorias = /*[[${categorias}]]*/[];
 
-                <div class="mb-3">
-                    <label for="valor" class="form-label">Valor</label>
-                    <input type="number" class="form-control" th:field="*{valor}" step="0.01" id="valor" />
-                    <div th:if="${#fields.hasErrors('valor')}" class="text-danger" th:errors="*{valor}"></div>
+                        /*]]>*/
+                    </script>
 
-                </div>
+                    <div class="mb-3">
+                        <label for="valor" class="form-label">Valor</label>
+                        <input type="number" class="form-control" th:field="*{valor}" step="0.01" id="valor" />
+                        <div th:if="${#fields.hasErrors('valor')}" class="text-danger" th:errors="*{valor}"></div>
 
-                <div class="mb-3">
-                    <label for="data" class="form-label">Data</label>
-                    <input type="date" class="form-control" th:field="*{data}" id="data" />
-                    <div th:if="${#fields.hasErrors('data')}" class="text-danger" th:errors="*{data}"></div>
+                    </div>
 
-                </div>
+                    <div class="mb-3">
+                        <label for="data" class="form-label">Data</label>
+                        <input type="date" class="form-control" th:field="*{data}" id="data" />
+                        <div th:if="${#fields.hasErrors('data')}" class="text-danger" th:errors="*{data}"></div>
+
+                    </div>
 
 
-                <h4>Comentário</h4>
+                    <h4>Comentário</h4>
 
-                <div class="mb-3">
-                    <textarea class="form-control" th:field="*{comentario.texto}" rows="2"
-                        placeholder="Digite um comentário opcional">
-            </textarea>
-                    <div th:if="${#fields.hasErrors('comentario.texto')}" class="text-danger"
-                        th:errors="*{comentario.texto}"></div>
-                </div>
+                    <div class="mb-3">
+                        <textarea class="form-control" th:field="*{comentario.texto}" rows="2"
+                            placeholder="Digite um comentário opcional">
+                        </textarea>
+                        <div th:if="${#fields.hasErrors('comentario.texto')}" class="text-danger"
+                            th:errors="*{comentario.texto}"></div>
+                    </div>
 
-                <a th:href="@{'/contas/' + ${contaId} + '/transacoes'}" class="btn btn-secondary">Cancelar</a>
-                <button type="submit" class="btn btn-success">Salvar Transação</button>
-            </form>
+                    <a th:href="@{'/contas/' + ${contaId} + '/transacoes'}" class="btn btn-secondary">Cancelar</a>
+                    <button type="submit" class="btn btn-success">Salvar Transação</button>
+                </form>
+            </div>
+
+            <!-- Edição de Transação -->
+            <div th:if="${transacao}">
+                <!-- '/contas/' + ${contaId} + '/transacoes/editar/' + {transacao.id} -->
+                <form th:action="@{'/contas/ ' + ${contaId} + '/transacoes/editar/' + ${transacao.id}}" th:object="${transacao}" method="post">
+
+                    <input type="hidden" name="_method" value="put">
+
+                    <input type="hidden" name="contaId" th:value="${contaId}" />
+
+                    <div class="mb-3">
+                        <label for="descricao" class="form-label">Descrição</label>
+                        <input type="text" class="form-control" th:field="*{descricao}" id="descricao" />
+                        <div th:if="${#fields.hasErrors('descricao')}" class="text-danger" th:errors="*{descricao}"></div>
+
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="movimento" class="form-label">Movimento</label>
+                        <select th:field="*{movimento}" class="form-select">
+                            <option th:value="''" th:text="'Selecione um movimento'"></option>
+                            <option th:value="'Crédito'" th:text="'Crédito'"></option>
+                            <option th:value="'Debito'" th:text="'Débito'"></option>
+                        </select>
+                        <div th:if="${#fields.hasErrors('movimento')}" class="text-danger" th:errors="*{movimento}"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="selectNatureza" class="form-label">Natureza</label>
+                        <select id="selectNatureza" th:field="*{categoria.natureza}" class="form-select">
+                            <option value="">Selecione a Natureza</option>
+                            <option th:each="n : ${naturezas}" th:value="${T(com.securitascash.enums.Natureza).valueOf(n)}" th:text="${n.displayValue}"></option>
+                        </select>
+                        <div th:if="${#fields.hasErrors('categoria.natureza')}" class="text-danger" th:errors="*{natureza}"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="selectCategoria" class="form-label">Categoria</label>
+                        <select id="selectCategoria" th:field="*{categoria}" class="form-select">
+                            <option value="">Selecione uma natureza primeiro</option>
+                        </select>
+                        <div th:if="${#fields.hasErrors('categoria')}" class="text-danger" th:errors="*{categoria}"></div>
+                    </div>
+
+                    <script th:inline="javascript">
+                        /*<![CDATA[*/
+
+                        // O Thymeleaf irá substituir '/*[[...]]*/' por um array JSON de suas categorias
+                        todasAsCategorias = /*[[${categorias}]]*/[];
+
+                        /*]]>*/
+                    </script>
+
+                    <div class="mb-3">
+                        <label for="valor" class="form-label">Valor</label>
+                        <input type="number" class="form-control" th:field="*{valor}" step="0.01" id="valor" />
+                        <div th:if="${#fields.hasErrors('valor')}" class="text-danger" th:errors="*{valor}"></div>
+
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="data" class="form-label">Data</label>
+                        <input type="date" class="form-control" th:field="*{data}" id="data" />
+                        <div th:if="${#fields.hasErrors('data')}" class="text-danger" th:errors="*{data}"></div>
+
+                    </div>
+
+
+                    <a th:href="@{'/contas/' + ${contaId} + '/transacoes'}" class="btn btn-secondary">Cancelar</a>
+                    <button type="submit" class="btn btn-success">Salvar Transação</button>
+                </form>
+            </div>
         </div>
 
         <script>

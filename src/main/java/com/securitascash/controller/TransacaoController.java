@@ -112,25 +112,37 @@ public class TransacaoController {
         return mav;
     }
 
-    @PutMapping("/{transacaoId}/detalhes")
+    @GetMapping("/editar/{transacaoId}")
+    public ModelAndView update (ModelAndView mav, @PathVariable("transacaoId") Long id, @PathVariable("id") Long contaId) {
+        Transacao transacao = transacaoService.buscarPorId(id);
+
+        mav.setViewName("transacoes/form");
+        mav.addObject("transacao", transacao);
+        mav.addObject("contaId", contaId);
+        mav.addObject("categorias", categoriaService.listarCategorias());
+        mav.addObject("naturezas", Natureza.values());
+
+        return mav;
+    }
+    @PutMapping("/editar/{transacaoId}")
     public String atualizar(@PathVariable("id") Long contaId,
                             @PathVariable("transacaoId") Long transacaoId,
                             @ModelAttribute TransacaoForm dto) {
 
         transacaoService.atualizar(transacaoId, dto); 
 
-        return "redirect:/contas/" + contaId + "/transacoes/" + transacaoId + "/detalhes";
+        return "redirect:/contas/" + contaId + "/transacoes";
     }
 
 
     
     //Comentários
-    @GetMapping("/{transacaoId}/detalhes")
+    @GetMapping("/{transacaoId}/comentarios")
     public ModelAndView listarComentarios (@PathVariable Long transacaoId, ModelAndView mav, @PathVariable("id") Long contaId) {
 
         Transacao transacao = transacaoService.buscarPorId(transacaoId);
         
-        mav.setViewName("transacoes/detalhes");
+        mav.setViewName("transacoes/comentarios");
 
         mav.addObject("comentarios", transacao.getComentarios());
         mav.addObject("categorias", categoriaService.listarCategorias());
@@ -140,38 +152,51 @@ public class TransacaoController {
         return mav;
     }
 
-    @PostMapping("/{transacaoId}/detalhes")
+    @PostMapping("/{transacaoId}/comentarios")
     public ModelAndView salvarComentario(@Valid @ModelAttribute ComentarioForm comentarioForm, BindingResult result,
                                 @RequestParam Long transacaoId, @PathVariable("id") Long contaId, ModelAndView mav) {
                                     
         if (result.hasErrors()) {
             Transacao transacao = transacaoService.buscarPorId(transacaoId);
-            mav.setViewName("transacoes/detalhes");
+            mav.setViewName("transacoes/comentarios");
             mav.addObject("comentarios", transacao.getComentarios());
-            mav.addObject("categorias", categoriaService.listarCategorias());
             mav.addObject("transacao", transacao);
             return mav;
         }
 
         transacaoService.adicionarComentario(transacaoId, comentarioForm);
 
-        mav.setViewName("redirect:/contas/" + contaId + "/transacoes/" + transacaoId + "/detalhes" );
+        mav.setViewName("redirect:/contas/" + contaId + "/transacoes/" + transacaoId + "/comentarios" );
         return mav;
     }
 
-    @PutMapping("/{transacaoId}/detalhes/{comentarioId}")
-    public String editarComentario(
+    @PutMapping("/{transacaoId}/comentarios/{comentarioId}")
+    public ModelAndView editarComentario(
+            @Valid @ModelAttribute ComentarioForm comentarioForm,
+            BindingResult result,
             @PathVariable("transacaoId") Long transacaoId,
             @PathVariable("comentarioId") Long comentarioId,
             @PathVariable("id") Long contaId,
-            @RequestParam String texto) {
+            @RequestParam String texto,
+            ModelAndView mav) {
+                System.out.println("passei aqui");
+                if (result.hasErrors()) {
+                System.out.println("passei aqui 2");
+                Transacao transacao = transacaoService.buscarPorId(transacaoId);
+                mav.setViewName("transacoes/comentarios");
+                mav.addObject("comentarios", transacao.getComentarios());
+                mav.addObject("transacao", transacao);
+                return mav;
+            }
 
         transacaoService.editarComentario(transacaoId, comentarioId, texto);
+
+        mav.setViewName("redirect:/contas/" + contaId + "/transacoes/" + transacaoId + "/comentarios" );
         
-        return "redirect:/contas/" + contaId + "/transacoes/" + transacaoId + "/detalhes" ;
+        return mav;
     }
 
-    @DeleteMapping("/{transacaoId}/detalhes/{comentarioId}")
+    @DeleteMapping("/{transacaoId}/comentarios/{comentarioId}")
     public String deletarComentario (
             @PathVariable("transacaoId") Long transacaoId,
             @PathVariable("comentarioId") Long comentarioId,
@@ -179,7 +204,7 @@ public class TransacaoController {
 
         transacaoService.excluirComentario(transacaoId, comentarioId);
 
-        return "redirect:/contas/" + contaId + "/transacoes/" + transacaoId + "/detalhes" ;
+        return "redirect:/contas/" + contaId + "/transacoes/" + transacaoId + "/comentarios" ;
     }
 
     

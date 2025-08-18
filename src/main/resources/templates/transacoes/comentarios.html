@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layouts/layout}">
+
+<head>
+    <title>Transações</title>
+</head>
+
+<body>
+    <section layout:fragment="content">
+        <div class="container mt-5">
+
+            <h4>Comentários</h4>
+
+            <!-- Comentários existentes -->
+            <ul class="list-group mb-3">
+                <li class="list-group-item mb-2" th:each="comentario : ${comentarios}"
+                    th:id="'comentario-' + ${comentario.id}">
+
+                    <!-- Texto do comentário + botões -->
+                    <div class="d-flex justify-content-between align-items-center" th:id="'texto-' + ${comentario.id}">
+                        <span th:text="${comentario.texto}">Comentário</span>
+                        <div>
+                            <!-- Botão Editar -->
+                            <button type="button" class="btn btn-sm btn-outline-primary me-2" title="Editar"
+                                th:onclick="'mostrarFormulario(' + ${comentario.id} + ')'">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+
+                            <!-- Botão Excluir -->
+                            <form
+                                th:action="@{'/contas/' + ${transacao.conta.id} + '/transacoes/' + ${transacao.id} + '/comentarios/' + ${comentario.id}}"
+                                method="post" class="d-inline">
+                                <input type="hidden" name="_method" value="delete" />
+                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Excluir"
+                                    onclick="return confirm('Tem certeza que deseja excluir este comentário?');">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Formulário de edição oculto -->
+                    <form
+                        th:action="@{'/contas/' + ${transacao.conta.id} + '/transacoes/' + ${transacao.id} + '/comentarios/' + ${comentario.id}}"
+                        method="post" th:id="'form-' + ${comentario.id}" style="display: none;" class="mt-2" th:object="${comentarioForm}">
+                        <input type="hidden" name="_method" value="put" />
+                        
+                        <div class="input-group">
+                            <input type="text" name="texto" th:value="${comentarioForm.texto}" class="form-control"
+                                required />
+                            <div th:if="${#fields.hasErrors('texto')}" class="text-danger" th:errors="*{texto}"></div>
+                            <button type="submit" class="btn btn-success btn-sm">Salvar</button>
+                            <button type="button" class="btn btn-secondary btn-sm"
+                                th:onclick="'cancelarEdicao(' + ${comentario.id} + ')'">Cancelar</button>
+                        </div>
+                    </form>
+                </li>
+            </ul>
+
+            <!-- Formulário para adicionar novo comentário -->
+            <form th:action="@{'/contas/' + ${transacao.conta.id} + '/transacoes/' + ${transacao.id} + '/comentarios'}"
+                method="post" th:object="${comentarioForm}">
+                <input type="hidden" name="transacaoId" th:value="${transacao.id}" />
+
+                <div class="mb-3">
+                    <label for="texto" class="form-label">Novo Comentário</label>
+                    <textarea class="form-control" id="texto" th:field="*{texto}" rows="3"></textarea>
+                    <div th:if="${#fields.hasErrors('texto')}" class="text-danger" th:errors="*{texto}"></div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="background-color: #6FA285;">Adicionar
+                    Comentário</button>
+                <a th:href="@{'/contas/' + ${transacao.conta.id} + '/transacoes'}" class="btn btn-secondary">Voltar</a>
+            </form>
+        </div>
+
+        <!-- Script para expandir/ocultar o formulário -->
+        <script>
+            function mostrarFormulario(id) {
+                document.getElementById('texto-' + id).style.display = 'none';
+                document.getElementById('form-' + id).style.display = 'block';
+            }
+
+            function cancelarEdicao(id) {
+                document.getElementById('form-' + id).style.display = 'none';
+                document.getElementById('texto-' + id).style.display = 'flex';
+            }
+        </script>
+
+    </section>
+</body>
+
+</html>

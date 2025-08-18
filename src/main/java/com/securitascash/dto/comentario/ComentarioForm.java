@@ -2,8 +2,8 @@ package com.securitascash.dto.comentario;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.securitascash.validators.comentario.NoWhiteSpacesOnly;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ComentarioForm {
     
-    @NoWhiteSpacesOnly
+    @NotBlank(message = "O texto não pode estar vazio.")
     @Length(max = 250, message = "O texto deve ter no máximo 250 caracteres.")
     private String texto;
 }

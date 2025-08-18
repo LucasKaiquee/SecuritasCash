@@ -81,7 +81,7 @@
                     </thead>
                     <tbody>
                         <tr th:each="transacao : ${pagina}" class="text-center clickable-row"
-                            th:data-href="@{'/contas/' + ${conta.id} + '/transacoes/' + ${transacao.id} + '/detalhes'}">
+                            th:data-href="@{'/contas/' + ${conta.id} + '/transacoes/editar/' + ${transacao.id} }">
                             <td th:text="${#temporals.format(transacao.data, 'dd/MM/yyyy')}">01/01/2024</td>
                             <td th:text="${transacao.categoria.name}">categoria</td>
                             <td th:text="${transacao.movimento.displayValue }">movimento</td>
@@ -121,15 +121,9 @@
 
                                         <div class="modal-footer">
                                             
-                                            <div th:unless="${#lists.isEmpty(transacao.comentarios)}" >
-                                                <a th:href="@{'/contas/' + ${transacao.conta.id} + '/transacoes/' + ${transacao.id} + '/detalhes'}"
-                                                    class="modal-botao botao-editar">
-                                                    Editar
-                                                </a>
-                                            </div>
-                                            <a th:href="@{'/contas/' + ${transacao.conta.id} + '/transacoes/' + ${transacao.id} + '/detalhes'}"
+                                            <a th:href="@{'/contas/' + ${transacao.conta.id} + '/transacoes/' + ${transacao.id} + '/comentarios'}"
                                                 class="modal-botao botao-adicionar">
-                                                Adicionar Novo
+                                                Editar/Adicionar Novo
                                             </a>
                                         </div>
                                     </div>
@@ -189,7 +183,6 @@
 
                 rows.forEach(row => {
                     row.addEventListener("click", (event) => {
-                        // MUDANÇA: Verifica se a linha está com o modal aberto. Se estiver, não faz nada.
                         if (row.classList.contains('modal-aberto')) {
                             return;
                         }
