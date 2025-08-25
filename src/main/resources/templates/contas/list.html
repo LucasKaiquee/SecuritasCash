@@ -19,29 +19,31 @@
             [[${mensagem}]]
         </div>
 
-        <table class="table table-hover table-bordered shadow-sm bg-white" th:unless="${#lists.isEmpty(contas)}">
-            <thead class="text-white table-dark text-center">
-                <tr>
-                    <th>Descrição</th>
-                    <th>Número da Conta</th>
-                    <th>Tipo da Conta</th>
-                    <th colspan="2">Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="conta : ${contas}" class="text-center">
-                    <td th:text="${conta.descricao}">Descrição</td>
-                    <td th:text="${conta.numero}">0000-0</td>
-                    <td th:text="${conta.tipo}">CORRENTE</td>
+        <div class="scroll-table">
+            <table class="styled-table" th:unless="${#lists.isEmpty(contas)}">
+                <thead class="text-white table-dark text-center">
+                    <tr>
+                        <th>Descrição</th>
+                        <th>Número da Conta</th>
+                        <th>Tipo da Conta</th>
+                        <th colspan="2">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="conta : ${contas}" class="text-center">
+                        <td th:text="${conta.descricao}">Descrição</td>
+                        <td th:text="${conta.numero}">0000-0</td>
+                        <td th:text="${conta.tipo}">CORRENTE</td>
 
-                    <td>
-                        <a th:href="@{'/contas/' + ${conta.id} + '/transacoes'}" class="btn btn-outline-dark btn-sm">
-                            <i class="bi bi-list-ul"></i> Transações
-                        </a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                        <td>
+                            <a th:href="@{'/contas/' + ${conta.id} + '/transacoes'}" class="btn btn-outline-dark btn-sm">
+                                <i class="bi bi-list-ul"></i> Transações
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
         <div class="d-flex justify-content-end mt-3">
             <a class="btn text-white" style="background-color: #6FA285;" th:href="@{/contas/criar}">
