@@ -25,10 +25,10 @@ public class ContaService {
         Conta conta = null;
     
         switch (contaForm.getTipo()) {
-            case "CORRENTE":
+            case "Corrente":
                 conta = new ContaCorrente();
                 break;
-            case "CARTAO_CREDITO":
+            case "Cartão de Crédito":
                 CartaoDeCredito cartao = new CartaoDeCredito();
                 cartao.setDiaDoFechamento(contaForm.getDiaDoFechamento());
                 conta = cartao;

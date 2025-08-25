@@ -15,8 +15,8 @@
             <div class="mb-3">
                 <label class="form-label">Tipo de Conta</label> 
                 <select th:field="*{tipo}" class="form-select">
-                    <option value="CORRENTE">Conta Corrente</option>
-                    <option value="CARTAO_CREDITO">Cartão de Crédito</option>
+                    <option value="Corrente">Conta Corrente</option>
+                    <option value="Cartão de Crédito">Cartão de Crédito</option>
                 </select>
                 <div th:if="${#fields.hasErrors('tipo')}" class="text-danger" th:errors="*{tipo}" ></div>
             </div>

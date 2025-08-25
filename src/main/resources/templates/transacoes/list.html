@@ -134,6 +134,12 @@
                 </table>
             </div>
 
+            <div class="d-flex mt-4 justify-content-between">
+                <a th:href="@{'/contas'}" class="btn btn-secondary">Voltar</a>
+                <a th:href="@{'/contas/' + ${conta.id} + '/transacoes/criar'}" class="btn btn-success"
+                    style="background-color: #6FA285;">Adicionar Transação</a>
+            </div>
+
             <div class="d-flex justify-content-center mt-3">
                 <nav aria-label="Navegação da página">
                     <ul class="pagination">
@@ -170,11 +176,7 @@
                 </nav>
             </div>
 
-            <div class="d-flex justify-content-between">
-                <a th:href="@{'/contas'}" class="btn btn-secondary">Voltar</a>
-                <a th:href="@{'/contas/' + ${conta.id} + '/transacoes/criar'}" class="btn btn-success"
-                    style="background-color: #6FA285;">Adicionar Transação</a>
-            </div>
+
         </div>
         <script>
             // --- LÓGICA PARA AS LINHAS CLICÁVEIS ---
