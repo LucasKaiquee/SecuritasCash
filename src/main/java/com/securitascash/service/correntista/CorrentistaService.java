@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.securitascash.dto.correntista.CorrentistaDTO;
+import com.securitascash.dto.correntista.CorrentistaForm;
 import com.securitascash.model.usuario.inherit.Correntista;
 import com.securitascash.repository.CorrentistaRepository;
 import com.securitascash.repository.UsuarioRepository;
@@ -22,7 +22,7 @@ public class CorrentistaService {
     public Page<Correntista> listarCorrentistas(Pageable pageable) {
         return correntistaRepository.findAll(pageable);
     }
-    public void criarCorrentista(CorrentistaDTO correntista) {
+    public void criarCorrentista(CorrentistaForm correntista) {
         Correntista novCorrentista = new Correntista();
         novCorrentista.setNome(correntista.getNome());
         novCorrentista.setEmail(correntista.getEmail());
@@ -49,6 +49,7 @@ public class CorrentistaService {
         Correntista correntista = this.buscar(id);
         correntista.setNome(dto.getNome());
         correntista.setEmail(dto.getEmail());
+        correntista.setSenha(dto.getSenha());
         correntista.setBlocked(dto.isBlocked());
 
         return correntistaRepository.save(correntista);

@@ -1,16 +1,18 @@
 package com.securitascash.dto.correntista;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-public class CorrentistaDTO {
-    //TODO: Implementar validações
+@AllArgsConstructor
+@NoArgsConstructor
+public class CorrentistaForm {
     @NotBlank(message= "Nome é obrigatório.")
     private String nome;
 
-    @NotNull(message= "Senha é obrigatório.")
+    @NotBlank(message= "Senha é obrigatório.")
     private String senha;
 
     @NotBlank(message= "Email é obrigatório.")

@@ -22,9 +22,9 @@
             <div th:unless="${correntista}">
                 <form th:action="@{/correntistas/novo}" th:object="${correntistaForm}" method="post">
 
-                    <!-- <input type="hidden" th:field="*{id}" /> -->
+                    <!-- <input type="hidden" th:field="*{id}" />
 
-                    <!-- <input type="hidden" th:field="*{contas}" /> -->
+                    <input type="hidden" th:field="*{contas}" /> -->
 
                     <div class="mb-3">
                         <label for="nome" class="form-label">Nome</label>
@@ -86,12 +86,12 @@
                         <div th:if="${#fields.hasErrors('email')}" class="text-danger" th:errors="*{email}"></div>
                     </div>
 
-                    <!-- <div class="mb-3">
+                    <div class="mb-3">
                         <label for="senha" class="form-label">Senha</label>
                         <input type="password" th:field="*{senha}" class="form-control" id="senha"
                             placeholder="Digite a senha">
                         <div th:if="${#fields.hasErrors('senha')}" class="text-danger" th:errors="*{senha}"></div>
-                    </div> -->
+                    </div>
 
                     <div class="mb-3">
                         <label for="blocked" class="form-label">Bloquado?</label>
@@ -100,8 +100,8 @@
                         <div th:if="${#fields.hasErrors('blocked')}" class="text-danger" th:errors="*{blocked}"></div>
                     </div>
 
-                    <button type="submit" class="btn btn-success">Salvar</button>
                     <a href="/correntistas" class="btn btn-secondary">Cancelar</a>
+                    <button type="submit" class="btn btn-success">Salvar</button>
                 </form>
             </div>
 

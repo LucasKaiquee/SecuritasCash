@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.securitascash.dto.correntista.CorrentistaDTO;
+import com.securitascash.dto.correntista.CorrentistaForm;
 import com.securitascash.model.usuario.inherit.Correntista;
 import com.securitascash.service.correntista.CorrentistaService;
 
@@ -36,13 +36,13 @@ public class CorrentistaController {
 
     @GetMapping("/novo")
     public ModelAndView exibirFormulario(ModelAndView mav) {
-        mav.addObject("correntistaForm", new CorrentistaDTO());
+        mav.addObject("correntistaForm", new CorrentistaForm());
         mav.setViewName("correntistas/form");
         return mav;
     }
 
     @PostMapping("/novo")
-    public ModelAndView criarCorrentista(@Valid @ModelAttribute CorrentistaDTO correntista, BindingResult result, RedirectAttributes attr, ModelAndView mav) {
+    public ModelAndView criarCorrentista(@Valid @ModelAttribute CorrentistaForm correntista, BindingResult result, RedirectAttributes attr, ModelAndView mav) {
 
         if ( result.hasErrors() ) {
             mav.setViewName("correntistas/form");
