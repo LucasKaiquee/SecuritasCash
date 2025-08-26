@@ -10,51 +10,78 @@
     <section layout:fragment="content">
         <div class="container mt-5">
 
-            <h2 class="text-dark mb-4">Transações da Conta <span th:text="${conta.numero}">0000-0</span></h2>
+            <!-- Título -->
+            <h2 class="text-dark mb-4">
+                Extrato da Conta <span th:text="${conta.numero}">0000-0</span>
+            </h2>
 
+            <!-- Mensagem quando não há transações -->
             <div class="alert alert-info" role="alert" th:if="${#lists.isEmpty(pagina)}">
                 Você não possui transações nessa conta.
             </div>
 
-
+            <!-- Filtros -->
             <div class="card mb-4">
                 <div class="card-body">
                     <h5 class="card-title mb-3">Filtrar por:</h5>
+
                     <form th:action="@{transacoes}" method="get" class="filter-form">
                         <div class="row align-items-end">
 
+                            <!-- Movimento -->
                             <div class="col-12 col-md-6 col-lg-4 mb-3">
                                 <label for="movimento" class="form-label">Movimento</label>
                                 <select id="movimento" name="movimento" class="form-select">
                                     <option value="">Todos</option>
                                     <option value="CREDITO"
                                         th:selected="${param.movimento != null and param.movimento[0] == 'CREDITO'}">
-                                        Crédito</option>
+                                        Crédito
+                                    </option>
                                     <option value="DEBITO"
                                         th:selected="${param.movimento != null and param.movimento[0] == 'DEBITO'}">
-                                        Débito</option>
+                                        Débito
+                                    </option>
                                 </select>
                             </div>
 
+                            <!-- Ordenação -->
                             <div class="col-12 col-md-6 col-lg-4 mb-3">
                                 <label for="filtroOrdem" class="form-label">Ordenar por</label>
                                 <select id="filtroOrdem" name="sort" class="form-select">
                                     <option value="">Padrão</option>
                                     <option value="data,desc"
-                                        th:selected="${param.sort != null and param.sort[0] == 'data,desc'}">Data (Mais
-                                        Recentes)</option>
+                                        th:selected="${param.sort != null and param.sort[0] == 'data,desc'}">
+                                        Data (Mais Recentes)
+                                    </option>
                                     <option value="data,asc"
-                                        th:selected="${param.sort != null and param.sort[0] == 'data,asc'}">Data (Mais
-                                        Antigas)</option>
+                                        th:selected="${param.sort != null and param.sort[0] == 'data,asc'}">
+                                        Data (Mais Antigas)
+                                    </option>
                                     <option value="valor,desc"
-                                        th:selected="${param.sort != null and param.sort[0] == 'valor,desc'}">Valor
-                                        (Maior para Menor)</option>
+                                        th:selected="${param.sort != null and param.sort[0] == 'valor,desc'}">
+                                        Valor (Maior para Menor)
+                                    </option>
                                     <option value="valor,asc"
-                                        th:selected="${param.sort != null and param.sort[0] == 'valor,asc'}">Valor
-                                        (Menor para Maior)</option>
+                                        th:selected="${param.sort != null and param.sort[0] == 'valor,asc'}">
+                                        Valor (Menor para Maior)
+                                    </option>
                                 </select>
                             </div>
 
+                            <!-- Data início -->
+                            <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                <label for="dataInicio" class="form-label">Data Início</label>
+                                <input type="date" id="dataInicio" name="dataInicio" class="form-control"
+                                    th:value="${inicio}">
+                            </div>
+
+                            <!-- Data fim -->
+                            <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                <label for="dataFim" class="form-label">Data Fim</label>
+                                <input type="date" id="dataFim" name="dataFim" class="form-control" th:value="${fim}">
+                            </div>
+
+                            <!-- Botões -->
                             <div class="col-lg-3 col-md-6 mb-3 d-flex align-items-center">
                                 <button type="submit" class="btn btn-primary me-2">
                                     <i class="bi bi-funnel"></i> Filtrar
@@ -64,9 +91,21 @@
                                 </a>
                             </div>
                         </div>
+
+                        <!-- Card de Balanço -->
+
                     </form>
                 </div>
             </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-3 p-3 border rounded bg-light shadow-sm">
+                <p><strong>Entradas:</strong> <span id="entradas" class="text-success">R$ 0,00</span></p>
+                <p><strong>Saídas:</strong> <span id="saidas" class="text-danger">R$ 0,00</span></p>
+                <hr>
+                <p><strong>Saldo:</strong> <span id="saldo">R$ 0,00</span></p>
+            </div>
+
+            <!-- Tabela -->
             <div class="scroll-table">
                 <table class="styled-table" th:unless="${#lists.isEmpty(pagina)}">
                     <thead class="table-dark text-center">
@@ -82,15 +121,17 @@
                     <tbody>
                         <tr th:each="transacao : ${pagina}" class="text-center clickable-row"
                             th:data-href="@{'/contas/' + ${conta.id} + '/transacoes/editar/' + ${transacao.id} }">
+
                             <td th:text="${#temporals.format(transacao.data, 'dd/MM/yyyy')}">01/01/2024</td>
-                            <td th:text="${transacao.categoria.name}">categoria</td>
-                            <td th:text="${transacao.movimento.displayValue }">movimento</td>
+                            <td th:text="${transacao.categoria.name}">Categoria</td>
+                            <td th:text="${transacao.movimento.displayValue}">Movimento</td>
                             <td class="transacao-descricao" th:text="${transacao.descricao}">Salário</td>
-                            <td
-                                th:text="'R$' + ' ' + ${#numbers.formatDecimal(transacao.valor, 0, 'POINT', 2, 'COMMA')}">
+                            <td th:text="'R$ ' + ${#numbers.formatDecimal(transacao.valor, 0, 'POINT', 2, 'COMMA')}">
                                 1000.00</td>
+
                             <td>
-                                <div class=" comment-button icone-container"
+                                <!-- Botão de comentários -->
+                                <div class="comment-button icone-container"
                                     th:onclick="'abrirModalComentarios(event, \'modal-comentarios-' + ${transacao.id} + '\')'">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                         stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -102,6 +143,7 @@
                                     </div>
                                 </div>
 
+                                <!-- Modal de comentários -->
                                 <div th:id="'modal-comentarios-' + ${transacao.id}" class="modal-comentarios-overlay">
                                     <div class="modal-comentarios-content">
                                         <span class="fechar-modal"
@@ -120,7 +162,6 @@
                                         </ul>
 
                                         <div class="modal-footer">
-                                            
                                             <a th:href="@{'/contas/' + ${transacao.conta.id} + '/transacoes/' + ${transacao.id} + '/comentarios'}"
                                                 class="modal-botao botao-adicionar">
                                                 Editar/Adicionar Novo
@@ -134,16 +175,21 @@
                 </table>
             </div>
 
+            <!-- Botões inferiores -->
             <div class="d-flex mt-4 justify-content-between">
                 <a th:href="@{'/contas'}" class="btn btn-secondary">Voltar</a>
                 <a th:href="@{'/contas/' + ${conta.id} + '/transacoes/criar'}" class="btn btn-success"
-                    style="background-color: #6FA285;">Adicionar Transação</a>
+                    style="background-color: #6FA285;">
+                    Adicionar Transação
+                </a>
             </div>
 
+            <!-- Paginação -->
             <div class="d-flex justify-content-center mt-3">
                 <nav aria-label="Navegação da página">
                     <ul class="pagination">
 
+                        <!-- Anterior -->
                         <li class="page-item" th:classappend="${pagina.first} ? 'disabled'">
                             <a class="page-link" th:href="@{transacoes
                                         (page=${pagina.number - 1},
@@ -155,13 +201,15 @@
                             </a>
                         </li>
 
+                        <!-- Info página -->
                         <li class="page-item disabled">
                             <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
-                                Página <span th:text="${pagina.number + 1}"></span> de <span
-                                    th:text="${pagina.totalPages} == 0 ? '1' : ${pagina.totalPages}"></span>
+                                Página <span th:text="${pagina.number + 1}"></span> de
+                                <span th:text="${pagina.totalPages} == 0 ? '1' : ${pagina.totalPages}"></span>
                             </a>
                         </li>
 
+                        <!-- Próximo -->
                         <li class="page-item" th:classappend="${pagina.last} ? 'disabled'">
                             <a class="page-link" th:href="@{transacoes
                                         (page=${pagina.number + 1},
@@ -176,68 +224,70 @@
                 </nav>
             </div>
 
-
         </div>
+
+        <!-- Scripts -->
         <script>
-            // --- LÓGICA PARA AS LINHAS CLICÁVEIS ---
             document.addEventListener("DOMContentLoaded", function () {
+                // --- LINHAS CLICÁVEIS ---
                 const rows = document.querySelectorAll(".clickable-row");
 
                 rows.forEach(row => {
                     row.addEventListener("click", (event) => {
-                        if (row.classList.contains('modal-aberto')) {
-                            return;
-                        }
+                        if (row.classList.contains('modal-aberto')) return;
+                        if (event.target.closest('.icone-container')) return;
 
-                        // Impede que o clique no ícone também acione a navegação
-                        // Se o elemento clicado (ou seu pai) tem a classe 'icone-container', não navega.
-                        if (event.target.closest('.icone-container')) {
-                            return;
-                        }
-
-                        // Se passou nas verificações, navega para a URL
                         window.location.href = row.dataset.href;
                     });
                 });
             });
 
-            // --- FUNÇÕES DO MODAL MODIFICADAS ---
-
-            // Função para ABRIR o modal
+            // --- FUNÇÕES DO MODAL ---
             function abrirModalComentarios(event, modalId) {
-                // MUDANÇA: Impede que o clique "vaze" para a linha e ative a navegação
                 event.stopPropagation();
-
                 const modal = document.getElementById(modalId);
                 if (modal) {
                     modal.style.display = 'flex';
-
-                    // MUDANÇA: Encontra a linha pai (tr.clickable-row) e a "desativa"
-                    // adicionando uma classe que a impede de ser clicada.
                     const linha = modal.closest('.clickable-row');
-                    if (linha) {
-                        linha.classList.add('modal-aberto');
-                    }
+                    if (linha) linha.classList.add('modal-aberto');
                 }
             }
 
-            // Função para FECHAR o modal
             function fecharModalComentarios(event, modalId) {
-                // MUDANÇA: Impede que o clique "vaze" (boa prática)
                 event.stopPropagation();
-
                 const modal = document.getElementById(modalId);
                 if (modal) {
                     modal.style.display = 'none';
-
-                    // MUDANÇA: Encontra a linha pai e a "reativa",
-                    // removendo a classe que a travava.
                     const linha = modal.closest('.clickable-row');
-                    if (linha) {
-                        linha.classList.remove('modal-aberto');
-                    }
+                    if (linha) linha.classList.remove('modal-aberto');
                 }
             }
+
+            // --- BALANÇO ---
+            document.addEventListener("DOMContentLoaded", () => {
+                let entradas = 0, saidas = 0;
+
+                document.querySelectorAll("tbody tr").forEach(row => {
+                    const movimento = row.querySelector("td:nth-child(3)")?.innerText.trim();
+                    const valorStr = row.querySelector("td:nth-child(5)")?.innerText
+                        .replace("R$", "").replace(/\./g, "").replace(",", ".");
+                    const valor = parseFloat(valorStr) || 0;
+
+                    if (movimento === "Crédito") entradas += valor;
+                    if (movimento === "Débito") saidas += valor;
+                });
+
+                const saldo = entradas - saidas;
+
+                document.getElementById("entradas").innerText =
+                    entradas.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+                document.getElementById("saidas").innerText =
+                    saidas.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+
+                const saldoEl = document.getElementById("saldo");
+                saldoEl.innerText = saldo.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+                saldoEl.classList.add(saldo >= 0 ? "text-success" : "text-danger");
+            });
         </script>
     </section>
 </body>

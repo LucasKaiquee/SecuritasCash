@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layouts/layout}">
+
+<head>
+    <title>Orçamento Anual</title>
+    <style>
+        /* Estilo para a linha que agrupa as categorias por natureza */
+        .group-header {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Estilo para a coluna de total anual, para dar destaque */
+        .total-anual {
+            font-weight: bold;
+            background-color: #e9f5ff;
+        }
+    </style>
+</head>
+
+<body>
+    <section layout:fragment="content">
+        <div class="container mt-5">
+
+            <h2 class="text-dark mb-4">
+                Orçamento Anual da Conta <span th:text="${conta.numero}">0000-0</span>
+            </h2>
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Selecionar Ano</h5>
+                    <form th:action="@{'/contas/' + ${conta.id} + '/transacoes/orcamento-anual'}" method="get"
+                        class="row align-items-end">
+                        <div class="col-12 col-md-4">
+                            <label for="ano" class="form-label">Ano:</label>
+                            <select id="ano" name="ano" class="form-select">
+                                <option th:each="anoOption : ${anosDisponiveis}" th:value="${anoOption}"
+                                    th:text="${anoOption}" th:selected="${anoOption == anoSelecionado}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-search"></i> Visualizar
+                            </button>
+                        </div>
+                    </form>
+                    <a th:href="@{'/contas/' + ${conta.id} + '/transacoes/orcamento-grafico'}"
+                        class="mt-5 btn btn-outline-primary btn-sm">
+                        <i class="bi bi-bar-chart-line"></i> Gráfico
+                    </a>
+                </div>
+            </div>
+
+            <div class="alert alert-info" role="alert" th:if="${#maps.isEmpty(orcamentoAgrupado)}">
+                Nenhuma transação encontrada para o ano de <strong th:text="${anoSelecionado}"></strong>.
+            </div>
+
+            <div th:each="grupo : ${orcamentoAgrupado}">
+                
+                <h3 class="mt-5 mb-3" th:text="${grupo.key}"></h3>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover text-center">
+                        <thead class="table-dark">
+                            <tr>
+                                <th style="width: 15%;">Categoria</th>
+                                <th>Jan</th>
+                                <th>Fev</th>
+                                <th>Mar</th>
+                                <th>Abr</th>
+                                <th>Mai</th>
+                                <th>Jun</th>
+                                <th>Jul</th>
+                                <th>Ago</th>
+                                <th>Set</th>
+                                <th>Out</th>
+                                <th>Nov</th>
+                                <th>Dez</th>
+                                <th style="width: 10%;">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="linha : ${grupo.value}">
+                                <td class="text-start" th:text="${linha.categoria.name}">Nome da Categoria</td>
+                                
+                                <td th:each="valorMensal : ${linha.valoresMensais}"
+                                    th:text="${#numbers.formatCurrency(valorMensal)}">
+                                    R$ 0,00
+                                </td>
+                                
+                                <td class="total-anual" th:text="${#numbers.formatCurrency(linha.totalAnual)}">
+                                    R$ 0,00
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="d-flex mt-4">
+                <a th:href="@{'/contas'}" class="btn btn-secondary">Voltar para Contas</a>
+            </div>
+    </section>
+</body>
+
+</html>

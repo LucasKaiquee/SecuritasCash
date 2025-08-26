@@ -63,7 +63,7 @@
             <!-- Edição Correntista -->
             <div th:if="${correntista}">
                 
-                <form th:action="@{'/correntistas/editar/' + ${correntista.id}}" th:object="${correntista}" method="post">
+                <form th:action="@{'/correntistas/editar1/' + ${correntista.id}}" th:object="${correntista}" method="post">
 
                     <input type="hidden" name="_method" value="put">
 

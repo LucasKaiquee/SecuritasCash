@@ -100,7 +100,7 @@
             <!-- Edição de Transação -->
             <div th:if="${transacao}">
                 <!-- '/contas/' + ${contaId} + '/transacoes/editar/' + {transacao.id} -->
-                <form th:action="@{'/contas/ ' + ${contaId} + '/transacoes/editar/' + ${transacao.id}}" th:object="${transacao}" method="post">
+                <form th:action="@{'/contas/' + ${contaId} + '/transacoes/editar/' + ${transacao.id}}" th:object="${transacao}" method="post">
 
                     <input type="hidden" name="_method" value="put">
 

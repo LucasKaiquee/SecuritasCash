@@ -3,7 +3,7 @@ package com.securitascash.dto.transacao;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import com.securitascash.dto.comentario.ComentarioForm;
+import com.securitascash.dto.comentario.ComentarioTransacao;
 import com.securitascash.model.Categoria;
 import com.securitascash.validators.date.DateAfter;
 
@@ -41,5 +41,5 @@ public class TransacaoForm {
     private Categoria categoria;
 
     @Valid
-    private ComentarioForm comentario;
+    private ComentarioTransacao comentario;
 }

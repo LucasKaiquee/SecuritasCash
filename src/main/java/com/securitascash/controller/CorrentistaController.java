@@ -66,10 +66,11 @@ public class CorrentistaController {
         return mav;
     }
 
-    @PutMapping("/editar/{id}")
+    @PutMapping("/editar1/{id}")
     public ModelAndView update ( @Valid @ModelAttribute Correntista correntista, BindingResult result, @PathVariable Long id,  ModelAndView mav){
         if ( result.hasErrors() ) {
             mav.setViewName("correntistas/form");
+            mav.addObject("correntista", correntista);
             return mav;
         }
         correntistaService.editar(id, correntista);

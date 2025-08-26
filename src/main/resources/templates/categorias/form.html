@@ -65,6 +65,7 @@
                 <div class="mb-3">
                     <label for="name" class="form-label">Nome</label>
                     <input type="text" class="form-control" th:field="*{name}" />
+                    <div th:if="${#fields.hasErrors('name')}" class="text-danger" th:errors="*{name}"></div>
                 </div>
 
                 <div class="mb-3">
@@ -82,6 +83,7 @@
                 <div class="mb-3">
                     <label for="ordem" class="form-label">Ordem</label>
                     <input type="number" class="form-control" th:field="*{ordem}" />
+                    <div th:if="${#fields.hasErrors('ordem')}" class="text-danger" th:errors="*{ordem}"></div>
                 </div>
 
                 <a th:href="@{/categorias}" class="btn btn-secondary">Cancelar</a>

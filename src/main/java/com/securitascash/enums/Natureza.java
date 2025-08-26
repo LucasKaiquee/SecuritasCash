@@ -2,8 +2,8 @@ package com.securitascash.enums;
 
 public enum Natureza {
     ENTRADA("Entrada"),
-    INVESTIMENTO("Investimento"),
-    SAIDA("Saída");
+    SAIDA("Saída"),
+    INVESTIMENTO("Investimento");
 
     private final String displayValue;
     

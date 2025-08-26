@@ -1,25 +1,25 @@
-package com.securitascash.config;
+// package com.securitascash.config;
 
-import org.springframework.web.servlet.HandlerInterceptor;
+// import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.securitascash.dto.usuario.UsuarioSessao;
+// import com.securitascash.dto.usuario.UsuarioSessao;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+// import jakarta.servlet.http.HttpServletRequest;
+// import jakarta.servlet.http.HttpServletResponse;
+// import jakarta.servlet.http.HttpSession;
 
-public class LoginInterceptor implements HandlerInterceptor {
+// public class LoginInterceptor implements HandlerInterceptor {
 
-    @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        HttpSession session = request.getSession();
-        UsuarioSessao usuario = (UsuarioSessao) session.getAttribute("usuarioLogado");
+//     @Override
+//     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+//         HttpSession session = request.getSession();
+//         UsuarioSessao usuario = (UsuarioSessao) session.getAttribute("usuarioLogado");
 
-        if (usuario == null) {
-            response.sendRedirect("/usuario/login");
-            return false; 
-        }
+//         if (usuario == null) {
+//             response.sendRedirect("/usuario/login");
+//             return false; 
+//         }
 
-        return true; 
-    }
-}
+//         return true; 
+//     }
+// }

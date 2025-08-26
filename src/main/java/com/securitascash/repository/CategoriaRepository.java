@@ -1,5 +1,7 @@
 package com.securitascash.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,6 +16,7 @@ import com.securitascash.model.Categoria;
 public interface CategoriaRepository extends JpaRepository<Categoria, Long>{
     
     Categoria findByName(String name);
+    List<Categoria> findAllByOrderByNaturezaAscOrdemAsc();
 
     @Query("SELECT c FROM Categoria c WHERE " +
         "(:natureza is null OR c.natureza = :natureza) AND " +
