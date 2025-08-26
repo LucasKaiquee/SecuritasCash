@@ -74,23 +74,44 @@ public class TransacaoService {
     }
 
     @Transactional
-    public void atualizar(Long id, TransacaoForm form) {
-        Transacao transacao = transacaoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Transação não encontrada"));
+public void atualizar(Long id, TransacaoForm form) {
+    Transacao transacao = transacaoRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Transação não encontrada"));
 
-        Categoria categoria = categoriaRepository.findByName(form.getCategoria().getName());
-
+    // Atualiza descrição se fornecida
+    if (form.getDescricao() != null && !form.getDescricao().isBlank()) {
         transacao.setDescricao(form.getDescricao());
-        transacao.setValor(form.getValor());
-        transacao.setData(form.getData());
-
-        Movimento movimento = form.getMovimento().equals("Crédito") ? Movimento.CREDITO : Movimento.DEBITO;
-
-        transacao.setMovimento(movimento);
-        transacao.setCategoria(categoria);
-
-        transacaoRepository.save(transacao);
     }
+
+    // Atualiza valor se fornecido
+    if (form.getValor() != null && form.getValor().compareTo(BigDecimal.ZERO) > 0) {
+        transacao.setValor(form.getValor());
+    }
+
+    // Atualiza data se fornecida
+    if (form.getData() != null) {
+        transacao.setData(form.getData());
+    }
+
+    // Atualiza movimento se fornecido e válido
+    if (form.getMovimento() != null) {
+        if (form.getMovimento().equals("Crédito")) {
+            transacao.setMovimento(Movimento.CREDITO);
+        } else if (form.getMovimento().equals("Débito")) {
+            transacao.setMovimento(Movimento.DEBITO);
+        }
+    }
+
+    // Atualiza categoria se fornecida e existir
+    if (form.getCategoria() != null && form.getCategoria().getName() != null) {
+        Categoria categoria = categoriaRepository.findByName(form.getCategoria().getName());
+        if (categoria != null) {
+            transacao.setCategoria(categoria);
+        }
+    }
+
+    transacaoRepository.save(transacao);
+}
 
     public Page<Transacao> listarPorContaId(Long contaID, Pageable pageable) {
         Conta conta = contaService.buscarPorId(contaID);
