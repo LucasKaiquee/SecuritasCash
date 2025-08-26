@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -65,7 +66,7 @@ public class TransacaoController {
     @GetMapping
     public ModelAndView listarPorConta(
             @PathVariable Long id,
-            HttpSession session,
+            Authentication authentication,
             ModelAndView mav,
             @PageableDefault(page = 0, size = 7) Pageable pageable,
             @RequestParam(required = false) Movimento movimento,
@@ -73,12 +74,7 @@ public class TransacaoController {
             @RequestParam(required = false) String dataFim
     ) throws Exception {
 
-        UsuarioSessao usuarioSessao = Utils.getUsuarioSessao(session);
         Conta conta = contaService.buscarPorId(id);
-
-        if (!conta.getUsuario().getId().equals(usuarioSessao.getId())) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-        }
 
         LocalDate inicio;
         LocalDate fim;
@@ -232,16 +228,12 @@ public class TransacaoController {
     public ModelAndView orcamentoAnual(
             @PathVariable Long id,
             @RequestParam(required = false) Integer ano,
-            HttpSession session,
+            Authentication authentication,
             ModelAndView mav
     ) throws Exception {
 
-        // Validação de segurança ...
-        UsuarioSessao usuarioSessao = Utils.getUsuarioSessao(session);
         Conta conta = contaService.buscarPorId(id);
-        if (!conta.getUsuario().getId().equals(usuarioSessao.getId())) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-        }
+    
 
         int anoSelecionado = (ano != null) ? ano : LocalDate.now().getYear();
 
@@ -277,16 +269,11 @@ public class TransacaoController {
     public ModelAndView orcamentoGrafico(
             @PathVariable Long id,
             @RequestParam(required = false) Integer ano,
-            HttpSession session,
+            Authentication authentication,
             ModelAndView mav
     ) throws Exception {
 
-        // 1. Validação de segurança (mesma do outro método)
-        UsuarioSessao usuarioSessao = Utils.getUsuarioSessao(session);
         Conta conta = contaService.buscarPorId(id);
-        if (!conta.getUsuario().getId().equals(usuarioSessao.getId())) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-        }
 
         // 2. Define o ano e busca os dados base
         int anoSelecionado = (ano != null) ? ano : LocalDate.now().getYear();

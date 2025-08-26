@@ -68,10 +68,10 @@ public class CorrentistaController {
 
     @PutMapping("/editar/{id}")
     public ModelAndView update ( @Valid @ModelAttribute Correntista correntista, BindingResult result, @PathVariable Long id,  ModelAndView mav){
-        if ( result.hasErrors() ) {
-            mav.setViewName("correntistas/form");
-            return mav;
-        }
+        // if ( result.hasErrors() ) {
+        //     mav.setViewName("correntistas/form");
+        //     return mav;
+        // }
         correntistaService.editar(id, correntista);
         mav.setViewName("redirect:/correntistas");
         return mav;

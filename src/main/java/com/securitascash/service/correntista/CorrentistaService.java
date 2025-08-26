@@ -18,10 +18,10 @@ public class CorrentistaService {
     private CorrentistaRepository correntistaRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private UsuarioRepository usuarioRepository;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private PasswordEncoder passwordEncoder;
 
     public Page<Correntista> listarCorrentistas(Pageable pageable) {
         return correntistaRepository.findAll(pageable);
