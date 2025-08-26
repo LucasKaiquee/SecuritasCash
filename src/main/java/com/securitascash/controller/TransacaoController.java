@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -25,14 +25,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.securitascash.dto.comentario.ComentarioForm;
+import com.securitascash.dto.comentario.ComentarioTransacao;
 import com.securitascash.dto.orcamento.ChartDatasetDTO;
 import com.securitascash.dto.orcamento.LinhaOrcamentoDTO;
 import com.securitascash.dto.transacao.TransacaoForm;
-import com.securitascash.dto.usuario.UsuarioSessao;
 import com.securitascash.enums.Movimento;
 import com.securitascash.enums.Natureza;
 import com.securitascash.model.Transacao;
@@ -41,9 +40,7 @@ import com.securitascash.service.categoria.CategoriaService;
 import com.securitascash.service.conta.ContaService;
 import com.securitascash.service.transacao.TransacaoService;
 import com.securitascash.service.usuario.UsuarioService;
-import com.securitascash.utils.Utils;
-import java.util.stream.IntStream;
-import jakarta.servlet.http.HttpSession;
+
 import jakarta.validation.Valid;
 
 @Controller
@@ -164,7 +161,7 @@ public class TransacaoController {
         mav.addObject("comentarios", transacao.getComentarios());
         mav.addObject("categorias", categoriaService.listarCategorias());
         mav.addObject("transacao", transacao);
-        mav.addObject("comentarioForm", new ComentarioForm());
+        mav.addObject("comentarioForm", new ComentarioTransacao());
 
         return mav;
     }

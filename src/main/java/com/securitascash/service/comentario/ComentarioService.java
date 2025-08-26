@@ -11,14 +11,14 @@ import com.securitascash.model.Transacao;
 @Service
 public class ComentarioService {
 
-    private void verificarTextoNaoEVazio (String texto) throws BussinessException{
-        if (texto == null || texto.isEmpty()){
-            throw new BussinessException("Texto do comentário não pode ser vazio.");
-        }
-    }
+    // private void verificarTextoNaoEVazio (String texto) throws BussinessException{
+    //     if (texto == null || texto.isEmpty()){
+    //         throw new BussinessException("Texto do comentário não pode ser vazio.");
+    //     }
+    // }
 
     public Comentario criarComentario(Transacao transacao, Comentario comentario){  
-        this.verificarTextoNaoEVazio(comentario.getTexto());
+        // this.verificarTextoNaoEVazio(comentario.getTexto());
         
         transacao.getComentarios().add(comentario);
         comentario.setTransacao(transacao);
@@ -29,7 +29,7 @@ public class ComentarioService {
     public Comentario editarComentario(Transacao transacao, Long comentarioID, String texto){
         Comentario comentario = buscarComentario(transacao.getComentarios(), comentarioID);
 
-        this.verificarTextoNaoEVazio(texto);
+        // this.verificarTextoNaoEVazio(texto);
         comentario.setTexto(texto);
         
         return comentario;

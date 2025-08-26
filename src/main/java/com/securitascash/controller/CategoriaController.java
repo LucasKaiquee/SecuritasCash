@@ -83,7 +83,14 @@ public class CategoriaController {
     }
 
     @PutMapping("/{id}")
-    public ModelAndView update (@ModelAttribute Categoria categoria, @PathVariable Long id,  ModelAndView mav){
+    public ModelAndView update (@Valid @ModelAttribute Categoria categoria, BindingResult result, @PathVariable Long id,  ModelAndView mav){
+
+        if (result.hasErrors()) {
+            mav.setViewName("categorias/form");
+            mav.addObject("categoria", categoria);
+            mav.addObject("naturezas", Natureza.values());
+            return mav;
+        }
 
         service.editarCategoria(id, categoria);
         mav.setViewName("redirect:/categorias");
