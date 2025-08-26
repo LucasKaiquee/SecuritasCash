@@ -23,7 +23,7 @@ public class CategoriaService {
     public void criarCategoria(CategoriaForm categoriaForm){
         Categoria categoria = new Categoria();
         
-        categoria.setName(categoriaForm.getNome().replace(null, null));
+        categoria.setName(categoriaForm.getNome());
         categoria.setIsActive(categoriaForm.getAtivo());
         categoria.setNatureza(Natureza.valueOf(categoriaForm.getNatureza()));
         categoria.setOrdem(categoriaForm.getOrdem());
