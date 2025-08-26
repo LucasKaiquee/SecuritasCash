@@ -68,10 +68,10 @@ A aplicação foi construída com as seguintes tecnologias:
 Para facilitar os testes, a aplicação inicializa com os seguintes utilizadores ao arrancar:
 * **Administrador**:
     * **Email**: `lucas@teste.com`
-    * **Senha**: `1234`
+    * **Senha**: `admin123`
 * **Correntista 1**:
     * **Email**: `lf@email.com`
-    * **Senha**: `a`
+    * **Senha**: `teste123`
 * **Correntista 2**:
     * **Email**: `lf2@email.com`
-    * **Senha**: `a`
+    * **Senha**: `teste123`
