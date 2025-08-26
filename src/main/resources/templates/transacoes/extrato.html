@@ -1,0 +1,39 @@
+<h2>Extrato da Conta: [[${conta.descricao}]]</h2>
+<p>Período: [[${inicio}]] a [[${fim}]]</p>
+
+<form method="get" th:action="@{/contas/{id}/transacoes/extrato(id=${conta.id})}">
+    <label>Data início:</label>
+    <input type="date" name="dataInicio" />
+    <label>Data fim:</label>
+    <input type="date" name="dataFim" />
+    <button type="submit">Filtrar</button>
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>Data</th>
+            <th>Descrição</th>
+            <th>Valor</th>
+            <th>Movimento</th>
+            <th>Categoria</th>
+            <th>Comentários</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="t : ${extrato}">
+            <td th:text="${t.data}"></td>
+            <td th:text="${t.descricao}"></td>
+            <td th:text="${t.valor}"></td>
+            <td th:text="${t.movimento}"></td>
+            <td th:text="${t.categoria.nome}"></td>
+            <td>
+                <a th:if="${#lists.size(t.comentarios) > 0}"
+                   th:href="@{/contas/{contaId}/transacoes/{id}/comentarios(contaId=${conta.id},id=${t.id})}">
+                   [[${#lists.size(t.comentarios)}]] comentário(s)
+                </a>
+                <span th:if="${#lists.size(t.comentarios) == 0}">-</span>
+            </td>
+        </tr>
+    </tbody>
+</table>

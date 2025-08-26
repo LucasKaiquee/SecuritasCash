@@ -1,60 +1,38 @@
 package com.securitascash.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
-
-import com.securitascash.dto.usuario.UsuarioSessao;
-import com.securitascash.model.usuario.Usuario;
-import com.securitascash.service.usuario.UsuarioService;
-
-import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/usuario")
 public class UsuarioController {
 
-    @Autowired
-    private UsuarioService usuarioService;
+    // A injeção do UsuarioService aqui não é mais necessária para o login.
 
     @GetMapping("/login")
-    public String loginUsuario(Model model) {
-        return "usuarioLogin";
-    }
-
-    @PostMapping("/login")
-    public String loginUsuarioPost(@RequestParam String email,
-                        @RequestParam String password, Model model, HttpSession session) {
+    public String loginUsuario(@RequestParam(value = "error", required = false) String error,
+                               @RequestParam(value = "logout", required = false) String logout,
+                               Model model) {
         
-        Usuario usuario = usuarioService.login(email, password);
-        
-
-        if (usuario != null) {
-            String tipo = usuario.getClass().getSimpleName();
-
-            UsuarioSessao usuarioSessao = new UsuarioSessao();
-            usuarioSessao.setId(usuario.getId());
-            usuarioSessao.setNome(usuario.getNome());
-            usuarioSessao.setTipo(tipo);
-    
-            session.setAttribute("usuarioLogado", usuarioSessao);
-            return "redirect:/contas";
+        if (error != null) {
+            model.addAttribute("error", "Usuário ou senha inválidos.");
         }
-
-        model.addAttribute("error", "Usuário ou senha inválidos");
+        
+        if (logout != null) {
+            model.addAttribute("logout", "Você foi desconectado com sucesso.");
+        }
+        
         return "usuarioLogin";
     }
 
-    @GetMapping("/logout")
-    public ModelAndView logout(ModelAndView mav, HttpSession session) {
-        session.invalidate();
-        mav.setViewName("redirect:/usuario/login");
-        return mav;
+    @GetMapping("/403")
+    public String acessoNegado() {
+        return "/403"; 
     }
-    
+
+    // O método POST para login foi removido.
+    // O método de logout também foi removido (o Spring Security cuida disso via URL /logout).
 }
