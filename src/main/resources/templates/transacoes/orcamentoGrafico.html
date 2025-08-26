@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layouts/layout}">
+
+<head>
+    <title>Gráfico de Orçamento Anual</title>
+</head>
+
+<body>
+    <section layout:fragment="content">
+        <div class="container mt-5">
+
+            <h2 class="text-dark mb-4">
+                Gráfico de Orçamento da Conta <span th:text="${conta.numero}">0000-0</span>
+            </h2>
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Selecionar Ano</h5>
+                    <form th:action="@{'/contas/' + ${conta.id} + '/transacoes/orcamento-grafico'}" method="get"
+                        class="row align-items-end">
+                        <div class="col-12 col-md-4">
+                            <label for="ano" class="form-label">Ano:</label>
+                            <select id="ano" name="ano" class="form-select">
+                                <option th:each="anoOption : ${anosDisponiveis}" th:value="${anoOption}"
+                                    th:text="${anoOption}" th:selected="${anoOption == anoSelecionado}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-search"></i> Visualizar
+                            </button>
+                        </div>
+                    </form>
+
+                    <a th:href="@{'/contas/' + ${conta.id} + '/transacoes/orcamento-anual'}"
+                        class="mt-5 btn btn-outline-primary btn-sm">
+                        <i class="bi bi-table"></i>tabela
+                    </a>
+                </div>
+            </div>
+
+            <div class="alert alert-info" role="alert" th:if="${#lists.isEmpty(datasets)}">
+                Nenhuma transação encontrada para gerar o gráfico do ano de <strong
+                    th:text="${anoSelecionado}"></strong>.
+            </div>
+
+            <div class="card" th:if="${not #lists.isEmpty(datasets)}">
+                <div class="card-body">
+                    <canvas id="orcamentoChart"></canvas>
+                </div>
+            </div>
+
+            <div class="d-flex mt-4">
+                <a th:href="@{'/contas'}" class="btn btn-secondary">Voltar para Contas</a>
+            </div>
+
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+
+            // A mágica do Thymeleaf: Ele transforma os objetos Java em objetos JavaScript
+            const chartLabels = /*[[${labels}]]*/[];
+            const chartDatasets = /*[[${datasets}]]*/[];
+            const ano = /*[[${anoSelecionado}]]*/ '';
+
+            // Só executa o script se houver dados
+            if (chartDatasets.length > 0) {
+                const ctx = document.getElementById('orcamentoChart').getContext('2d');
+
+                new Chart(ctx, {
+                    type: 'line', // Tipo do gráfico
+                    data: {
+                        labels: chartLabels,
+                        datasets: chartDatasets
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                // Clicar na legenda liga/desliga a categoria (requisito 4)
+                            },
+                            title: {
+                                display: true,
+                                text: 'Orçamento Anual por Categoria - ' + ano,
+                                font: {
+                                    size: 18
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    // Formata o eixo Y para exibir como moeda
+                                    callback: function (value, index, values) {
+                                        return 'R$ ' + value.toLocaleString('pt-BR');
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            /*]]>*/
+        </script>
+    </section>
+</body>
+
+</html>
