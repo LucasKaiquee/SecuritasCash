@@ -3,6 +3,7 @@ package com.securitascash.service.correntista;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.securitascash.dto.correntista.CorrentistaForm;
@@ -17,18 +18,22 @@ public class CorrentistaService {
     private CorrentistaRepository correntistaRepository;
 
     @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
     private UsuarioRepository usuarioRepository;
 
     public Page<Correntista> listarCorrentistas(Pageable pageable) {
         return correntistaRepository.findAll(pageable);
     }
+
     public void criarCorrentista(CorrentistaForm correntista) {
         Correntista novCorrentista = new Correntista();
         novCorrentista.setNome(correntista.getNome());
         novCorrentista.setEmail(correntista.getEmail());
-        novCorrentista.setSenha(correntista.getSenha());
+        novCorrentista.setSenha(passwordEncoder.encode(correntista.getSenha()));
         novCorrentista.setBlocked(correntista.isBlocked());
-        
+
         usuarioRepository.save(novCorrentista);
     }
 
@@ -45,7 +50,7 @@ public class CorrentistaService {
                 .orElseThrow(() -> new IllegalArgumentException("Correntista não encontrado com o ID: " + id));
     }
 
-    public Correntista editar (Long id, Correntista dto) {
+    public Correntista editar(Long id, Correntista dto) {
         Correntista correntista = this.buscar(id);
         correntista.setNome(dto.getNome());
         correntista.setEmail(dto.getEmail());
@@ -55,4 +60,3 @@ public class CorrentistaService {
         return correntistaRepository.save(correntista);
     }
 }
-
